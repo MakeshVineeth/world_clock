@@ -99,7 +99,7 @@ class _HomeState extends State<Home> {
                         width: 30.0,
                         image: AssetImage('images/time_zone.png'),
                       ),
-                      applicationVersion: '1.0.0',
+                      applicationVersion: '1.0.1',
                       applicationLegalese:
                           'An Internet based World Clock app made in Flutter. It can retrieve timezones and country flags using the WorldClassAPI and CountryFlagsAPI.',
                     ),
