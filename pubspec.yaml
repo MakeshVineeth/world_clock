@@ -33,6 +33,7 @@ dependencies:
   flutter_rename_app: ^1.0.0
   flappy_search_bar: ^1.7.2
   shared_preferences: ^0.5.8
+  transparent_image: ^1.0.0
 
 dev_dependencies:
   flutter_test:

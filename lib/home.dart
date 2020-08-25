@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_clock/services/worldtime.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -110,9 +111,9 @@ class _HomeState extends State<Home> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Image(
-                              image: NetworkImage('$flagURL'),
-                            ),
+                            FadeInImage.memoryNetwork(
+                                placeholder: kTransparentImage,
+                                image: '$flagURL'),
                             SizedBox(
                               width: 10.0,
                             ),
@@ -191,7 +192,7 @@ class _HomeState extends State<Home> {
                                   );
                                 } catch (e) {}
                               },
-                              color: Colors.white,
+                              color: Colors.white.withOpacity(0.8),
                               icon: Icon(
                                 Icons.location_city,
                               ),

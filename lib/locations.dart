@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_clock/services/worldtime.dart';
 import 'package:flappy_search_bar/flappy_search_bar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class Location extends StatefulWidget {
   @override
@@ -83,9 +84,9 @@ class _LocationState extends State<Location> {
         },
         title: Row(
           children: [
-            Image(
-              image: NetworkImage('${locations[index].flag}'),
-            ),
+            FadeInImage.memoryNetwork(
+                placeholder: kTransparentImage,
+                image: '${locations[index].flag}'),
             SizedBox(
               width: 10.0,
             ),
@@ -105,7 +106,9 @@ class _LocationState extends State<Location> {
     await Future.delayed(Duration(seconds: 1));
     List<Card> lists = [];
     for (var i = 0; i < locations.length; i++) {
-      if (locations[i].url.toLowerCase().contains(search.toLowerCase())) {
+      String locationURL = locations[i].url.toLowerCase().replaceAll('_', '');
+      String searchFormatted = search.toLowerCase().replaceAll(' ', '');
+      if (locationURL.contains(searchFormatted)) {
         lists.add(loadCards(i));
       }
     }
