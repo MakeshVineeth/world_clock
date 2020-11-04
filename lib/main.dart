@@ -1,14 +1,19 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_clock/home.dart';
 import 'package:flutter_clock/loader.dart';
 import 'package:flutter_clock/locations.dart';
 
-void main() => runApp(MyClockApp());
+void main() {
+  runApp(MyClockApp());
+  GestureBinding.instance.resamplingEnabled = true;
+}
 
 class MyClockApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      title: 'Flutter Clock',
       routes: {
         '/': (context) => Loader(),
         '/home': (context) => Home(),

@@ -203,9 +203,9 @@ class _HomeState extends State<Home> {
                                 ),
                               ),
                               padding: EdgeInsets.symmetric(
-                                  vertical: 5.0, horizontal: 10.0),
+                                  vertical: 15.0, horizontal: 20.0),
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15.0),
+                                borderRadius: BorderRadius.circular(30.0),
                               ),
                               elevation: 10.0,
                               hoverColor: Colors.lightBlue[50],
