@@ -16,10 +16,23 @@ class WorldTime {
 
   WorldTime({this.location, this.url, this.flag});
 
+  Future<Response> getData(url) async {
+    try {
+      Map e = {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'POST,GET,DELETE,PUT,OPTIONS',
+      };
+      return await get(url, headers: e);
+    } catch (e) {
+      return null;
+    }
+  }
+
   Future<void> taskLoader() async {
     try {
       Response response =
-          await get('http://worldtimeapi.org/api/timezone/$url');
+          await getData('https://worldtimeapi.org/api/timezone/$url');
+
       Map e = jsonDecode(response.body);
 
       String dumpTime = e['datetime'];
@@ -43,14 +56,18 @@ class WorldTime {
       time = DateFormat.jm().format(now);
       secondsLeft = 60 - now.second;
     } catch (e) {
+      time = 'Cannot fetch data at the moment.';
     }
   }
 
   Future<void> getList() async {
     try {
-      Response responseList = await get('http://worldtimeapi.org/api/timezone');
+      Response responseList =
+          await getData('https://worldtimeapi.org/api/timezone');
       listData = jsonDecode(responseList.body);
     } catch (e) {
+      listData.clear();
+      listData.add('Offline.');
     }
   }
 }

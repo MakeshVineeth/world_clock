@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flappy_search_bar/search_bar_style.dart';
 import 'package:flutter/material.dart';
@@ -84,9 +85,7 @@ class _LocationState extends State<Location> {
         },
         title: Row(
           children: [
-            FadeInImage.memoryNetwork(
-                placeholder: kTransparentImage,
-                image: '${locations[index].flag}'),
+            getFlagImg(index),
             SizedBox(
               width: 10.0,
             ),
@@ -100,6 +99,17 @@ class _LocationState extends State<Location> {
         ),
       ),
     );
+  }
+
+  Widget getFlagImg(int index) {
+    try {
+      return FadeInImage.memoryNetwork(
+        placeholder: kTransparentImage,
+        image: '${locations[index].flag}',
+      );
+    } on SocketException catch (_) {
+      return Placeholder();
+    }
   }
 
   Future<List<Card>> search(String search) async {
