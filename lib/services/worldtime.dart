@@ -16,13 +16,21 @@ class WorldTime {
 
   WorldTime({this.location, this.url, this.flag});
 
-  Future<Response> getData(url) async {
+  Future<Response> getData(String urlStr) async {
     try {
-      Map e = {
+      Map optionalHeaders = {
         'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'POST,GET,DELETE,PUT,OPTIONS',
+        'Access-Control-Allow-Headers':
+            'Origin, Content-Type, Cookie, X-CSRF-TOKEN, x-requested-with, X-Auth-Token, Accept, Authorization, X-XSRF-TOKEN, Access-Control-Allow-Origin, client-security-token',
+        'Access-Control-Expose-Headers': 'Authorization, authenticated, X-JSON',
+        'Access-Control-Allow-Methods': 'GET, POST, PATCH, PUT, OPTIONS',
+        'Access-Control-Allow-Credentials': 'true',
       };
-      return await get(url, headers: e);
+
+      String optionalCorProxy = 'https://crossorigin.me/';
+
+      String httpStr = 'https://';
+      return await get('$httpStr$urlStr', headers: optionalHeaders);
     } catch (e) {
       return null;
     }
@@ -30,8 +38,7 @@ class WorldTime {
 
   Future<void> taskLoader() async {
     try {
-      Response response =
-          await getData('https://worldtimeapi.org/api/timezone/$url');
+      Response response = await getData('worldtimeapi.org/api/timezone/$url');
 
       Map e = jsonDecode(response.body);
 
@@ -56,14 +63,13 @@ class WorldTime {
       time = DateFormat.jm().format(now);
       secondsLeft = 60 - now.second;
     } catch (e) {
-      time = 'Cannot fetch data at the moment.';
+      time = 'Cannot fetch data.';
     }
   }
 
   Future<void> getList() async {
     try {
-      Response responseList =
-          await getData('https://worldtimeapi.org/api/timezone');
+      Response responseList = await getData('worldtimeapi.org/api/timezone');
       listData = jsonDecode(responseList.body);
     } catch (e) {
       listData.clear();
