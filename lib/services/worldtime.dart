@@ -61,18 +61,13 @@ class WorldTime {
       isDayTime = now.hour > 6 && now.hour < 19 ? true : false;
       time = DateFormat.jm().format(now);
       secondsLeft = 60 - now.second;
-    } catch (e) {
-      time = 'Cannot fetch data.';
-    }
+    } catch (e) {}
   }
 
   Future<void> getList() async {
     try {
       Response responseList = await getData('worldtimeapi.org/api/timezone');
       listData = jsonDecode(responseList.body);
-    } catch (e) {
-      listData.clear();
-      listData.add('Offline.');
-    }
+    } catch (e) {}
   }
 }
