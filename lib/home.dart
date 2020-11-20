@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_clock/services/worldtime.dart';
 import 'package:transparent_image/transparent_image.dart';
@@ -21,9 +20,11 @@ class _HomeState extends State<Home> {
   Color bgColor;
   Timer timer;
   int secondsLeft;
+  bool isWeb;
 
   Future<void> getTimeData() async {
-    WorldTime instance = WorldTime(location: location, url: url, flag: flagURL);
+    WorldTime instance =
+        WorldTime(location: location, url: url, flag: flagURL);
     await instance.taskLoader();
 
     setState(() {
@@ -58,6 +59,7 @@ class _HomeState extends State<Home> {
         Duration(seconds: secondsLeft), (Timer t) => getTimeData());
     date = data['date'];
     url = data['url'];
+    isWeb = data['isWeb'];
 
     return Scaffold(
       backgroundColor: bgColor,

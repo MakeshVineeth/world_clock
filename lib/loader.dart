@@ -15,7 +15,8 @@ class _LoaderState extends State<Loader> {
     final url = prefs.getString('url') ?? 'Asia/Kolkata';
     final flag =
         prefs.getString('flag') ?? 'https://www.countryflags.io/in/flat/32.png';
-    WorldTime instance = WorldTime(location: location, url: url, flag: flag);
+    WorldTime instance =
+        WorldTime(location: location, url: url, flag: flag);
     await instance.taskLoader();
     Navigator.pushReplacementNamed(
       context,

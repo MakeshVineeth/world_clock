@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart';
 import 'dart:convert';
 import 'package:intl/intl.dart';
@@ -14,23 +16,20 @@ class WorldTime {
   String date = '';
   int secondsLeft = 10; // Refresh rate defaults to 10 seconds for retry.
 
-  WorldTime({this.location, this.url, this.flag});
+  WorldTime({@required this.location, @required this.url, this.flag});
 
   Future<Response> getData(String urlStr) async {
     try {
-      Map optionalHeaders = {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Headers':
-            'Origin, Content-Type, Cookie, X-CSRF-TOKEN, x-requested-with, X-Auth-Token, Accept, Authorization, X-XSRF-TOKEN, Access-Control-Allow-Origin, client-security-token',
-        'Access-Control-Expose-Headers': 'Authorization, authenticated, X-JSON',
-        'Access-Control-Allow-Methods': 'GET, POST, PATCH, PUT, OPTIONS',
-        'Access-Control-Allow-Credentials': 'true',
-      };
-
       String optionalCorProxy = 'https://crossorigin.me/';
+      String httpStr = 'http://';
+      String url;
 
-      String httpStr = 'https://';
-      return await get('$httpStr$urlStr', headers: optionalHeaders);
+      if (kIsWeb)
+        url = '$optionalCorProxy$httpStr$urlStr';
+      else
+        url = '$httpStr$urlStr';
+
+      return await get(url);
     } catch (e) {
       return null;
     }
@@ -63,7 +62,7 @@ class WorldTime {
       time = DateFormat.jm().format(now);
       secondsLeft = 60 - now.second;
     } catch (e) {
-      time = 'Cannot fetch data.';
+      time = 'Cannot fetch data. $e';
     }
   }
 
