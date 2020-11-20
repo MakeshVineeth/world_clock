@@ -20,7 +20,7 @@ class WorldTime {
 
   Future<Response> getData(String urlStr) async {
     try {
-      String optionalCorProxy = 'https://crossorigin.me/';
+      String optionalCorProxy = 'https://cors-anywhere.herokuapp.com/';
       String httpStr = 'https://';
       String fullUrl;
 
