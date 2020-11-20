@@ -21,15 +21,15 @@ class WorldTime {
   Future<Response> getData(String urlStr) async {
     try {
       String optionalCorProxy = 'https://crossorigin.me/';
-      String httpStr = 'http://';
-      String url;
+      String httpStr = 'https://';
+      String fullUrl;
 
       if (kIsWeb)
-        url = '$optionalCorProxy$httpStr$urlStr';
+        fullUrl = '$optionalCorProxy$httpStr$urlStr';
       else
-        url = '$httpStr$urlStr';
+        fullUrl = '$httpStr$urlStr';
 
-      return await get(url);
+      return await get(fullUrl);
     } catch (e) {
       return null;
     }
@@ -62,7 +62,7 @@ class WorldTime {
       time = DateFormat.jm().format(now);
       secondsLeft = 60 - now.second;
     } catch (e) {
-      time = 'Cannot fetch data. $e';
+      time = 'Cannot fetch data.';
     }
   }
 
