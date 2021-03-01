@@ -76,25 +76,14 @@ class _LocationState extends State<Location> {
     } catch (e) {}
   }
 
-  Widget loadCards(int index) {
-    return Card(
-      child: ListTile(
-        onTap: () async {
-          updateTime(index);
-        },
-        title: Row(
-          children: [
-            getFlagImg(index),
-            SizedBox(
-              width: 10.0,
-            ),
-            Text(
-              locations[index].location,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ],
+  Widget loadCards(WorldTime worldTime, int index) {
+    return ListTile(
+      onTap: () async => updateTime(index),
+      leading: getFlagImg(index),
+      title: Text(
+        worldTime.location,
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
         ),
       ),
     );
@@ -111,14 +100,14 @@ class _LocationState extends State<Location> {
     }
   }
 
-  Future<List<Card>> search(String search) async {
+  Future<List<WorldTime>> search(String searchStr) async {
     await Future.delayed(Duration(seconds: 1));
-    List<Card> lists = [];
+    List<WorldTime> lists = [];
     for (var i = 0; i < locations.length; i++) {
       String locationURL = locations[i].url.toLowerCase().replaceAll('_', '');
-      String searchFormatted = search.toLowerCase().replaceAll(' ', '');
+      String searchFormatted = searchStr.toLowerCase().replaceAll(' ', '');
       if (locationURL.contains(searchFormatted)) {
-        lists.add(loadCards(i));
+        lists.add(locations.elementAt(i));
       }
     }
     return lists;
@@ -132,21 +121,13 @@ class _LocationState extends State<Location> {
           centerTitle: true,
           backgroundColor: Colors.blue[900],
         ),
-        body: Container(
+        body: Padding(
           padding: const EdgeInsets.fromLTRB(5.0, 10.0, 5.0, 2.0),
-          color: Colors.white,
-          child: SearchBar<Card>(
+          child: SearchBar<WorldTime>(
             onSearch: search,
-            suggestions:
-                List.generate(locations.length, (index) => loadCards(index)),
-            onItemFound: (Card foundCard, int index) {
-              return Card(
-                child: foundCard.child,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20.0),
-                ),
-                elevation: 3.0,
-              );
+            suggestions: locations,
+            onItemFound: (WorldTime foundCard, int index) {
+              return loadCards(foundCard, index);
             },
             searchBarStyle: SearchBarStyle(
               padding: EdgeInsets.all(5),

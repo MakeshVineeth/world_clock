@@ -23,8 +23,7 @@ class _HomeState extends State<Home> {
   bool isWeb;
 
   Future<void> getTimeData() async {
-    WorldTime instance =
-        WorldTime(location: location, url: url, flag: flagURL);
+    WorldTime instance = WorldTime(location: location, url: url, flag: flagURL);
     await instance.taskLoader();
 
     setState(() {
@@ -49,7 +48,7 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     data = data.isEmpty ? ModalRoute.of(context).settings.arguments : data;
     isDayTime = data['isDayTime'];
-    bgImage = isDayTime ? "clouds_min.webp" : "night.gif";
+    bgImage = isDayTime ? "day.gif" : "night.gif";
     bgColor = isDayTime ? Color(0xFF0092AC) : Color(0xFF00002B);
     flagURL = data['flag'];
     location = data['location'];
@@ -77,33 +76,28 @@ class _HomeState extends State<Home> {
                 ),
               ),
               child: Column(
-                // Outer Most Column for storing 3-dot menu and a child column that displays rest of the widgets with Expanded Widget
-                crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  PopupMenuButton(
-                    itemBuilder: (context) => [
-                      PopupMenuItem(
-                        value: 1,
-                        child: Text('About'),
-                      ),
-                    ],
-                    offset: Offset(0, 50),
-                    elevation: 5.0,
-                    color: Colors.white,
-                    icon: Icon(
-                      Icons.more_vert,
+                  Container(
+                    alignment: Alignment.topRight,
+                    child: PopupMenuButton(
+                      itemBuilder: (context) => [
+                        PopupMenuItem(
+                          value: 1,
+                          child: Text('About'),
+                        ),
+                        PopupMenuItem(
+                          value: 2,
+                          child: Text('Change Location'),
+                        ),
+                      ],
+                      offset: Offset(0, 50),
+                      elevation: 5.0,
                       color: Colors.white,
-                    ),
-                    onSelected: (value) => showAboutDialog(
-                      context: context,
-                      applicationName: 'Flutter Clock',
-                      applicationIcon: Image(
-                        width: 30.0,
-                        image: AssetImage('images/time_zone.png'),
+                      icon: Icon(
+                        Icons.more_vert,
+                        color: Colors.white,
                       ),
-                      applicationVersion: '1.0.1',
-                      applicationLegalese:
-                          'An Internet based World Clock app made in Flutter. It can retrieve timezones and country flags using the WorldClassAPI and CountryFlagsAPI.',
+                      onSelected: (value) => executeMenuItems(value),
                     ),
                   ),
                   Expanded(
@@ -168,54 +162,6 @@ class _HomeState extends State<Home> {
                             ],
                           ),
                         ),
-                        SizedBox(
-                          height: 15.0,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            RaisedButton.icon(
-                              onPressed: () async {
-                                dynamic result = await Navigator.pushNamed(
-                                    context, '/location');
-                                try {
-                                  setState(
-                                    () {
-                                      data = {
-                                        'time': result['time'],
-                                        'isDayTime': result['isDayTime'],
-                                        'flag': result['flag'],
-                                        'location': result['location'],
-                                        'date': result['date'],
-                                        'url': result['url'],
-                                        'secondsLeft': result['secondsLeft']
-                                      };
-                                    },
-                                  );
-                                } catch (e) {}
-                              },
-                              color: Colors.white.withOpacity(0.8),
-                              icon: Icon(
-                                Icons.location_city,
-                              ),
-                              label: Text(
-                                'Location',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              padding: EdgeInsets.symmetric(
-                                  vertical: 15.0, horizontal: 20.0),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30.0),
-                              ),
-                              elevation: 10.0,
-                              hoverColor: Colors.lightBlue[50],
-                              highlightColor: Colors.lightBlue,
-                              focusColor: Colors.lightGreen,
-                            ),
-                          ],
-                        ),
                       ],
                     ),
                   ),
@@ -226,5 +172,49 @@ class _HomeState extends State<Home> {
         ),
       ),
     );
+  }
+
+  void executeMenuItems(int val) {
+    switch (val) {
+      case 1:
+        displayAbout();
+        break;
+      case 2:
+        changeLocation();
+        break;
+    }
+  }
+
+  void displayAbout() {
+    showAboutDialog(
+      context: context,
+      applicationName: 'Flutter Clock',
+      applicationIcon: Image(
+        width: 30.0,
+        image: AssetImage('images/time_zone.png'),
+      ),
+      applicationVersion: '1.0.1',
+      applicationLegalese:
+          'An Internet based World Clock app made in Flutter. It can retrieve timezones and country flags using the WorldClassAPI and CountryFlagsAPI.',
+    );
+  }
+
+  void changeLocation() async {
+    dynamic result = await Navigator.pushNamed(context, '/location');
+    try {
+      setState(
+        () {
+          data = {
+            'time': result['time'],
+            'isDayTime': result['isDayTime'],
+            'flag': result['flag'],
+            'location': result['location'],
+            'date': result['date'],
+            'url': result['url'],
+            'secondsLeft': result['secondsLeft']
+          };
+        },
+      );
+    } catch (e) {}
   }
 }
