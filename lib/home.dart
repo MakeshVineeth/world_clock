@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_clock/commons.dart';
 import 'package:flutter_clock/services/worldtime.dart';
 import 'package:transparent_image/transparent_image.dart';
 
@@ -60,112 +61,123 @@ class _HomeState extends State<Home> {
     url = data['url'];
     isWeb = data['isWeb'];
 
-    return Scaffold(
-      backgroundColor: bgColor,
-      body: SafeArea(
-        child: RefreshIndicator(
-          onRefresh: () => getTimeData(),
-          child: SingleChildScrollView(
-            physics: AlwaysScrollableScrollPhysics(),
-            child: Container(
-              height: MediaQuery.of(context).size.height,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage('images/$bgImage'),
-                  fit: BoxFit.cover,
-                ),
-              ),
-              child: Column(
-                children: [
-                  Container(
-                    alignment: Alignment.topRight,
-                    child: PopupMenuButton(
-                      itemBuilder: (context) => [
-                        PopupMenuItem(
-                          value: 1,
-                          child: Text('About'),
-                        ),
-                        PopupMenuItem(
-                          value: 2,
-                          child: Text('Change Location'),
-                        ),
-                      ],
-                      offset: Offset(0, 50),
-                      elevation: 5.0,
-                      color: Colors.white,
-                      icon: Icon(
-                        Icons.more_vert,
+    Commons.setStatusBarColor(context: context);
+
+    return Container(
+      height: MediaQuery.of(context).size.height,
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage('images/$bgImage'),
+          fit: BoxFit.cover,
+        ),
+      ),
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        body: SafeArea(
+          child: RefreshIndicator(
+            onRefresh: () => getTimeData(),
+            child: SingleChildScrollView(
+              physics: AlwaysScrollableScrollPhysics(),
+              child: Container(
+                height: MediaQuery.of(context).size.height,
+                child: Column(
+                  children: [
+                    Container(
+                      alignment: Alignment.topRight,
+                      child: PopupMenuButton(
+                        itemBuilder: (context) => [
+                          PopupMenuItem(
+                            value: 1,
+                            child: Text(
+                              'About',
+                              style: TextStyle(fontWeight: FontWeight.w600),
+                            ),
+                          ),
+                          PopupMenuItem(
+                            value: 2,
+                            child: Text(
+                              'Change Location',
+                              style: TextStyle(fontWeight: FontWeight.w600),
+                            ),
+                          ),
+                        ],
+                        offset: Offset(0, 50),
+                        elevation: 5.0,
                         color: Colors.white,
+                        icon: Icon(
+                          Icons.more_vert,
+                          color: Colors.white,
+                        ),
+                        onSelected: (value) => executeMenuItems(value),
                       ),
-                      onSelected: (value) => executeMenuItems(value),
                     ),
-                  ),
-                  Expanded(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            FadeInImage.memoryNetwork(
-                                placeholder: kTransparentImage,
-                                image: '$flagURL'),
-                            SizedBox(
-                              width: 10.0,
-                            ),
-                            Text(
-                              '$location',
-                              style: TextStyle(
-                                fontSize: 25.0,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                                shadows: <Shadow>[
-                                  Shadow(
-                                    offset: Offset(1.0, 1.0),
-                                    blurRadius: 3.0,
-                                  ),
-                                ],
+                    Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              FadeInImage.memoryNetwork(
+                                  placeholder: kTransparentImage,
+                                  image: '$flagURL'),
+                              SizedBox(
+                                width: 10.0,
                               ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 5.0,
-                        ),
-                        Text(
-                          '$time',
-                          style: TextStyle(
-                            fontSize: 50.0,
-                            fontWeight: FontWeight.bold,
-                            letterSpacing: 2.0,
-                            color: Colors.white,
-                            shadows: <Shadow>[
-                              Shadow(
-                                offset: Offset(1.0, 1.0),
-                                blurRadius: 3.0,
+                              Text(
+                                '$location',
+                                style: TextStyle(
+                                  fontSize: 25.0,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                  shadows: <Shadow>[
+                                    Shadow(
+                                      offset: Offset(1.0, 1.0),
+                                      blurRadius: 3.0,
+                                    ),
+                                  ],
+                                ),
                               ),
                             ],
                           ),
-                        ),
-                        Text(
-                          date,
-                          style: TextStyle(
-                            fontSize: 20.0,
-                            fontWeight: FontWeight.bold,
-                            letterSpacing: 1.0,
-                            color: Colors.white,
-                            shadows: <Shadow>[
-                              Shadow(
-                                offset: Offset(1.0, 1.0),
-                                blurRadius: 3.0,
-                              ),
-                            ],
+                          SizedBox(
+                            height: 5.0,
                           ),
-                        ),
-                      ],
+                          Text(
+                            '$time',
+                            style: TextStyle(
+                              fontSize: 50.0,
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 2.0,
+                              color: Colors.white,
+                              shadows: <Shadow>[
+                                Shadow(
+                                  offset: Offset(1.0, 1.0),
+                                  blurRadius: 3.0,
+                                ),
+                              ],
+                            ),
+                          ),
+                          Text(
+                            date,
+                            style: TextStyle(
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 1.0,
+                              color: Colors.white,
+                              shadows: <Shadow>[
+                                Shadow(
+                                  offset: Offset(1.0, 1.0),
+                                  blurRadius: 3.0,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),

@@ -16,6 +16,7 @@ class Location extends StatefulWidget {
 class _LocationState extends State<Location> {
   List<WorldTime> locations = [];
   Map listData = {};
+  final circleRadius = BorderRadius.circular(20);
 
   @override
   void initState() {
@@ -77,13 +78,17 @@ class _LocationState extends State<Location> {
   }
 
   Widget loadCards(WorldTime worldTime, int index) {
-    return ListTile(
-      onTap: () async => updateTime(index),
-      leading: getFlagImg(index),
-      title: Text(
-        worldTime.location,
-        style: TextStyle(
-          fontWeight: FontWeight.bold,
+    return Padding(
+      padding: const EdgeInsets.only(left: 10),
+      child: ListTile(
+        onTap: () async => updateTime(index),
+        shape: RoundedRectangleBorder(borderRadius: circleRadius),
+        leading: getFlagImg(index),
+        title: Text(
+          worldTime.location,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ),
     );
@@ -122,7 +127,7 @@ class _LocationState extends State<Location> {
           backgroundColor: Colors.blue[900],
         ),
         body: Padding(
-          padding: const EdgeInsets.fromLTRB(5.0, 10.0, 5.0, 2.0),
+          padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
           child: SearchBar<WorldTime>(
             onSearch: search,
             suggestions: locations,
@@ -131,7 +136,7 @@ class _LocationState extends State<Location> {
             },
             searchBarStyle: SearchBarStyle(
               padding: EdgeInsets.all(5),
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: circleRadius,
             ),
             minimumChars: 2,
             onError: (error) {
