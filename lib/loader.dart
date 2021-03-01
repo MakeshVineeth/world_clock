@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_clock/services/data_methods.dart';
 import 'package:flutter_clock/services/worldtime.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -15,9 +16,8 @@ class _LoaderState extends State<Loader> {
     final url = prefs.getString('url') ?? 'Asia/Kolkata';
     final flag =
         prefs.getString('flag') ?? 'https://www.countryflags.io/in/flat/32.png';
-    WorldTime instance =
-        WorldTime(location: location, url: url, flag: flag);
-    await instance.taskLoader();
+    WorldTime instance = await DataMethods()
+        .taskLoader(location: location, url: url, flag: flag);
     Navigator.pushReplacementNamed(
       context,
       '/home',
@@ -25,7 +25,6 @@ class _LoaderState extends State<Loader> {
         'location': instance.location,
         'time': instance.time,
         'isDayTime': instance.isDayTime,
-        'listData': instance.listData,
         'flag': instance.flag,
         'date': instance.date,
         'url': instance.url,

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flappy_search_bar/search_bar_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_clock/services/data_methods.dart';
 import 'package:flutter_clock/services/worldtime.dart';
 import 'package:flappy_search_bar/flappy_search_bar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -24,10 +25,13 @@ class _LocationState extends State<Location> {
     firstSetup();
   }
 
-  void updateTime(index) async {
+  void updateTime(int index) async {
     try {
-      WorldTime instance = locations[index];
-      await instance.taskLoader();
+      WorldTime instance = await DataMethods().taskLoader(
+        location: locations[index].location,
+        flag: locations[index].flag,
+        url: locations[index].url,
+      );
 
       final prefs = await SharedPreferences
           .getInstance(); // We set SharedPrefs only when changing the location
@@ -49,10 +53,9 @@ class _LocationState extends State<Location> {
 
   void firstSetup() async {
     try {
-      WorldTime ins = WorldTime(url: "", location: "");
-      await ins.getList();
+      List ins = await DataMethods().getList();
       Map e = jsonDecode(await rootBundle.loadString('assets/countries.json'));
-      for (var item in ins.listData) {
+      for (var item in ins) {
         String listItem = item.toString();
 
         String flag = e['$listItem'].toString().toLowerCase();

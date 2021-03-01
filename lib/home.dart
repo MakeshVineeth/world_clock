@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_clock/commons.dart';
+import 'package:flutter_clock/services/data_methods.dart';
 import 'package:flutter_clock/services/worldtime.dart';
 import 'package:transparent_image/transparent_image.dart';
 
@@ -24,8 +25,8 @@ class _HomeState extends State<Home> {
   bool isWeb;
 
   Future<void> getTimeData() async {
-    WorldTime instance = WorldTime(location: location, url: url, flag: flagURL);
-    await instance.taskLoader();
+    WorldTime instance = await DataMethods()
+        .taskLoader(location: location, url: url, flag: flagURL);
 
     setState(() {
       data['time'] = instance.time;
@@ -77,7 +78,8 @@ class _HomeState extends State<Home> {
           child: RefreshIndicator(
             onRefresh: () => getTimeData(),
             child: SingleChildScrollView(
-              physics: AlwaysScrollableScrollPhysics(),
+              physics: AlwaysScrollableScrollPhysics(
+                  parent: BouncingScrollPhysics()),
               child: Container(
                 height: MediaQuery.of(context).size.height,
                 child: Column(
