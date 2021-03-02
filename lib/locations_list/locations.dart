@@ -1,15 +1,15 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:flappy_search_bar/search_bar_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_clock/commons.dart';
+import 'package:flutter_clock/locations_list/location_item.dart';
 import 'package:flutter_clock/services/data_methods.dart';
 import 'package:flutter_clock/services/time_provider.dart';
 import 'package:flutter_clock/services/worldtime.dart';
 import 'package:flappy_search_bar/flappy_search_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:transparent_image/transparent_image.dart';
 
 class Location extends StatefulWidget {
   @override
@@ -19,7 +19,7 @@ class Location extends StatefulWidget {
 class _LocationState extends State<Location> {
   List<WorldTime> locations = [];
   Map listData = {};
-  final circleRadius = BorderRadius.circular(20);
+
   TimeProvider timeProvider;
 
   @override
@@ -36,15 +36,16 @@ class _LocationState extends State<Location> {
         url: locations[index].url,
       );
 
-      final prefs = await SharedPreferences
-          .getInstance(); // We set SharedPrefs only when changing the location
+      final prefs = await SharedPreferences.getInstance();
       prefs.setString('url', instance.url);
       prefs.setString('flag', instance.flag);
       prefs.setString('location', instance.location);
       Navigator.pop(context);
 
       timeProvider.change(instance);
-    } catch (e) {}
+    } catch (e) {
+      print(e);
+    }
   }
 
   void firstSetup() async {
@@ -56,10 +57,8 @@ class _LocationState extends State<Location> {
 
         String flag = e['$listItem'].toString().toLowerCase();
         flag = 'https://www.countryflags.io/$flag/flat/32.png';
-        if (flag.contains('null')) {
-          flag =
-              'https://cdn2.iconfinder.com/data/icons/Siena/32/globe%20green.png';
-        }
+
+        if (flag.contains('null')) flag = null;
 
         listItem = listItem.replaceAll('[', '');
         listItem = listItem.replaceAll(' ', '');
@@ -68,40 +67,10 @@ class _LocationState extends State<Location> {
         String countryName = temp[temp.length - 1];
         countryName = countryName.replaceAll('_', ' ');
 
-        setState(() {
-          locations
-              .add(WorldTime(url: listItem, location: countryName, flag: flag));
-        });
+        setState(() => locations
+            .add(WorldTime(url: listItem, location: countryName, flag: flag)));
       }
     } catch (e) {}
-  }
-
-  Widget loadCards(WorldTime worldTime, int index) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 10),
-      child: ListTile(
-        onTap: () async => updateTime(index),
-        shape: RoundedRectangleBorder(borderRadius: circleRadius),
-        leading: getFlagImg(index),
-        title: Text(
-          worldTime.location,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget getFlagImg(int index) {
-    try {
-      return FadeInImage.memoryNetwork(
-        placeholder: kTransparentImage,
-        image: '${locations[index].flag}',
-      );
-    } on SocketException catch (_) {
-      return Placeholder();
-    }
   }
 
   Future<List<WorldTime>> search(String searchStr) async {
@@ -132,11 +101,15 @@ class _LocationState extends State<Location> {
             onSearch: search,
             suggestions: locations,
             onItemFound: (WorldTime foundCard, int index) {
-              return loadCards(foundCard, index);
+              return LocationItem(
+                worldTime: foundCard,
+                index: index,
+                onTap: () => updateTime(index),
+              );
             },
             searchBarStyle: SearchBarStyle(
               padding: EdgeInsets.all(5),
-              borderRadius: circleRadius,
+              borderRadius: Commons.circleRadius,
             ),
             minimumChars: 2,
             onError: (error) {
@@ -177,6 +150,9 @@ class _LocationState extends State<Location> {
               fontWeight: FontWeight.bold,
             ),
             iconActiveColor: Colors.blue,
+            loader: CircularProgressIndicator(),
+            crossAxisCount: 1,
+            mainAxisSpacing: 5,
           ),
         ));
   }

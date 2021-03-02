@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_clock/locations_list/display_image.dart';
 import 'package:flutter_clock/services/data_methods.dart';
 import 'package:flutter_clock/services/time_provider.dart';
-import 'package:transparent_image/transparent_image.dart';
 import 'package:provider/provider.dart';
 
 class DisplayDate extends StatefulWidget {
@@ -33,9 +33,7 @@ class _DisplayDateState extends State<DisplayDate> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            FadeInImage.memoryNetwork(
-                placeholder: kTransparentImage,
-                image: timeProvider.worldTime.flag),
+            DisplayImage(url: timeProvider.worldTime.flag),
             SizedBox(width: 10.0),
             Text(
               timeProvider.worldTime.location,

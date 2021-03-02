@@ -3,6 +3,8 @@ import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'dart:io' show Platform;
 
 class Commons {
+  static final circleRadius = BorderRadius.circular(20);
+
   static ThemeData getColorData(BuildContext context) {
     Color bgColor = Colors.blue;
     MaterialColor materialColor = Colors.blue;

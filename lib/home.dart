@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_clock/commons.dart';
 import 'package:flutter_clock/display_date.dart';
-import 'package:flutter_clock/locations.dart';
+import 'package:flutter_clock/locations_list/locations.dart';
 import 'package:flutter_clock/services/data_methods.dart';
 import 'package:flutter_clock/services/time_provider.dart';
 import 'package:provider/provider.dart';

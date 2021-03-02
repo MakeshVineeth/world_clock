@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_clock/commons.dart';
 import 'package:flutter_clock/home.dart';
 import 'package:flutter_clock/loader.dart';
-import 'package:flutter_clock/locations.dart';
+import 'package:flutter_clock/locations_list/locations.dart';
 
 void main() {
   runApp(MyClockApp());
