@@ -1,11 +1,12 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter_clock/services/time_provider.dart';
 import 'package:flutter_clock/services/worldtime.dart';
 import 'package:http/http.dart';
 import 'dart:convert';
 import 'package:intl/intl.dart';
 
 class DataMethods {
- Future<Response> getData(String urlStr) async {
+  Future<Response> getData(String urlStr) async {
     try {
       String optionalCorProxy = 'https://cors-anywhere.herokuapp.com/';
       String httpStr = 'https://';
@@ -22,7 +23,7 @@ class DataMethods {
     }
   }
 
- Future<List> getList() async {
+  Future<List> getList() async {
     try {
       Response responseList = await getData('worldtimeapi.org/api/timezone');
       List listData = jsonDecode(responseList.body);
@@ -72,5 +73,13 @@ class DataMethods {
     } catch (e) {
       return WorldTime();
     }
+  }
+
+  Future<void> getTimeData(TimeProvider timeProvider) async {
+    WorldTime old = timeProvider.worldTime;
+    WorldTime newTime = await DataMethods()
+        .taskLoader(location: old.location, url: old.url, flag: old.flag);
+
+    timeProvider.change(newTime);
   }
 }

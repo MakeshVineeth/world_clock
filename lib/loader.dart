@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_clock/home.dart';
 import 'package:flutter_clock/services/data_methods.dart';
+import 'package:flutter_clock/services/time_provider.dart';
 import 'package:flutter_clock/services/worldtime.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
 
 class Loader extends StatefulWidget {
   @override
@@ -10,6 +13,9 @@ class Loader extends StatefulWidget {
 }
 
 class _LoaderState extends State<Loader> {
+  Widget _current = loadingIndicator();
+  TimeProvider timeProvider;
+
   void getTimeData() async {
     final prefs = await SharedPreferences.getInstance();
     final location = prefs.getString('location') ?? 'Kolkata';
@@ -18,19 +24,10 @@ class _LoaderState extends State<Loader> {
         prefs.getString('flag') ?? 'https://www.countryflags.io/in/flat/32.png';
     WorldTime instance = await DataMethods()
         .taskLoader(location: location, url: url, flag: flag);
-    Navigator.pushReplacementNamed(
-      context,
-      '/home',
-      arguments: {
-        'location': instance.location,
-        'time': instance.time,
-        'isDayTime': instance.isDayTime,
-        'flag': instance.flag,
-        'date': instance.date,
-        'url': instance.url,
-        'secondsLeft': instance.secondsLeft
-      },
-    );
+
+    timeProvider = TimeProvider(worldTime: instance);
+
+    setState(() => _current = Home());
   }
 
   @override
@@ -41,29 +38,26 @@ class _LoaderState extends State<Loader> {
 
   @override
   Widget build(BuildContext context) {
+    return ChangeNotifierProvider<TimeProvider>(
+      create: (context) => timeProvider,
+      child: AnimatedSwitcher(
+        duration: const Duration(milliseconds: 500),
+        child: _current,
+      ),
+    );
+  }
+
+  Widget homeScreen() {
+    return Home();
+  }
+
+  static Widget loadingIndicator() {
     return Scaffold(
       backgroundColor: Colors.blueAccent,
       body: Center(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SpinKitCircle(
-              color: Colors.white,
-              size: 50.0,
-            ),
-            SizedBox(
-              height: 5.0,
-            ),
-            Text(
-              'Loading',
-              style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                letterSpacing: 1.0,
-              ),
-            ),
-          ],
+        child: SpinKitCircle(
+          color: Colors.white,
+          size: 50.0,
         ),
       ),
     );
