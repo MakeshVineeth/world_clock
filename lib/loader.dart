@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_clock/home.dart';
+import 'package:flutter_clock/loading_indicator.dart';
 import 'package:flutter_clock/services/data_methods.dart';
 import 'package:flutter_clock/services/time_provider.dart';
 import 'package:flutter_clock/services/worldtime.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';
 
@@ -54,12 +54,7 @@ class _LoaderState extends State<Loader> {
   static Widget loadingIndicator() {
     return Scaffold(
       backgroundColor: Colors.blueAccent,
-      body: Center(
-        child: SpinKitCircle(
-          color: Colors.white,
-          size: 50.0,
-        ),
-      ),
+      body: LoadingIndicator(color: Colors.white),
     );
   }
 }
