@@ -44,6 +44,7 @@ class _LocationState extends State<Location> {
       prefs.setString('location', instance.location);
 
       timeProvider.change(instance);
+
       Navigator.pop(context);
     } catch (e) {
       print(e);
@@ -95,13 +96,15 @@ class _LocationState extends State<Location> {
   @override
   Widget build(BuildContext context) {
     timeProvider = Provider.of<TimeProvider>(context, listen: false);
-    Commons.setStatusBarColor(context: context);
 
     return Scaffold(
         appBar: AppBar(
           title: Text('Choose Location'),
-          centerTitle: true,
-          backgroundColor: Colors.blue[900],
+          backwardsCompatibility: false,
+          systemOverlayStyle: SystemUiOverlayStyle(
+            statusBarColor: Colors.transparent,
+            statusBarIconBrightness: Brightness.light,
+          ),
         ),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),

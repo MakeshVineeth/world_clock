@@ -1,13 +1,16 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_clock/commons.dart';
 import 'package:flutter_clock/home.dart';
 import 'package:flutter_clock/loader.dart';
-import 'package:flutter_clock/locations_list/locations.dart';
 
 void main() {
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    statusBarColor: Colors.transparent,
+    statusBarIconBrightness: Brightness.light,
+  ));
+
   runApp(MyClockApp());
-  GestureBinding.instance.resamplingEnabled = true;
 }
 
 class MyClockApp extends StatelessWidget {
@@ -20,7 +23,6 @@ class MyClockApp extends StatelessWidget {
       routes: {
         '/': (context) => Loader(),
         '/home': (context) => Home(),
-        '/location': (context) => Location(),
       },
       debugShowCheckedModeBanner: false,
     );

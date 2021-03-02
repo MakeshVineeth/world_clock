@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_clock/commons.dart';
 import 'package:flutter_clock/display_date.dart';
 import 'package:flutter_clock/locations_list/locations.dart';
 import 'package:flutter_clock/services/data_methods.dart';
@@ -15,7 +14,6 @@ class _HomeState extends State<Home> {
   TimeProvider _timeProvider;
   @override
   Widget build(BuildContext context) {
-    Commons.setStatusBarColor(context: context);
     _timeProvider = Provider.of<TimeProvider>(context, listen: false);
 
     return Consumer<TimeProvider>(
@@ -39,16 +37,16 @@ class _HomeState extends State<Home> {
                 child: PopupMenuButton(
                   itemBuilder: (context) => [
                     PopupMenuItem(
-                      value: 1,
+                      value: 2,
                       child: Text(
-                        'About',
+                        'Change Location',
                         style: TextStyle(fontWeight: FontWeight.w600),
                       ),
                     ),
                     PopupMenuItem(
-                      value: 2,
+                      value: 1,
                       child: Text(
-                        'Change Location',
+                        'About',
                         style: TextStyle(fontWeight: FontWeight.w600),
                       ),
                     ),

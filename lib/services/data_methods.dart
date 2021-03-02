@@ -80,6 +80,7 @@ class DataMethods {
     WorldTime newTime = await DataMethods()
         .taskLoader(location: old.location, url: old.url, flag: old.flag);
 
+    
     timeProvider.change(newTime);
   }
 }

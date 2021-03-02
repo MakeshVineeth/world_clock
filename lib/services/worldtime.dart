@@ -8,12 +8,12 @@ class WorldTime {
   final int secondsLeft;
 
   const WorldTime({
-    this.location = '',
-    this.url = '',
-    this.flag = '',
-    this.date = '',
-    this.isDayTime = true,
+    this.location,
+    this.url,
+    this.flag,
+    this.date,
+    this.isDayTime,
     this.secondsLeft = 10,
-    this.time = '',
+    this.time,
   });
 }
