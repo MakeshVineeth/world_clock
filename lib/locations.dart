@@ -4,8 +4,10 @@ import 'package:flappy_search_bar/search_bar_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_clock/services/data_methods.dart';
+import 'package:flutter_clock/services/time_provider.dart';
 import 'package:flutter_clock/services/worldtime.dart';
 import 'package:flappy_search_bar/flappy_search_bar.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:transparent_image/transparent_image.dart';
 
@@ -18,6 +20,7 @@ class _LocationState extends State<Location> {
   List<WorldTime> locations = [];
   Map listData = {};
   final circleRadius = BorderRadius.circular(20);
+  TimeProvider timeProvider;
 
   @override
   void initState() {
@@ -38,16 +41,9 @@ class _LocationState extends State<Location> {
       prefs.setString('url', instance.url);
       prefs.setString('flag', instance.flag);
       prefs.setString('location', instance.location);
+      Navigator.pop(context);
 
-      Navigator.pop(context, {
-        'time': instance.time,
-        'isDayTime': instance.isDayTime,
-        'location': instance.location,
-        'flag': instance.flag,
-        'date': instance.date,
-        'url': instance.url,
-        'secondsLeft': instance.secondsLeft
-      });
+      timeProvider.change(instance);
     } catch (e) {}
   }
 
@@ -123,6 +119,7 @@ class _LocationState extends State<Location> {
 
   @override
   Widget build(BuildContext context) {
+    timeProvider = Provider.of<TimeProvider>(context, listen: false);
     return Scaffold(
         appBar: AppBar(
           title: Text('Choose Location'),

@@ -72,7 +72,7 @@ class _DisplayDateState extends State<DisplayDate> {
           ),
         ),
         Text(
-          timeProvider.worldTime.time,
+          timeProvider.worldTime.date,
           style: TextStyle(
             fontSize: 20.0,
             fontWeight: FontWeight.bold,

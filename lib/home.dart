@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_clock/commons.dart';
 import 'package:flutter_clock/display_date.dart';
+import 'package:flutter_clock/locations.dart';
 import 'package:flutter_clock/services/data_methods.dart';
 import 'package:flutter_clock/services/time_provider.dart';
 import 'package:provider/provider.dart';
@@ -11,9 +12,11 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  TimeProvider _timeProvider;
   @override
   Widget build(BuildContext context) {
     Commons.setStatusBarColor(context: context);
+    _timeProvider = Provider.of<TimeProvider>(context, listen: false);
 
     return Consumer<TimeProvider>(
       builder: (context, timeProvider, child) => Container(
@@ -29,50 +32,52 @@ class _HomeState extends State<Home> {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         body: SafeArea(
-          child: RefreshIndicator(
-            onRefresh: () => DataMethods()
-                .getTimeData(Provider.of<TimeProvider>(context, listen: false)),
-            child: SingleChildScrollView(
-              physics: AlwaysScrollableScrollPhysics(
-                  parent: BouncingScrollPhysics()),
-              child: Container(
-                height: MediaQuery.of(context).size.height,
-                child: Column(
-                  children: [
-                    Container(
-                      alignment: Alignment.topRight,
-                      child: PopupMenuButton(
-                        itemBuilder: (context) => [
-                          PopupMenuItem(
-                            value: 1,
-                            child: Text(
-                              'About',
-                              style: TextStyle(fontWeight: FontWeight.w600),
-                            ),
-                          ),
-                          PopupMenuItem(
-                            value: 2,
-                            child: Text(
-                              'Change Location',
-                              style: TextStyle(fontWeight: FontWeight.w600),
-                            ),
-                          ),
-                        ],
-                        offset: Offset(0, 50),
-                        elevation: 5.0,
-                        color: Colors.white,
-                        icon: Icon(
-                          Icons.more_vert,
-                          color: Colors.white,
-                        ),
-                        onSelected: (value) => executeMenuItems(value),
+          child: Column(
+            children: [
+              Container(
+                alignment: Alignment.topRight,
+                child: PopupMenuButton(
+                  itemBuilder: (context) => [
+                    PopupMenuItem(
+                      value: 1,
+                      child: Text(
+                        'About',
+                        style: TextStyle(fontWeight: FontWeight.w600),
                       ),
                     ),
-                    Expanded(child: DisplayDate()),
+                    PopupMenuItem(
+                      value: 2,
+                      child: Text(
+                        'Change Location',
+                        style: TextStyle(fontWeight: FontWeight.w600),
+                      ),
+                    ),
                   ],
+                  offset: Offset(0, 50),
+                  elevation: 5.0,
+                  color: Colors.white,
+                  icon: Icon(
+                    Icons.more_vert,
+                    color: Colors.white,
+                  ),
+                  onSelected: (value) => executeMenuItems(value),
                 ),
               ),
-            ),
+              Expanded(
+                child: RefreshIndicator(
+                  onRefresh: () => DataMethods().getTimeData(
+                      Provider.of<TimeProvider>(context, listen: false)),
+                  child: SingleChildScrollView(
+                    physics: AlwaysScrollableScrollPhysics(
+                        parent: BouncingScrollPhysics()),
+                    child: Container(
+                      height: MediaQuery.of(context).size.height,
+                      child: DisplayDate(),
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ),
@@ -105,11 +110,18 @@ class _HomeState extends State<Home> {
             'An Internet based World Clock app made in Flutter. It can retrieve timezones and country flags using the WorldClassAPI and CountryFlagsAPI.',
       );
 
-  void changeLocation() async =>
-      await Navigator.pushNamed(context, '/location');
+  void changeLocation() async {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ChangeNotifierProvider.value(
+            value: _timeProvider,
+            child: Location(),
+          ),
+        ));
+  }
 
   String getDynamicBg(TimeProvider timeProvider) {
-  
     return timeProvider.worldTime.isDayTime ? "day.gif" : "night.gif";
   }
 }

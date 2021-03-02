@@ -7,7 +7,7 @@ class TimeProvider extends ChangeNotifier {
   TimeProvider({this.worldTime});
 
   void change(WorldTime worldTime) {
-    worldTime = worldTime;
+    this.worldTime = worldTime;
     notifyListeners();
   }
 }
