@@ -4,6 +4,7 @@ import 'package:flutter_clock/locations_list/display_image.dart';
 import 'package:flutter_clock/services/data_methods.dart';
 import 'package:flutter_clock/services/time_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class DisplayDate extends StatefulWidget {
   @override
@@ -56,7 +57,7 @@ class _DisplayDateState extends State<DisplayDate> {
         ),
         Text(
           timeProvider.worldTime.time ?? '--:--',
-          style: TextStyle(
+          style: GoogleFonts.aladin(
             fontSize: 50.0,
             fontWeight: FontWeight.bold,
             letterSpacing: 2.0,

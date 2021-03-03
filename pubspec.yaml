@@ -13,6 +13,7 @@ dependencies:
   flappy_search_bar: ^1.7.2
   flutter_spinkit: ^4.1.2+1
   fuzzy: ^0.3.0
+  google_fonts: ^1.1.2
   http: ^0.12.2
   intl: ^0.16.1
   provider: ^4.3.3
@@ -35,7 +36,6 @@ flutter_rename_app:
   dart_package_name: flutter_clock
   application_id: com.makeshtech.clock
   bundle_id: com.makeshtech.clock
-  android_package_name: com.makeshtech.clock
 
 flutter:
   uses-material-design: true
