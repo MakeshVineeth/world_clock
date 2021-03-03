@@ -75,12 +75,13 @@ class DataMethods {
     }
   }
 
-  Future<void> getTimeData(TimeProvider timeProvider) async {
+  Future<void> getNewTimeData(TimeProvider timeProvider) async {
     WorldTime old = timeProvider.worldTime;
-    WorldTime newTime = await DataMethods()
-        .taskLoader(location: old.location, url: old.url, flag: old.flag);
+    WorldTime newTime =
+        await taskLoader(location: old.location, url: old.url, flag: old.flag);
 
-    
-    timeProvider.change(newTime);
+    if (newTime.isDayTime != null &&
+        newTime.time != null &&
+        newTime.flag != null) timeProvider.change(newTime);
   }
 }

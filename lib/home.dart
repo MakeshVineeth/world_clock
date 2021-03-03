@@ -63,7 +63,7 @@ class _HomeState extends State<Home> {
               ),
               Expanded(
                 child: RefreshIndicator(
-                  onRefresh: () => DataMethods().getTimeData(
+                  onRefresh: () => DataMethods().getNewTimeData(
                       Provider.of<TimeProvider>(context, listen: false)),
                   child: SingleChildScrollView(
                     physics: AlwaysScrollableScrollPhysics(

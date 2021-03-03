@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class Commons {
   static final circleRadius = BorderRadius.circular(20);
@@ -13,6 +14,11 @@ class Commons {
       appBarTheme: AppBarTheme(
         color: bgColor,
         centerTitle: true,
+        backwardsCompatibility: false,
+        systemOverlayStyle: SystemUiOverlayStyle(
+          statusBarColor: Colors.transparent,
+          statusBarIconBrightness: Brightness.light,
+        ),
       ),
     );
   }
