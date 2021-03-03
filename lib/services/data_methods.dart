@@ -6,6 +6,8 @@ import 'dart:convert';
 import 'package:intl/intl.dart';
 
 class DataMethods {
+  Duration _timeOut = const Duration(minutes: 1);
+
   Future<Response> getData(String urlStr) async {
     try {
       String optionalCorProxy = 'https://cors-anywhere.herokuapp.com/';
@@ -25,7 +27,9 @@ class DataMethods {
 
   Future<List> getList() async {
     try {
-      Response responseList = await getData('worldtimeapi.org/api/timezone');
+      Response responseList =
+          await getData('worldtimeapi.org/api/timezone').timeout(_timeOut);
+
       List listData = jsonDecode(responseList.body);
       return listData;
     } catch (e) {
@@ -33,10 +37,10 @@ class DataMethods {
     }
   }
 
-  Future<WorldTime> taskLoader(
-      {String location, String url, String flag}) async {
+  Future<WorldTime> getTime({String location, String url, String flag}) async {
     try {
-      Response response = await getData('worldtimeapi.org/api/timezone/$url');
+      Response response =
+          await getData('worldtimeapi.org/api/timezone/$url').timeout(_timeOut);
 
       Map e = jsonDecode(response.body);
 
@@ -78,10 +82,23 @@ class DataMethods {
   Future<void> getNewTimeData(TimeProvider timeProvider) async {
     WorldTime old = timeProvider.worldTime;
     WorldTime newTime =
-        await taskLoader(location: old.location, url: old.url, flag: old.flag);
+        await getTime(location: old.location, url: old.url, flag: old.flag)
+            .timeout(_timeOut);
 
-    if (newTime.isDayTime != null &&
-        newTime.time != null &&
-        newTime.flag != null) timeProvider.change(newTime);
+    if (newTime?.isDayTime != null &&
+        newTime?.time != null &&
+        newTime?.flag != null)
+      timeProvider.change(newTime);
+    else {
+      timeProvider.change(WorldTime(
+        isDayTime: old.isDayTime,
+        location: old.location,
+        url: old.url,
+        flag: old.flag,
+        date: old.date,
+        secondsLeft: 10,
+        time: old.time,
+      ));
+    }
   }
 }

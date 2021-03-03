@@ -32,7 +32,7 @@ class _LocationState extends State<Location> {
 
   void updateTime(WorldTime worldTime) async {
     try {
-      WorldTime instance = await DataMethods().taskLoader(
+      WorldTime instance = await DataMethods().getTime(
         location: worldTime.location,
         flag: worldTime.flag,
         url: worldTime.url,

@@ -36,7 +36,7 @@ class _DisplayDateState extends State<DisplayDate> {
             DisplayImage(url: timeProvider.worldTime.flag),
             SizedBox(width: 10.0),
             Text(
-              timeProvider.worldTime.location,
+              timeProvider.worldTime.location ?? '--',
               style: TextStyle(
                 fontSize: 25.0,
                 fontWeight: FontWeight.bold,
@@ -55,7 +55,7 @@ class _DisplayDateState extends State<DisplayDate> {
           height: 5.0,
         ),
         Text(
-          timeProvider.worldTime.time,
+          timeProvider.worldTime.time ?? '--:--',
           style: TextStyle(
             fontSize: 50.0,
             fontWeight: FontWeight.bold,
@@ -70,7 +70,7 @@ class _DisplayDateState extends State<DisplayDate> {
           ),
         ),
         Text(
-          timeProvider.worldTime.date,
+          timeProvider.worldTime.date ?? '--',
           style: TextStyle(
             fontSize: 20.0,
             fontWeight: FontWeight.bold,

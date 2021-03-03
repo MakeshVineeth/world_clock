@@ -120,6 +120,8 @@ class _HomeState extends State<Home> {
   }
 
   String getDynamicBg(TimeProvider timeProvider) {
-    return timeProvider.worldTime.isDayTime ? "day.gif" : "night.gif";
+    if (timeProvider?.worldTime?.isDayTime == null) return 'day.gif';
+
+    return timeProvider.worldTime.isDayTime ? 'day.gif' : 'night.gif';
   }
 }

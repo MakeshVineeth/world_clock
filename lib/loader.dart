@@ -23,7 +23,7 @@ class _LoaderState extends State<Loader> {
     final flag =
         prefs.getString('flag') ?? 'https://www.countryflags.io/in/flat/32.png';
     WorldTime instance = await DataMethods()
-        .taskLoader(location: location, url: url, flag: flag);
+        .getTime(location: location, url: url, flag: flag);
 
     timeProvider = TimeProvider(worldTime: instance);
 
