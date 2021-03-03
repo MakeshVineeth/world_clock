@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_clock/commons.dart';
 import 'package:flutter_clock/display_date.dart';
 import 'package:flutter_clock/locations_list/locations.dart';
 import 'package:flutter_clock/services/data_methods.dart';
@@ -37,14 +38,21 @@ class _HomeState extends State<Home> {
                 child: PopupMenuButton(
                   itemBuilder: (context) => [
                     PopupMenuItem(
-                      value: 2,
+                      value: 1,
                       child: Text(
                         'Change Location',
                         style: TextStyle(fontWeight: FontWeight.w600),
                       ),
                     ),
                     PopupMenuItem(
-                      value: 1,
+                      value: 2,
+                      child: Text(
+                        'Play Store',
+                        style: TextStyle(fontWeight: FontWeight.w600),
+                      ),
+                    ),
+                    PopupMenuItem(
+                      value: 3,
                       child: Text(
                         'About',
                         style: TextStyle(fontWeight: FontWeight.w600),
@@ -84,11 +92,16 @@ class _HomeState extends State<Home> {
 
   void executeMenuItems(int val) {
     switch (val) {
-      case 1:
+      case 3:
         displayAbout();
         break;
-      case 2:
+      case 1:
         changeLocation();
+        break;
+      case 2:
+        Commons.launchUrl(
+            url:
+                'https://play.google.com/store/apps/details?id=com.makeshtech.clock');
         break;
     }
   }

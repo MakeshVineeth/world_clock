@@ -4,7 +4,7 @@ import 'package:flutter_clock/loading_indicator.dart';
 import 'package:flutter_clock/services/data_methods.dart';
 import 'package:flutter_clock/services/time_provider.dart';
 import 'package:flutter_clock/services/worldtime.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
 import 'package:provider/provider.dart';
 
 class Loader extends StatefulWidget {
@@ -17,16 +17,8 @@ class _LoaderState extends State<Loader> {
   TimeProvider timeProvider;
 
   void getTimeData() async {
-    final prefs = await SharedPreferences.getInstance();
-    final location = prefs.getString('location') ?? 'Kolkata';
-    final url = prefs.getString('url') ?? 'Asia/Kolkata';
-    final flag =
-        prefs.getString('flag') ?? 'https://www.countryflags.io/in/flat/32.png';
-    WorldTime instance = await DataMethods()
-        .getTime(location: location, url: url, flag: flag);
-
-    timeProvider = TimeProvider(worldTime: instance);
-
+    WorldTime _worldTime = await DataMethods().getDefaultClock();
+    timeProvider = TimeProvider(worldTime: _worldTime);
     setState(() => _current = Home());
   }
 

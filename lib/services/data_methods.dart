@@ -4,6 +4,7 @@ import 'package:flutter_clock/services/worldtime.dart';
 import 'package:http/http.dart';
 import 'dart:convert';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DataMethods {
   Duration _timeOut = const Duration(minutes: 1);
@@ -75,7 +76,7 @@ class DataMethods {
         secondsLeft: secondsLeft,
       );
     } catch (e) {
-      return WorldTime();
+      return WorldTime(location: location, url: url, flag: flag);
     }
   }
 
@@ -85,9 +86,7 @@ class DataMethods {
         await getTime(location: old.location, url: old.url, flag: old.flag)
             .timeout(_timeOut);
 
-    if (newTime?.isDayTime != null &&
-        newTime?.time != null &&
-        newTime?.flag != null)
+    if (newTime?.isDayTime != null && newTime?.time != null)
       timeProvider.change(newTime);
     else {
       timeProvider.change(WorldTime(
@@ -100,5 +99,23 @@ class DataMethods {
         time: old.time,
       ));
     }
+  }
+
+  Future<WorldTime> getDefaultClock() async {
+    final prefs = await SharedPreferences.getInstance();
+    String location = prefs.getString('location');
+    String url = prefs.getString('url');
+    String flag = prefs.getString('flag');
+
+    if (location == null) {
+      location = 'Kolkata';
+      url = 'Asia/Kolkata';
+      flag = 'https://www.countryflags.io/in/flat/32.png';
+    }
+
+    WorldTime instance =
+        await getTime(location: location, url: url, flag: flag);
+
+    return instance;
   }
 }
