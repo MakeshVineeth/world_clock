@@ -11,6 +11,7 @@ import 'package:flutter_clock/services/worldtime.dart';
 import 'package:flappy_search_bar/flappy_search_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:fuzzy/fuzzy.dart';
 
 class Location extends StatefulWidget {
   @override
@@ -19,6 +20,7 @@ class Location extends StatefulWidget {
 
 class _LocationState extends State<Location> {
   List<WorldTime> locations = [];
+  Fuzzy<String> fuse = Fuzzy([]);
   Map listData = {};
 
   TimeProvider timeProvider;
@@ -56,6 +58,7 @@ class _LocationState extends State<Location> {
       locations.clear();
       List ins = await DataMethods().getList();
       Map e = jsonDecode(await rootBundle.loadString('assets/countries.json'));
+
       for (var item in ins) {
         String listItem = item.toString();
 
@@ -71,26 +74,29 @@ class _LocationState extends State<Location> {
         String countryName = temp[temp.length - 1];
         countryName = countryName.replaceAll('_', ' ');
 
-        locations
-            .add(WorldTime(url: listItem, location: countryName, flag: flag));
+        WorldTime locationItem =
+            WorldTime(url: listItem, location: countryName, flag: flag);
+
+        locations.add(locationItem);
+        fuse.list.add(locationItem.url);
       }
     } catch (e) {}
   }
 
   Future<List<WorldTime>> search(String searchStr) async {
-    await Future.delayed(Duration(milliseconds: 800));
-    List<WorldTime> lists = [];
-    for (var i = 0; i < locations.length; i++) {
-      String locationURL =
-          locations[i].url.toLowerCase().replaceAll('_', '').trim();
-      String searchFormatted =
-          searchStr.toLowerCase().replaceAll(' ', '').trim();
+    try {
+      await Future.delayed(Duration(milliseconds: 800));
+      List<WorldTime> lists = [];
 
-      if (locationURL.contains(searchFormatted))
-        lists.add(locations.elementAt(i));
+      final result = fuse.search(searchStr);
+      result
+          .map((r) => r.matches.first.arrayIndex)
+          .forEach((int i) => lists.add(locations.elementAt(i)));
+
+      return lists;
+    } catch (e) {
+      return [];
     }
-
-    return lists;
   }
 
   @override
@@ -159,7 +165,7 @@ class _LocationState extends State<Location> {
                         Icons.search,
                       ),
                     ),
-                    hintText: "Type here to search...",
+                    hintText: "Search Timezones",
                     searchBarPadding: EdgeInsets.all(15.0),
                     listPadding:
                         EdgeInsets.symmetric(vertical: 0.0, horizontal: 5.0),
