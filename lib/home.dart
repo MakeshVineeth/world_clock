@@ -1,4 +1,6 @@
+import 'dart:io' show Platform, exit;
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_clock/commons.dart';
 import 'package:flutter_clock/display_date.dart';
 import 'package:flutter_clock/locations_list/locations.dart';
@@ -13,6 +15,8 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   TimeProvider _timeProvider;
+  final MethodChannel _androidAppRetain = MethodChannel("android_app_exit");
+
   @override
   Widget build(BuildContext context) {
     _timeProvider = Provider.of<TimeProvider>(context, listen: false);
@@ -31,61 +35,60 @@ class _HomeState extends State<Home> {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         body: SafeArea(
-          child: Column(
-            children: [
-              Container(
-                alignment: Alignment.topRight,
-                child: PopupMenuButton(
-                  itemBuilder: (context) => [
-                    PopupMenuItem(
-                      value: 1,
-                      child: Text(
-                        'Change Location',
-                        style: TextStyle(fontWeight: FontWeight.w600),
-                      ),
-                    ),
-                    PopupMenuItem(
-                      value: 2,
-                      child: Text(
-                        'Play Store',
-                        style: TextStyle(fontWeight: FontWeight.w600),
-                      ),
-                    ),
-                    PopupMenuItem(
-                      value: 3,
-                      child: Text(
-                        'About',
-                        style: TextStyle(fontWeight: FontWeight.w600),
-                      ),
-                    ),
-                  ],
-                  offset: Offset(0, 50),
-                  elevation: 5.0,
-                  color: Colors.white,
-                  icon: Icon(
-                    Icons.more_vert,
-                    color: Colors.white,
-                  ),
-                  onSelected: (value) => executeMenuItems(value),
-                ),
+          child: RefreshIndicator(
+            onRefresh: () => DataMethods().getNewTimeData(
+                Provider.of<TimeProvider>(context, listen: false)),
+            child: SingleChildScrollView(
+              physics: AlwaysScrollableScrollPhysics(
+                  parent: BouncingScrollPhysics()),
+              child: Container(
+                height: MediaQuery.of(context).size.height,
+                child: DisplayDate(),
               ),
-              Expanded(
-                child: RefreshIndicator(
-                  onRefresh: () => DataMethods().getNewTimeData(
-                      Provider.of<TimeProvider>(context, listen: false)),
-                  child: SingleChildScrollView(
-                    physics: AlwaysScrollableScrollPhysics(
-                        parent: BouncingScrollPhysics()),
-                    child: Container(
-                      height: MediaQuery.of(context).size.height,
-                      child: DisplayDate(),
-                    ),
-                  ),
-                ),
-              ),
-            ],
+            ),
           ),
         ),
+        floatingActionButton: PopupMenuButton(
+          itemBuilder: (context) => [
+            PopupMenuItem(
+              value: 1,
+              child: Text(
+                'Change Location',
+                style: TextStyle(fontWeight: FontWeight.w600),
+              ),
+            ),
+            PopupMenuItem(
+              value: 2,
+              child: Text(
+                'Play Store',
+                style: TextStyle(fontWeight: FontWeight.w600),
+              ),
+            ),
+            PopupMenuItem(
+              value: 3,
+              child: Text(
+                'About',
+                style: TextStyle(fontWeight: FontWeight.w600),
+              ),
+            ),
+            PopupMenuItem(
+              value: 4,
+              child: Text(
+                'Exit',
+                style: TextStyle(fontWeight: FontWeight.w600),
+              ),
+            ),
+          ],
+          offset: Offset(0, 50),
+          elevation: 5.0,
+          color: Colors.white,
+          icon: Icon(
+            Icons.more_vert,
+            color: Colors.white,
+          ),
+          onSelected: (value) => executeMenuItems(value),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.miniEndTop,
       ),
     );
   }
@@ -102,6 +105,13 @@ class _HomeState extends State<Home> {
         Commons.launchUrl(
             url:
                 'https://play.google.com/store/apps/details?id=com.makeshtech.clock');
+        break;
+      case 4:
+        if (Platform.isAndroid)
+          _androidAppRetain.invokeMethod("sendToBackground");
+        else if (!Platform.isIOS)
+          exit(
+              0); // Not allowed on IOS as it's against Apple Human Interface guidelines to exit the app programmatically.
         break;
     }
   }
