@@ -26,7 +26,11 @@ class _HomeState extends State<Home> {
         height: MediaQuery.of(context).size.height,
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('images/' + getDynamicBg(timeProvider)),
+            image: ResizeImage(
+              AssetImage('images/' + getDynamicBg(timeProvider)),
+              width: MediaQuery.of(context).size.width.round(),
+              height: MediaQuery.of(context).size.height.round(),
+            ),
             fit: BoxFit.cover,
           ),
         ),
