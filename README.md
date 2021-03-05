@@ -1,6 +1,6 @@
-# world_clock
+# Flutter Clock
 
-A new Flutter project.
+A Simple Flutter project to display World Clocks dynamically from WorldTimeAPI and retrieve flags using CountryFlagsAPI.
 
 ## Getting Started
 

@@ -1,5 +1,5 @@
 name: flutter_clock
-description: A Simple Flutter project to display World Clocks dynamically.
+description: A Simple Flutter project to display World Clocks dynamically from WorldTimeAPI and retrieve flags using CountryFlagsAPI.
 publish_to: "none"
 version: 2.0.0+3
 
