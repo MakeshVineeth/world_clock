@@ -71,12 +71,19 @@ class _HomeState extends State<Home> {
             PopupMenuItem(
               value: 3,
               child: Text(
-                'About',
+                'GitHub',
                 style: TextStyle(fontWeight: FontWeight.w600),
               ),
             ),
             PopupMenuItem(
               value: 4,
+              child: Text(
+                'About',
+                style: TextStyle(fontWeight: FontWeight.w600),
+              ),
+            ),
+            PopupMenuItem(
+              value: 5,
               child: Text(
                 'Exit',
                 style: TextStyle(fontWeight: FontWeight.w600),
@@ -99,9 +106,6 @@ class _HomeState extends State<Home> {
 
   void executeMenuItems(int val) {
     switch (val) {
-      case 3:
-        displayAbout();
-        break;
       case 1:
         changeLocation();
         break;
@@ -110,7 +114,13 @@ class _HomeState extends State<Home> {
             url:
                 'https://play.google.com/store/apps/details?id=com.makeshtech.clock');
         break;
+      case 3:
+        Commons.launchUrl(url: 'https://github.com/MakeshVineeth/world_clock');
+        break;
       case 4:
+        displayAbout();
+        break;
+      case 5:
         if (Platform.isAndroid)
           _androidAppRetain.invokeMethod("sendToBackground");
         else if (!Platform.isIOS)
@@ -137,13 +147,22 @@ class _HomeState extends State<Home> {
 
   void changeLocation() async {
     Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => ChangeNotifierProvider.value(
-            value: _timeProvider,
-            child: Location(),
-          ),
-        ));
+      context,
+      PageRouteBuilder(
+          pageBuilder: (context, anim, anim1) => ChangeNotifierProvider.value(
+                value: _timeProvider,
+                child: Location(),
+              ),
+          transitionsBuilder: (context, anim, anim1, child) {
+            return FadeTransition(
+              opacity: anim,
+              child: ScaleTransition(
+                scale: anim,
+                child: child,
+              ),
+            );
+          }),
+    );
   }
 
   String getDynamicBg(TimeProvider timeProvider) {
