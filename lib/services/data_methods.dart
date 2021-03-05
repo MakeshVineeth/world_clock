@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter_clock/services/time_provider.dart';
 import 'package:flutter_clock/services/worldtime.dart';
 import 'package:http/http.dart';
@@ -11,14 +10,10 @@ class DataMethods {
 
   Future<Response> getData(String urlStr) async {
     try {
-      String optionalCorProxy = 'https://cors-anywhere.herokuapp.com/';
       String httpStr = 'https://';
       String fullUrl;
 
-      if (kIsWeb)
-        fullUrl = '$optionalCorProxy$httpStr$urlStr';
-      else
-        fullUrl = '$httpStr$urlStr';
+      fullUrl = '$httpStr$urlStr';
 
       return await get(fullUrl);
     } catch (e) {
