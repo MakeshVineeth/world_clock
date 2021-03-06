@@ -7,16 +7,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class DataMethods {
   final Duration _timeOut = const Duration(minutes: 1);
+  final String httpStr = 'https://';
 
   Future<Response> getData(String urlStr) async {
     try {
-      String httpStr = 'https://';
-      String fullUrl;
-      fullUrl = '$httpStr$urlStr';
+      String fullUrl = httpStr + urlStr;
 
-      return await get(fullUrl)
-          .timeout(_timeOut, onTimeout: () => null)
-          .catchError(() => null);
+      return await get(fullUrl).timeout(_timeOut, onTimeout: () => null);
     } catch (e) {
       return null;
     }
