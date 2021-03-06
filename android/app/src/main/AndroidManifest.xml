@@ -1,11 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.makeshtech.clock">
-    <queries>
-        <intent>
-            <action android:name="android.intent.action.VIEW" />
-        </intent>
-    </queries>
-    
+    package="com.makeshtech.clock">    
     <uses-permission android:name="android.permission.INTERNET" />
     <application
         android:name="io.flutter.app.FlutterApplication"

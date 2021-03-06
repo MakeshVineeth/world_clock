@@ -24,14 +24,15 @@ class Commons {
     );
   }
 
-    static void launchUrl(
+  static void launchUrl(
       {@required String url,
       bool forceWebView = false,
       bool enableJavaScript = false}) async {
     try {
-      if (await canLaunch(url))
-        await launch(url,
-            forceWebView: forceWebView, enableJavaScript: enableJavaScript);
-    } catch (e) {}
+      await launch(url,
+          forceWebView: forceWebView, enableJavaScript: enableJavaScript);
+    } catch (e) {
+      print(e);
+    }
   }
 }

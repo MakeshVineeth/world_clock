@@ -52,6 +52,7 @@ class _LocationState extends State<Location> {
 
       Navigator.pop(context);
     } catch (e) {
+      setState(() => _workInProgress = false);
       print(e);
     }
   }
