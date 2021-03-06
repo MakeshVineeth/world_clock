@@ -6,16 +6,17 @@ import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DataMethods {
-  Duration _timeOut = const Duration(minutes: 1);
+  final Duration _timeOut = const Duration(minutes: 1);
 
   Future<Response> getData(String urlStr) async {
     try {
       String httpStr = 'https://';
       String fullUrl;
-
       fullUrl = '$httpStr$urlStr';
 
-      return await get(fullUrl);
+      return await get(fullUrl)
+          .timeout(_timeOut, onTimeout: () => null)
+          .catchError(() => null);
     } catch (e) {
       return null;
     }
@@ -23,8 +24,9 @@ class DataMethods {
 
   Future<List> getList() async {
     try {
-      Response responseList =
-          await getData('worldtimeapi.org/api/timezone').timeout(_timeOut);
+      Response responseList = await getData('worldtimeapi.org/api/timezone');
+
+      if (responseList == null) return [];
 
       List listData = jsonDecode(responseList.body);
       return listData;
@@ -35,8 +37,7 @@ class DataMethods {
 
   Future<WorldTime> getTime({String location, String url, String flag}) async {
     try {
-      Response response =
-          await getData('worldtimeapi.org/api/timezone/$url').timeout(_timeOut);
+      Response response = await getData('worldtimeapi.org/api/timezone/$url');
 
       Map e = jsonDecode(response.body);
 
@@ -78,8 +79,7 @@ class DataMethods {
   Future<void> getNewTimeData(TimeProvider timeProvider) async {
     WorldTime old = timeProvider.worldTime;
     WorldTime newTime =
-        await getTime(location: old.location, url: old.url, flag: old.flag)
-            .timeout(_timeOut);
+        await getTime(location: old.location, url: old.url, flag: old.flag);
 
     if (newTime?.isDayTime != null && newTime?.time != null)
       timeProvider.change(newTime);

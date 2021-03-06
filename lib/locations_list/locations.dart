@@ -61,6 +61,12 @@ class _LocationState extends State<Location> {
     try {
       locations.clear();
       List ins = await DataMethods().getList();
+
+      if (ins.isEmpty) {
+        setState(() => _workInProgress = false);
+        return;
+      }
+
       Map e = jsonDecode(await rootBundle.loadString('assets/countries.json'));
 
       for (var item in ins) {
