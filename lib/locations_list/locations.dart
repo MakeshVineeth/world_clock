@@ -73,7 +73,7 @@ class _LocationState extends State<Location> {
         String listItem = item.toString();
 
         String flag = e['$listItem'].toString().toLowerCase();
-        flag = 'https://www.countryflags.io/$flag/flat/32.png';
+        flag = 'icons/flags/png/$flag.png';
 
         if (flag.contains('null')) flag = null;
 

@@ -99,10 +99,10 @@ class DataMethods {
     String url = prefs.getString('url');
     String flag = prefs.getString('flag');
 
-    if (location == null) {
+    if (location == null || flag.contains('https://www.countryflags.io')) {
       location = 'Kolkata';
       url = 'Asia/Kolkata';
-      flag = 'https://www.countryflags.io/in/flat/32.png';
+      flag = 'icons/flags/png/in.png';
     }
 
     WorldTime instance =
