@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_clock/commons.dart';
 import 'package:flutter_clock/home.dart';
 import 'package:flutter_clock/loader.dart';
-
 void main() {
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
     statusBarColor: Colors.transparent,

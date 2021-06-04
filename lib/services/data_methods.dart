@@ -11,9 +11,9 @@ class DataMethods {
 
   Future<Response> getData(String urlStr) async {
     try {
-      String fullUrl = httpStr + urlStr;
-
-      return await get(fullUrl).timeout(_timeOut, onTimeout: () => null);
+      String fullUrl = Uri.encodeFull(httpStr + urlStr);
+      Uri url = Uri.parse(fullUrl);
+      return await get(url).timeout(_timeOut, onTimeout: () => null);
     } catch (e) {
       return null;
     }
@@ -24,10 +24,10 @@ class DataMethods {
       Response responseList = await getData('worldtimeapi.org/api/timezone');
 
       if (responseList == null) return [];
-
       List listData = jsonDecode(responseList.body);
+
       return listData;
-    } catch (e) {
+    } catch (_) {
       return [];
     }
   }
@@ -35,7 +35,6 @@ class DataMethods {
   Future<WorldTime> getTime({String location, String url, String flag}) async {
     try {
       Response response = await getData('worldtimeapi.org/api/timezone/$url');
-
       Map e = jsonDecode(response.body);
 
       String dumpTime = e['datetime'];
@@ -68,7 +67,7 @@ class DataMethods {
         time: time,
         secondsLeft: secondsLeft,
       );
-    } catch (e) {
+    } catch (_) {
       return WorldTime(location: location, url: url, flag: flag);
     }
   }
