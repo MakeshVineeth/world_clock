@@ -25,8 +25,9 @@ class _DisplayDateState extends State<DisplayDate> {
   Widget build(BuildContext context) {
     TimeProvider timeProvider = Provider.of<TimeProvider>(context);
     timer = Timer.periodic(
-        Duration(seconds: timeProvider.worldTime.secondsLeft),
-        (Timer t) => DataMethods().getNewTimeData(timeProvider));
+      Duration(seconds: timeProvider.worldTime.secondsLeft),
+      (Timer t) => DataMethods().getNewTimeData(timeProvider),
+    );
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,

@@ -51,9 +51,8 @@ class _LocationState extends State<Location> {
       timeProvider.change(instance);
 
       Navigator.pop(context);
-    } catch (e) {
+    } catch (_) {
       setState(() => _workInProgress = false);
-      print(e);
     }
   }
 
@@ -92,9 +91,8 @@ class _LocationState extends State<Location> {
 
         setState(() => _workInProgress = false);
       }
-    } catch (e) {
+    } catch (_) {
       setState(() => _workInProgress = false);
-      print(e);
     }
   }
 
@@ -109,8 +107,7 @@ class _LocationState extends State<Location> {
           .forEach((int i) => lists.add(locations.elementAt(i)));
 
       return lists;
-    } catch (e) {
-      print(e);
+    } catch (_) {
       return [];
     }
   }
@@ -120,83 +117,86 @@ class _LocationState extends State<Location> {
     timeProvider = Provider.of<TimeProvider>(context, listen: false);
 
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Choose Location'),
-          backwardsCompatibility: false,
-          systemOverlayStyle: SystemUiOverlayStyle(
-            statusBarColor: Colors.transparent,
-            statusBarIconBrightness: Brightness.light,
-          ),
+      appBar: AppBar(
+        title: Text('Choose Location'),
+        backwardsCompatibility: false,
+        systemOverlayStyle: SystemUiOverlayStyle(
+          statusBarColor: Colors.transparent,
+          statusBarIconBrightness: Brightness.light,
         ),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
-          child: AnimatedCrossFade(
-              firstChild: Container(
-                height: double.maxFinite,
-                child: SearchBar<WorldTime>(
-                  onSearch: search,
-                  suggestions: locations,
-                  onItemFound: (WorldTime found, int index) {
-                    return LocationItem(
-                      worldTime: found,
-                      index: index,
-                      onTap: () => updateTime(found),
-                    );
-                  },
-                  searchBarStyle: SearchBarStyle(
-                    padding: EdgeInsets.all(5),
-                    borderRadius: Commons.circleRadius,
-                  ),
-                  minimumChars: 2,
-                  onError: (error) {
-                    return Center(
-                      child: Text(
-                        "Error occurred : $error",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    );
-                  },
-                  emptyWidget: Center(
+      ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+        child: AnimatedCrossFade(
+            firstChild: Container(
+              height: double.maxFinite,
+              child: SearchBar<WorldTime>(
+                onSearch: search,
+                suggestions: locations,
+                onItemFound: (WorldTime found, int index) => LocationItem(
+                  worldTime: found,
+                  index: index,
+                  onTap: () => updateTime(found),
+                ),
+                searchBarStyle: SearchBarStyle(
+                  padding: EdgeInsets.all(5),
+                  borderRadius: Commons.circleRadius,
+                ),
+                minimumChars: 2,
+                onError: (error) {
+                  return Center(
                     child: Text(
-                      "No Results",
+                      "Error occurred : $error",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                  ),
-                  cancellationWidget: Text(
-                    "Cancel",
+                  );
+                },
+                emptyWidget: Center(
+                  child: Text(
+                    "No Results",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  icon: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 0.0, horizontal: 5.0),
-                    child: Icon(
-                      Icons.search,
-                    ),
-                  ),
-                  hintText: "Search Timezones",
-                  searchBarPadding: EdgeInsets.all(15.0),
-                  listPadding:
-                      EdgeInsets.symmetric(vertical: 0.0, horizontal: 5.0),
-                  textStyle: TextStyle(
+                ),
+                cancellationWidget: Text(
+                  "Cancel",
+                  style: TextStyle(
                     fontWeight: FontWeight.bold,
                   ),
-                  iconActiveColor: Colors.blue,
-                  loader: LoadingIndicator(),
-                  crossAxisCount: 1,
-                  mainAxisSpacing: 5,
                 ),
+                icon: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 0.0,
+                    horizontal: 5.0,
+                  ),
+                  child: Icon(
+                    Icons.search,
+                  ),
+                ),
+                hintText: "Search Timezones",
+                searchBarPadding: EdgeInsets.all(15.0),
+                listPadding: EdgeInsets.symmetric(
+                  vertical: 0.0,
+                  horizontal: 5.0,
+                ),
+                textStyle: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+                iconActiveColor: Colors.blue,
+                loader: LoadingIndicator(),
+                crossAxisCount: 1,
+                mainAxisSpacing: 5,
               ),
-              secondChild: LoadingIndicator(),
-              crossFadeState: _workInProgress
-                  ? CrossFadeState.showSecond
-                  : CrossFadeState.showFirst,
-              duration: const Duration(milliseconds: 500)),
-        ));
+            ),
+            secondChild: LoadingIndicator(),
+            crossFadeState: _workInProgress
+                ? CrossFadeState.showSecond
+                : CrossFadeState.showFirst,
+            duration: const Duration(milliseconds: 500)),
+      ),
+    );
   }
 }

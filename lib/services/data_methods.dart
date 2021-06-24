@@ -101,14 +101,19 @@ class DataMethods {
     String flag = prefs.getString('flag');
 
     // Also checking for country flags string as previously it uses online to get this flag icons.
-    if (location == null || flag.contains('https://www.countryflags.io')) {
+    if (location == null ||
+        url == null ||
+        flag.contains('https://www.countryflags.io')) {
       location = 'Kolkata';
       url = 'Asia/Kolkata';
       flag = 'icons/flags/png/in.png';
     }
 
-    WorldTime instance =
-        await getTime(location: location, url: url, flag: flag);
+    WorldTime instance = await getTime(
+      location: location,
+      url: url,
+      flag: flag,
+    );
 
     return instance;
   }
