@@ -20,6 +20,7 @@ class LocationItem extends StatelessWidget {
         leading: DisplayImage(url: worldTime.flag),
         title: Text(
           worldTime.location,
+          overflow: TextOverflow.ellipsis,
           style: TextStyle(
             fontWeight: FontWeight.bold,
           ),
