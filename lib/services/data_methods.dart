@@ -6,7 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DataMethods {
-  final Duration _timeOut = const Duration(minutes: 1);
+  final Duration _timeOut = const Duration(seconds: 10);
   final String httpStr = 'https://';
 
   Future<Response> getData(String urlStr) async {
@@ -14,7 +14,7 @@ class DataMethods {
       String fullUrl = Uri.encodeFull(httpStr + urlStr);
       Uri url = Uri.parse(fullUrl);
       return await get(url).timeout(_timeOut, onTimeout: () => null);
-    } catch (e) {
+    } catch (_) {
       return null;
     }
   }
@@ -73,14 +73,14 @@ class DataMethods {
   }
 
   Future<void> getNewTimeData(TimeProvider timeProvider) async {
-    WorldTime old = timeProvider.worldTime;
+    final WorldTime old = timeProvider.worldTime;
     WorldTime newTime =
         await getTime(location: old.location, url: old.url, flag: old.flag);
 
     if (newTime?.isDayTime != null && newTime?.time != null)
       timeProvider.change(newTime);
     else {
-      timeProvider.change(WorldTime(
+      final WorldTime oldTime = WorldTime(
         isDayTime: old.isDayTime,
         location: old.location,
         url: old.url,
@@ -88,7 +88,9 @@ class DataMethods {
         date: old.date,
         secondsLeft: 10,
         time: old.time,
-      ));
+      );
+
+      timeProvider.change(oldTime);
     }
   }
 

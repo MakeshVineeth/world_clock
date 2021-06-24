@@ -58,34 +58,30 @@ class _DisplayDateState extends State<DisplayDate> {
         Text(
           timeProvider.worldTime.time ?? '--:--',
           style: GoogleFonts.aladin(
-            fontSize: 50.0,
-            fontWeight: FontWeight.bold,
-            letterSpacing: 2.0,
-            color: Colors.white,
-            shadows: <Shadow>[
-              Shadow(
-                offset: Offset(1.0, 1.0),
-                blurRadius: 3.0,
-              ),
-            ],
+            textStyle: commonStyle.copyWith(
+              fontSize: 50.0,
+              letterSpacing: 2.0,
+            ),
           ),
         ),
         Text(
           timeProvider.worldTime.date ?? '--',
-          style: TextStyle(
-            fontSize: 20.0,
-            fontWeight: FontWeight.bold,
-            letterSpacing: 1.0,
-            color: Colors.white,
-            shadows: <Shadow>[
-              Shadow(
-                offset: Offset(1.0, 1.0),
-                blurRadius: 3.0,
-              ),
-            ],
-          ),
+          style: commonStyle,
         ),
       ],
     );
   }
+
+  TextStyle get commonStyle => const TextStyle(
+        fontSize: 20.0,
+        fontWeight: FontWeight.bold,
+        letterSpacing: 1.0,
+        color: Colors.white,
+        shadows: <Shadow>[
+          Shadow(
+            offset: Offset(1.0, 1.0),
+            blurRadius: 3.0,
+          ),
+        ],
+      );
 }

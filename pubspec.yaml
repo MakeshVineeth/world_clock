@@ -1,7 +1,7 @@
 name: flutter_clock
 description: A Simple Flutter project to display World Clocks dynamically from WorldTimeAPI.
 publish_to: "none"
-version: 2.0.1+4
+version: 2.0.2+5
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
