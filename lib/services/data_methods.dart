@@ -23,12 +23,12 @@ class DataMethods {
     try {
       Response responseList = await getData('worldtimeapi.org/api/timezone');
 
-      if (responseList == null) return [];
+      if (responseList == null) return const [];
       List listData = jsonDecode(responseList.body);
 
       return listData;
     } catch (_) {
-      return [];
+      return const [];
     }
   }
 

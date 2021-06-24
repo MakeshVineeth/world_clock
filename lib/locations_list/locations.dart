@@ -108,7 +108,7 @@ class _LocationState extends State<Location> {
 
       return lists;
     } catch (_) {
-      return [];
+      return const [];
     }
   }
 
@@ -143,16 +143,14 @@ class _LocationState extends State<Location> {
                   borderRadius: Commons.circleRadius,
                 ),
                 minimumChars: 2,
-                onError: (error) {
-                  return Center(
-                    child: Text(
-                      "Error occurred : $error",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
+                onError: (error) => Center(
+                  child: Text(
+                    "Error occurred : $error",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
                     ),
-                  );
-                },
+                  ),
+                ),
                 emptyWidget: Center(
                   child: Text(
                     "No Results",
