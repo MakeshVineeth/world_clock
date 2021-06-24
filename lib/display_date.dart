@@ -23,7 +23,7 @@ class _DisplayDateState extends State<DisplayDate> {
 
   @override
   Widget build(BuildContext context) {
-    TimeProvider timeProvider = Provider.of<TimeProvider>(context);
+    TimeProvider timeProvider = context.watch<TimeProvider>();
     timer = Timer.periodic(
       Duration(seconds: timeProvider.worldTime.secondsLeft),
       (Timer t) => DataMethods().getNewTimeData(timeProvider),

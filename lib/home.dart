@@ -19,7 +19,7 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    _timeProvider = Provider.of<TimeProvider>(context, listen: false);
+    _timeProvider = context.read<TimeProvider>();
 
     return Consumer<TimeProvider>(
       builder: (context, timeProvider, child) => Container(
@@ -145,14 +145,13 @@ class _HomeState extends State<Home> {
             'An Internet based World Clock app made in Flutter. It can retrieve timezones using the WorldClassAPI.',
       );
 
-  void changeLocation() async {
-    Navigator.push(
-      context,
-      PageRouteBuilder(
+  void changeLocation() async => Navigator.push(
+        context,
+        PageRouteBuilder(
           pageBuilder: (context, anim, anim1) => ChangeNotifierProvider.value(
-                value: _timeProvider,
-                child: Location(),
-              ),
+            value: _timeProvider,
+            child: Location(),
+          ),
           transitionsBuilder: (context, anim, anim1, child) {
             return FadeTransition(
               opacity: anim,
@@ -161,13 +160,12 @@ class _HomeState extends State<Home> {
                 child: child,
               ),
             );
-          }),
-    );
-  }
+          },
+        ),
+      );
 
   String getDynamicBg(TimeProvider timeProvider) {
     if (timeProvider?.worldTime?.isDayTime == null) return 'day.gif';
-
     return timeProvider.worldTime.isDayTime ? 'day.gif' : 'night.gif';
   }
 }

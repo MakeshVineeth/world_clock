@@ -114,7 +114,7 @@ class _LocationState extends State<Location> {
 
   @override
   Widget build(BuildContext context) {
-    timeProvider = Provider.of<TimeProvider>(context, listen: false);
+    timeProvider = context.read<TimeProvider>();
 
     return Scaffold(
       appBar: AppBar(
