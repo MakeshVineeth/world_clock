@@ -155,10 +155,7 @@ class _HomeState extends State<Home> {
           transitionsBuilder: (context, anim, anim1, child) {
             return FadeTransition(
               opacity: anim,
-              child: ScaleTransition(
-                scale: anim,
-                child: child,
-              ),
+              child: child,
             );
           },
         ),

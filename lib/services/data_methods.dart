@@ -104,7 +104,7 @@ class DataMethods {
     if (location == null ||
         url == null ||
         flag.contains('https://www.countryflags.io')) {
-      location = 'Kolkata';
+      location = 'Asia, Kolkata';
       url = 'Asia/Kolkata';
       flag = 'icons/flags/png/in.png';
     }

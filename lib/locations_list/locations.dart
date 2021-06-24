@@ -20,7 +20,7 @@ class Location extends StatefulWidget {
 
 class _LocationState extends State<Location> {
   List<WorldTime> locations = [];
-  Fuzzy<String> fuse = Fuzzy([]);
+  Fuzzy<String> listOfLocations = Fuzzy([]);
   Map listData = {};
 
   TimeProvider timeProvider;
@@ -79,15 +79,14 @@ class _LocationState extends State<Location> {
         listItem = listItem.replaceAll('[', '');
         listItem = listItem.replaceAll(' ', '');
 
-        var temp = listItem.split('/');
-        String countryName = temp[temp.length - 1];
+        String countryName = listItem.replaceAll('/', ', ');
         countryName = countryName.replaceAll('_', ' ');
 
         WorldTime locationItem =
             WorldTime(url: listItem, location: countryName, flag: flag);
 
         locations.add(locationItem);
-        fuse.list.add(locationItem.url);
+        listOfLocations.list.add(locationItem.url);
 
         setState(() => _workInProgress = false);
       }
@@ -101,7 +100,7 @@ class _LocationState extends State<Location> {
       await Future.delayed(Duration(milliseconds: 800));
       List<WorldTime> lists = [];
 
-      final result = fuse.search(searchStr);
+      final result = listOfLocations.search(searchStr);
       result
           .map((r) => r.matches.first.arrayIndex)
           .forEach((int i) => lists.add(locations.elementAt(i)));
@@ -128,72 +127,73 @@ class _LocationState extends State<Location> {
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
         child: AnimatedCrossFade(
-            firstChild: Container(
-              height: double.maxFinite,
-              child: SearchBar<WorldTime>(
-                onSearch: search,
-                suggestions: locations,
-                onItemFound: (WorldTime found, int index) => LocationItem(
-                  worldTime: found,
-                  index: index,
-                  onTap: () => updateTime(found),
-                ),
-                searchBarStyle: SearchBarStyle(
-                  padding: EdgeInsets.all(5),
-                  borderRadius: Commons.circleRadius,
-                ),
-                minimumChars: 2,
-                onError: (error) => Center(
-                  child: Text(
-                    "Error occurred : $error",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                emptyWidget: Center(
-                  child: Text(
-                    "No Results",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                cancellationWidget: Text(
-                  "Cancel",
+          firstChild: Container(
+            height: double.maxFinite,
+            child: SearchBar<WorldTime>(
+              onSearch: search,
+              suggestions: locations,
+              onItemFound: (WorldTime found, int index) => LocationItem(
+                worldTime: found,
+                index: index,
+                onTap: () => updateTime(found),
+              ),
+              searchBarStyle: SearchBarStyle(
+                padding: EdgeInsets.all(5),
+                borderRadius: Commons.circleRadius,
+              ),
+              minimumChars: 2,
+              onError: (_) => Center(
+                child: Text(
+                  "Error",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                icon: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 0.0,
-                    horizontal: 5.0,
-                  ),
-                  child: Icon(
-                    Icons.search,
+              ),
+              emptyWidget: Center(
+                child: Text(
+                  "No Results",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
-                hintText: "Search Timezones",
-                searchBarPadding: EdgeInsets.all(15.0),
-                listPadding: EdgeInsets.symmetric(
+              ),
+              cancellationWidget: Text(
+                "Cancel",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              icon: Padding(
+                padding: const EdgeInsets.symmetric(
                   vertical: 0.0,
                   horizontal: 5.0,
                 ),
-                textStyle: TextStyle(
-                  fontWeight: FontWeight.bold,
+                child: Icon(
+                  Icons.search,
                 ),
-                iconActiveColor: Colors.blue,
-                loader: LoadingIndicator(),
-                crossAxisCount: 1,
-                mainAxisSpacing: 5,
               ),
+              hintText: "Search Timezones",
+              searchBarPadding: EdgeInsets.all(15.0),
+              listPadding: EdgeInsets.symmetric(
+                vertical: 0.0,
+                horizontal: 5.0,
+              ),
+              textStyle: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+              iconActiveColor: Colors.blue,
+              loader: LoadingIndicator(),
+              crossAxisCount: 1,
+              mainAxisSpacing: 5,
             ),
-            secondChild: LoadingIndicator(),
-            crossFadeState: _workInProgress
-                ? CrossFadeState.showSecond
-                : CrossFadeState.showFirst,
-            duration: const Duration(milliseconds: 500)),
+          ),
+          secondChild: LoadingIndicator(),
+          crossFadeState: _workInProgress
+              ? CrossFadeState.showSecond
+              : CrossFadeState.showFirst,
+          duration: const Duration(milliseconds: 500),
+        ),
       ),
     );
   }

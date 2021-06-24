@@ -39,8 +39,10 @@ class _DisplayDateState extends State<DisplayDate> {
             SizedBox(width: 10.0),
             Text(
               timeProvider.worldTime.location ?? '--',
+              softWrap: true,
+              textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: 25.0,
+                fontSize: 20.0,
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
                 shadows: <Shadow>[
