@@ -39,14 +39,10 @@ class _LoaderState extends State<Loader> {
     );
   }
 
-  Widget homeScreen() {
-    return Home();
-  }
+  Widget homeScreen() => Home();
 
-  static Widget loadingIndicator() {
-    return Scaffold(
-      backgroundColor: Colors.blueAccent,
-      body: LoadingIndicator(color: Colors.white),
-    );
-  }
+  static Widget loadingIndicator() => const Scaffold(
+        backgroundColor: Colors.blueAccent,
+        body: LoadingIndicator(color: Colors.white),
+      );
 }

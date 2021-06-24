@@ -7,7 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class DataMethods {
   final Duration _timeOut = const Duration(seconds: 10);
-  final String httpStr = 'https://';
+  final String httpStr = 'http://';
 
   Future<Response> getData(String urlStr) async {
     try {
@@ -100,6 +100,7 @@ class DataMethods {
     String url = prefs.getString('url');
     String flag = prefs.getString('flag');
 
+    // Also checking for country flags string as previously it uses online to get this flag icons.
     if (location == null || flag.contains('https://www.countryflags.io')) {
       location = 'Kolkata';
       url = 'Asia/Kolkata';
