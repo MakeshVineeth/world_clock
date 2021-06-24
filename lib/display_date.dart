@@ -34,23 +34,29 @@ class _DisplayDateState extends State<DisplayDate> {
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            DisplayImage(url: timeProvider.worldTime.flag),
-            SizedBox(width: 10.0),
-            Text(
-              timeProvider.worldTime.location ?? '--',
-              softWrap: true,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 20.0,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-                shadows: <Shadow>[
-                  Shadow(
-                    offset: Offset(1.0, 1.0),
-                    blurRadius: 3.0,
-                  ),
-                ],
+            Padding(
+              padding: const EdgeInsets.all(5.0),
+              child: DisplayImage(url: timeProvider.worldTime.flag),
+            ),
+            SizedBox(width: 8.0),
+            Flexible(
+              child: Text(
+                timeProvider.worldTime.location ?? '--',
+                softWrap: true,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                  shadows: <Shadow>[
+                    Shadow(
+                      offset: Offset(1.0, 1.0),
+                      blurRadius: 3.0,
+                    ),
+                  ],
+                ),
               ),
             ),
           ],
