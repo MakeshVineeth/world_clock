@@ -35,24 +35,24 @@ class _LocationState extends State<Location> {
 
   void updateTime(WorldTime worldTime) async {
     try {
-      setState(() => _workInProgress = true);
+      if (mounted) setState(() => _workInProgress = true);
 
-      WorldTime instance = await DataMethods().getTime(
+      final WorldTime instance = await DataMethods().getTime(
         location: worldTime.location,
         flag: worldTime.flag,
         url: worldTime.url,
       );
 
-      final prefs = await SharedPreferences.getInstance();
-      prefs.setString('url', instance.url);
-      prefs.setString('flag', instance.flag);
-      prefs.setString('location', instance.location);
-
       timeProvider.change(instance);
+
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('url', instance.url);
+      await prefs.setString('flag', instance.flag);
+      await prefs.setString('location', instance.location);
 
       Navigator.pop(context);
     } catch (_) {
-      setState(() => _workInProgress = false);
+      if (mounted) setState(() => _workInProgress = false);
     }
   }
 
@@ -62,7 +62,7 @@ class _LocationState extends State<Location> {
       List ins = await DataMethods().getList();
 
       if (ins.isEmpty) {
-        setState(() => _workInProgress = false);
+        if (mounted) setState(() => _workInProgress = false);
         return;
       }
 
@@ -88,10 +88,10 @@ class _LocationState extends State<Location> {
         locations.add(locationItem);
         listOfLocations.list.add(locationItem.url);
 
-        setState(() => _workInProgress = false);
+        if (mounted) setState(() => _workInProgress = false);
       }
     } catch (_) {
-      setState(() => _workInProgress = false);
+      if (mounted) setState(() => _workInProgress = false);
     }
   }
 
@@ -192,7 +192,7 @@ class _LocationState extends State<Location> {
           crossFadeState: _workInProgress
               ? CrossFadeState.showSecond
               : CrossFadeState.showFirst,
-          duration: const Duration(milliseconds: 500),
+          duration: const Duration(milliseconds: 450),
         ),
       ),
     );

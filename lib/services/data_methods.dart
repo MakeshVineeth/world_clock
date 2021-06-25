@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_clock/services/time_provider.dart';
 import 'package:flutter_clock/services/worldtime.dart';
 import 'package:http/http.dart';
@@ -32,7 +33,10 @@ class DataMethods {
     }
   }
 
-  Future<WorldTime> getTime({String location, String url, String flag}) async {
+  Future<WorldTime> getTime(
+      {@required String location,
+      @required String url,
+      @required String flag}) async {
     try {
       Response response = await getData('worldtimeapi.org/api/timezone/$url');
       Map e = jsonDecode(response.body);
@@ -72,25 +76,31 @@ class DataMethods {
     }
   }
 
-  Future<void> getNewTimeData(TimeProvider timeProvider) async {
-    final WorldTime old = timeProvider.worldTime;
-    WorldTime newTime =
-        await getTime(location: old.location, url: old.url, flag: old.flag);
+  Future<bool> getNewTimeData(TimeProvider timeProvider) async {
+    try {
+      final WorldTime old = timeProvider.worldTime;
+      final WorldTime newTime =
+          await getTime(location: old.location, url: old.url, flag: old.flag);
 
-    if (newTime?.isDayTime != null && newTime?.time != null)
-      timeProvider.change(newTime);
-    else {
-      final WorldTime oldTime = WorldTime(
-        isDayTime: old.isDayTime,
-        location: old.location,
-        url: old.url,
-        flag: old.flag,
-        date: old.date,
-        secondsLeft: 10,
-        time: old.time,
-      );
+      if (newTime?.isDayTime != null && newTime?.time != null) {
+        timeProvider.change(newTime);
+        return true;
+      } else {
+        final WorldTime oldTime = WorldTime(
+          isDayTime: old.isDayTime,
+          location: old.location,
+          url: old.url,
+          flag: old.flag,
+          date: old.date,
+          secondsLeft: 10,
+          time: old.time,
+        );
 
-      timeProvider.change(oldTime);
+        timeProvider.change(oldTime);
+        return false;
+      }
+    } catch (_) {
+      return false;
     }
   }
 

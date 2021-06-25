@@ -21,27 +21,23 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     _timeProvider = context.read<TimeProvider>();
 
-    return Consumer<TimeProvider>(
-      builder: (context, timeProvider, child) => Container(
-        height: MediaQuery.of(context).size.height,
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: ResizeImage(
-              AssetImage('images/' + getDynamicBg(timeProvider)),
-              width: MediaQuery.of(context).size.width.round(),
-              height: MediaQuery.of(context).size.height.round(),
-            ),
-            fit: BoxFit.cover,
+    return Container(
+      height: MediaQuery.of(context).size.height,
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: ResizeImage(
+            AssetImage('images/' + getDynamicBg(_timeProvider)),
+            width: MediaQuery.of(context).size.width.round(),
+            height: MediaQuery.of(context).size.height.round(),
           ),
+          fit: BoxFit.cover,
         ),
-        child: child,
       ),
       child: Scaffold(
         backgroundColor: Colors.transparent,
         body: SafeArea(
           child: RefreshIndicator(
-            onRefresh: () => DataMethods().getNewTimeData(
-                Provider.of<TimeProvider>(context, listen: false)),
+            onRefresh: () => DataMethods().getNewTimeData(_timeProvider),
             child: SingleChildScrollView(
               physics: AlwaysScrollableScrollPhysics(
                   parent: BouncingScrollPhysics()),
