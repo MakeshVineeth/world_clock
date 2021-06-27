@@ -98,7 +98,7 @@ class _LocationState extends State<Location> {
 
   Future<List<WorldTime>> search(String searchStr) async {
     try {
-      await Future.delayed(Duration(milliseconds: 800));
+      await Future.delayed(Duration(milliseconds: 600));
       List<WorldTime> lists = [];
 
       final result = listOfLocations.search(searchStr);
@@ -131,6 +131,7 @@ class _LocationState extends State<Location> {
             child: SearchBar<WorldTime>(
               onSearch: search,
               suggestions: locations,
+              scrollDirection: Axis.vertical,
               onItemFound: (WorldTime found, int index) => LocationItem(
                 worldTime: found,
                 index: index,

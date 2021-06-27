@@ -16,6 +16,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   TimeProvider _timeProvider;
   final MethodChannel _androidAppRetain = MethodChannel("android_app_exit");
+  final Duration duration = const Duration(milliseconds: 200);
 
   @override
   Widget build(BuildContext context) {
@@ -141,9 +142,11 @@ class _HomeState extends State<Home> {
             'An Internet based World Clock app made in Flutter. It can retrieve timezones using the WorldClassAPI.',
       );
 
-  void changeLocation() async => Navigator.push(
+  void changeLocation() => Navigator.push(
         context,
         PageRouteBuilder(
+          transitionDuration: duration,
+          reverseTransitionDuration: duration,
           pageBuilder: (context, anim, anim1) => ChangeNotifierProvider.value(
             value: _timeProvider,
             child: Location(),
