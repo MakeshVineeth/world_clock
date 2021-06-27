@@ -10,7 +10,7 @@ dependencies:
   flutter:
     sdk: flutter
   country_icons: ^2.0.2
-  flappy_search_bar: ^1.7.2
+  flappy_search_bar_ns: ^2.0.2
   flutter_spinkit: ^5.0.0
   fuzzy: ^0.3.0
   google_fonts: ^2.1.0

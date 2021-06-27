@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:flappy_search_bar/search_bar_style.dart';
+import 'package:flappy_search_bar_ns/search_bar_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_clock/commons.dart';
@@ -8,7 +8,7 @@ import 'package:flutter_clock/locations_list/location_item.dart';
 import 'package:flutter_clock/services/data_methods.dart';
 import 'package:flutter_clock/services/time_provider.dart';
 import 'package:flutter_clock/services/worldtime.dart';
-import 'package:flappy_search_bar/flappy_search_bar.dart';
+import 'package:flappy_search_bar_ns/flappy_search_bar_ns.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:fuzzy/fuzzy.dart';

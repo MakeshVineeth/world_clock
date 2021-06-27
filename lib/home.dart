@@ -151,12 +151,10 @@ class _HomeState extends State<Home> {
             value: _timeProvider,
             child: Location(),
           ),
-          transitionsBuilder: (context, anim, anim1, child) {
-            return FadeTransition(
-              opacity: anim,
-              child: child,
-            );
-          },
+          transitionsBuilder: (context, anim, anim1, child) => FadeTransition(
+            opacity: anim,
+            child: child,
+          ),
         ),
       );
 
