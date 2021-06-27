@@ -30,6 +30,7 @@ class _LocationState extends State<Location> {
   @override
   void initState() {
     super.initState();
+    timeProvider = context.read<TimeProvider>();
     firstSetup();
   }
 
@@ -43,12 +44,12 @@ class _LocationState extends State<Location> {
         url: worldTime.url,
       );
 
-      timeProvider.change(instance);
+      if (timeProvider != null) timeProvider.change(instance);
 
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString('url', instance.url);
-      await prefs.setString('flag', instance.flag);
       await prefs.setString('location', instance.location);
+      await prefs.setString('flag', instance.flag ?? '');
 
       Navigator.pop(context);
     } catch (_) {
@@ -113,8 +114,6 @@ class _LocationState extends State<Location> {
 
   @override
   Widget build(BuildContext context) {
-    timeProvider = context.read<TimeProvider>();
-
     return Scaffold(
       appBar: AppBar(
         title: Text('Choose Location'),
