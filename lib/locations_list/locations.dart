@@ -98,7 +98,7 @@ class _LocationState extends State<Location> {
 
   Future<List<WorldTime>> search(String searchStr) async {
     try {
-      await Future.delayed(Duration(milliseconds: 600));
+      await Future.delayed(const Duration(milliseconds: 300));
       List<WorldTime> lists = [];
 
       final result = listOfLocations.search(searchStr);
@@ -192,7 +192,7 @@ class _LocationState extends State<Location> {
           crossFadeState: _workInProgress
               ? CrossFadeState.showSecond
               : CrossFadeState.showFirst,
-          duration: const Duration(milliseconds: 450),
+          duration: const Duration(milliseconds: 400),
         ),
       ),
     );
