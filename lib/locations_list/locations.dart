@@ -114,7 +114,7 @@ class _LocationState extends State<Location> {
       await Future.delayed(const Duration(milliseconds: 300));
       List<WorldTime> lists = [];
 
-      final result = listOfLocations.search(searchStr!);
+      final result = listOfLocations.search(searchStr ?? "");
       result
           .map((r) => r.matches.first.arrayIndex)
           .forEach((int i) => lists.add(locations.elementAt(i)));
