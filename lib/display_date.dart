@@ -14,12 +14,12 @@ class DisplayDate extends StatefulWidget {
 }
 
 class _DisplayDateState extends State<DisplayDate> {
-  late Timer timer;
-  late int secondsLeft;
-  late String flagUrl;
-  late String timeString;
-  late String place;
-  late String dateString;
+  Timer timer = Timer(Duration.zero, () {});
+  int secondsLeft = 10;
+  String flagUrl = '';
+  String timeString = '';
+  String place = '';
+  String dateString = '';
 
   @override
   void initState() {

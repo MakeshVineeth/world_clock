@@ -24,7 +24,14 @@ class _LocationState extends State<Location> {
   Fuzzy<String> listOfLocations = Fuzzy([]);
   Map listData = {};
 
-  late TimeProvider timeProvider;
+  TimeProvider timeProvider = TimeProvider(
+      worldTime: WorldTime(
+          location: '',
+          url: '',
+          flag: '',
+          date: '',
+          isDayTime: true,
+          time: ''));
 
   bool _workInProgress = true;
 
