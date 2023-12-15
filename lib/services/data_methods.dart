@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:html';
 
 import 'package:flutter_clock/services/time_provider.dart';
 import 'package:flutter_clock/services/worldtime.dart';
@@ -15,8 +14,8 @@ class DataMethods {
     try {
       String fullUrl = Uri.encodeFull(httpStr + urlStr);
       Uri url = Uri.parse(fullUrl);
-      return await get(url).timeout(_timeOut,
-          onTimeout: () => new Response("", HttpStatus.requestTimeout));
+      return await get(url)
+          .timeout(_timeOut, onTimeout: () => new Response("", 0));
     } catch (_) {
       return null;
     }
