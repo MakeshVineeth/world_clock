@@ -1,11 +1,11 @@
 class WorldTime {
-  final String location;
-  final String time;
-  final String url;
-  final bool isDayTime;
-  final String flag;
-  final String date;
-  final int secondsLeft;
+  final String? location;
+  final String? time;
+  final String? url;
+  final bool? isDayTime;
+  final String? flag;
+  final String? date;
+  final int? secondsLeft;
 
   const WorldTime({
     this.location,

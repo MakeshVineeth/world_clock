@@ -13,7 +13,6 @@ class Commons {
         appBarTheme: AppBarTheme(
           color: bgColor,
           centerTitle: true,
-          backwardsCompatibility: false,
           systemOverlayStyle: SystemUiOverlayStyle(
             statusBarColor: Colors.transparent,
             statusBarIconBrightness: Brightness.light,
@@ -22,7 +21,7 @@ class Commons {
       );
 
   static Future<void> launchUrl(
-      {@required String url,
+      {required String url,
       bool forceWebView = false,
       bool enableJavaScript = false}) async {
     try {

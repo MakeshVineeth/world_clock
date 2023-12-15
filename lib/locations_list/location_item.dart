@@ -8,7 +8,8 @@ class LocationItem extends StatelessWidget {
   final int index;
   final Function onTap;
 
-  const LocationItem({this.worldTime, this.index, this.onTap});
+  const LocationItem(
+      {required this.worldTime, required this.index, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -17,9 +18,9 @@ class LocationItem extends StatelessWidget {
       child: ListTile(
         onTap: () => onTap(),
         shape: RoundedRectangleBorder(borderRadius: Commons.circleRadius),
-        leading: DisplayImage(url: worldTime.flag),
+        leading: DisplayImage(url: worldTime.flag!),
         title: Text(
-          worldTime.location,
+          worldTime.location!,
           overflow: TextOverflow.ellipsis,
           style: TextStyle(
             fontWeight: FontWeight.bold,

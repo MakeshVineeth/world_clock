@@ -2,7 +2,7 @@
     package="com.makeshtech.clock">    
     <uses-permission android:name="android.permission.INTERNET" />
     <application
-        android:name="io.flutter.app.FlutterApplication"
+        android:name="${applicationName}"
         android:label="Flutter Clock"
         android:icon="@mipmap/time_zone">
         <activity

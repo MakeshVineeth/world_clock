@@ -1,4 +1,6 @@
 import 'dart:convert';
+
+import 'package:flappy_search_bar_ns/flappy_search_bar_ns.dart' as FlappySearch;
 import 'package:flappy_search_bar_ns/search_bar_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -8,10 +10,9 @@ import 'package:flutter_clock/locations_list/location_item.dart';
 import 'package:flutter_clock/services/data_methods.dart';
 import 'package:flutter_clock/services/time_provider.dart';
 import 'package:flutter_clock/services/worldtime.dart';
-import 'package:flappy_search_bar_ns/flappy_search_bar_ns.dart';
+import 'package:fuzzy/fuzzy.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:fuzzy/fuzzy.dart';
 
 class Location extends StatefulWidget {
   @override
@@ -23,7 +24,7 @@ class _LocationState extends State<Location> {
   Fuzzy<String> listOfLocations = Fuzzy([]);
   Map listData = {};
 
-  TimeProvider timeProvider;
+  late TimeProvider timeProvider;
 
   bool _workInProgress = true;
 
@@ -39,16 +40,16 @@ class _LocationState extends State<Location> {
       if (mounted) setState(() => _workInProgress = true);
 
       final WorldTime instance = await DataMethods().getTime(
-        location: worldTime.location,
-        flag: worldTime.flag,
-        url: worldTime.url,
+        location: worldTime.location!,
+        flag: worldTime.flag!,
+        url: worldTime.url!,
       );
 
-      if (timeProvider != null) timeProvider.change(instance);
+      timeProvider.change(instance);
 
       final prefs = await SharedPreferences.getInstance();
-      await prefs.setString('url', instance.url);
-      await prefs.setString('location', instance.location);
+      await prefs.setString('url', instance.url!);
+      await prefs.setString('location', instance.location!);
       await prefs.setString('flag', instance.flag ?? '');
 
       Navigator.pop(context);
@@ -72,7 +73,7 @@ class _LocationState extends State<Location> {
       for (var item in ins) {
         String listItem = item.toString();
 
-        String flag = e['$listItem'].toString().toLowerCase();
+        String? flag = e['$listItem'].toString().toLowerCase();
         flag = 'icons/flags/png/$flag.png';
 
         if (flag.contains('null')) flag = null;
@@ -83,11 +84,16 @@ class _LocationState extends State<Location> {
         String countryName = listItem.replaceAll('/', ', ');
         countryName = countryName.replaceAll('_', ' ');
 
-        WorldTime locationItem =
-            WorldTime(url: listItem, location: countryName, flag: flag);
+        WorldTime locationItem = WorldTime(
+            url: listItem,
+            location: countryName,
+            flag: flag,
+            date: '',
+            isDayTime: null,
+            time: '');
 
         locations.add(locationItem);
-        listOfLocations.list.add(locationItem.url);
+        listOfLocations.list.add(locationItem.url!);
 
         if (mounted) setState(() => _workInProgress = false);
       }
@@ -96,12 +102,12 @@ class _LocationState extends State<Location> {
     }
   }
 
-  Future<List<WorldTime>> search(String searchStr) async {
+  Future<List<WorldTime>> search(String? searchStr) async {
     try {
       await Future.delayed(const Duration(milliseconds: 300));
       List<WorldTime> lists = [];
 
-      final result = listOfLocations.search(searchStr);
+      final result = listOfLocations.search(searchStr!);
       result
           .map((r) => r.matches.first.arrayIndex)
           .forEach((int i) => lists.add(locations.elementAt(i)));
@@ -117,7 +123,6 @@ class _LocationState extends State<Location> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Choose Location'),
-        backwardsCompatibility: false,
         systemOverlayStyle: SystemUiOverlayStyle(
           statusBarColor: Colors.transparent,
           statusBarIconBrightness: Brightness.light,
@@ -128,12 +133,12 @@ class _LocationState extends State<Location> {
         child: AnimatedCrossFade(
           firstChild: Container(
             height: double.maxFinite,
-            child: SearchBar<WorldTime>(
+            child: FlappySearch.SearchBar<WorldTime>(
               onSearch: search,
               suggestions: locations,
               scrollDirection: Axis.vertical,
-              onItemFound: (WorldTime found, int index) => LocationItem(
-                worldTime: found,
+              onItemFound: (WorldTime? found, int index) => LocationItem(
+                worldTime: found!,
                 index: index,
                 onTap: () => updateTime(found),
               ),

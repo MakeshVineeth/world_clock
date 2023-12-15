@@ -1,4 +1,5 @@
 import 'dart:io' show Platform, exit;
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_clock/commons.dart';
@@ -14,7 +15,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  TimeProvider _timeProvider;
+  late TimeProvider _timeProvider;
   final MethodChannel _androidAppRetain = MethodChannel("android_app_exit");
   final Duration duration = const Duration(milliseconds: 200);
 
@@ -94,7 +95,7 @@ class _HomeState extends State<Home> {
             Icons.more_vert,
             color: Colors.white,
           ),
-          onSelected: (value) => executeMenuItems(value),
+          onSelected: (int value) => executeMenuItems(value),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.miniEndTop,
       ),
@@ -159,7 +160,16 @@ class _HomeState extends State<Home> {
       );
 
   String getDynamicBg(TimeProvider timeProvider) {
-    if (timeProvider?.worldTime?.isDayTime == null) return 'day.gif';
-    return timeProvider.worldTime.isDayTime ? 'day.gif' : 'night.gif';
+    if (timeProvider.worldTime.isDayTime == null) {
+      return "";
+    }
+
+    bool? flag = timeProvider.worldTime.isDayTime;
+
+    if (flag!) {
+      return 'day.gif';
+    } else {
+      return 'night.gif';
+    }
   }
 }

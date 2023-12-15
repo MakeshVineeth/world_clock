@@ -1,11 +1,12 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_clock/locations_list/display_image.dart';
 import 'package:flutter_clock/services/data_methods.dart';
 import 'package:flutter_clock/services/time_provider.dart';
 import 'package:flutter_clock/services/worldtime.dart';
-import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 class DisplayDate extends StatefulWidget {
   @override
@@ -13,30 +14,30 @@ class DisplayDate extends StatefulWidget {
 }
 
 class _DisplayDateState extends State<DisplayDate> {
-  Timer timer;
-  int secondsLeft;
-  String flagUrl;
-  String timeString;
-  String place;
-  String dateString;
+  late Timer timer;
+  late int secondsLeft;
+  late String flagUrl;
+  late String timeString;
+  late String place;
+  late String dateString;
 
   @override
   void initState() {
     super.initState();
     final TimeProvider timeProvider = context.read<TimeProvider>();
-    setTheStates(timeProvider?.worldTime);
+    setTheStates(timeProvider.worldTime);
 
     timeProvider.addListener(() {
       // Cancel previous timers as data is changed.
-      timer?.cancel();
+      timer.cancel();
 
-      setTheStates(timeProvider?.worldTime);
+      setTheStates(timeProvider.worldTime);
 
       timer = Timer.periodic(
-        Duration(seconds: timeProvider?.worldTime?.secondsLeft ?? 10),
+        Duration(seconds: timeProvider.worldTime.secondsLeft ?? 10),
         (Timer t) async {
           bool status = await DataMethods().getNewTimeData(timeProvider);
-          if (status) setTheStates(timeProvider?.worldTime);
+          if (status) setTheStates(timeProvider.worldTime);
         },
       );
     });
@@ -45,16 +46,16 @@ class _DisplayDateState extends State<DisplayDate> {
   void setTheStates(WorldTime worldTime) {
     if (mounted)
       setState(() {
-        flagUrl = worldTime?.flag;
-        place = worldTime?.location;
-        timeString = worldTime?.time;
-        dateString = worldTime?.date;
+        flagUrl = worldTime.flag!;
+        place = worldTime.location!;
+        timeString = worldTime.time!;
+        dateString = worldTime.date!;
       });
   }
 
   @override
   void dispose() {
-    timer?.cancel();
+    timer.cancel();
     super.dispose();
   }
 
