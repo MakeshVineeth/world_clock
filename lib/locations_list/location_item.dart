@@ -18,9 +18,9 @@ class LocationItem extends StatelessWidget {
       child: ListTile(
         onTap: () => onTap(),
         shape: RoundedRectangleBorder(borderRadius: Commons.circleRadius),
-        leading: DisplayImage(url: worldTime.flag!),
+        leading: DisplayImage(url: worldTime.flag),
         title: Text(
-          worldTime.location!,
+          worldTime.location,
           overflow: TextOverflow.ellipsis,
           style: TextStyle(
             fontWeight: FontWeight.bold,

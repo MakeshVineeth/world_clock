@@ -40,17 +40,17 @@ class _LocationState extends State<Location> {
       if (mounted) setState(() => _workInProgress = true);
 
       final WorldTime instance = await DataMethods().getTime(
-        location: worldTime.location!,
-        flag: worldTime.flag!,
-        url: worldTime.url!,
+        location: worldTime.location,
+        flag: worldTime.flag,
+        url: worldTime.url,
       );
 
       timeProvider.change(instance);
 
       final prefs = await SharedPreferences.getInstance();
-      await prefs.setString('url', instance.url!);
-      await prefs.setString('location', instance.location!);
-      await prefs.setString('flag', instance.flag ?? '');
+      await prefs.setString('url', instance.url);
+      await prefs.setString('location', instance.location);
+      await prefs.setString('flag', instance.flag);
 
       Navigator.pop(context);
     } catch (_) {
@@ -76,7 +76,7 @@ class _LocationState extends State<Location> {
         String? flag = e['$listItem'].toString().toLowerCase();
         flag = 'icons/flags/png/$flag.png';
 
-        if (flag.contains('null')) flag = null;
+        if (flag.contains('null')) flag = '';
 
         listItem = listItem.replaceAll('[', '');
         listItem = listItem.replaceAll(' ', '');
@@ -89,11 +89,11 @@ class _LocationState extends State<Location> {
             location: countryName,
             flag: flag,
             date: '',
-            isDayTime: null,
+            isDayTime: true,
             time: '');
 
         locations.add(locationItem);
-        listOfLocations.list.add(locationItem.url!);
+        listOfLocations.list.add(locationItem.url);
 
         if (mounted) setState(() => _workInProgress = false);
       }

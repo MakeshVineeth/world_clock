@@ -108,12 +108,12 @@ class _HomeState extends State<Home> {
         changeLocation();
         break;
       case 2:
-        Commons.launchUrl(
+        Commons.launch(
             url:
                 'https://play.google.com/store/apps/details?id=com.makeshtech.clock');
         break;
       case 3:
-        Commons.launchUrl(url: 'https://github.com/MakeshVineeth/world_clock');
+        Commons.launch(url: 'https://github.com/MakeshVineeth/world_clock');
         break;
       case 4:
         displayAbout();
@@ -160,13 +160,9 @@ class _HomeState extends State<Home> {
       );
 
   String getDynamicBg(TimeProvider timeProvider) {
-    if (timeProvider.worldTime.isDayTime == null) {
-      return "";
-    }
+    bool flag = timeProvider.worldTime.isDayTime;
 
-    bool? flag = timeProvider.worldTime.isDayTime;
-
-    if (flag!) {
+    if (flag) {
       return 'day.gif';
     } else {
       return 'night.gif';

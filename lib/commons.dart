@@ -20,17 +20,14 @@ class Commons {
         ),
       );
 
-  static Future<void> launchUrl(
-      {required String url,
-      bool forceWebView = false,
-      bool enableJavaScript = false}) async {
+  static Future<void> launch(
+      {required String url, bool enableJS = false}) async {
     try {
-      String encoded = Uri.encodeFull(url);
+      Uri encoded = Uri.parse(url);
 
-      await launch(
+      await launchUrl(
         encoded,
-        forceWebView: forceWebView,
-        enableJavaScript: enableJavaScript,
+        webViewConfiguration: WebViewConfiguration(enableJavaScript: enableJS),
       );
     } catch (_) {}
   }

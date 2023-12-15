@@ -34,7 +34,7 @@ class _DisplayDateState extends State<DisplayDate> {
       setTheStates(timeProvider.worldTime);
 
       timer = Timer.periodic(
-        Duration(seconds: timeProvider.worldTime.secondsLeft ?? 10),
+        Duration(seconds: timeProvider.worldTime.secondsLeft),
         (Timer t) async {
           bool status = await DataMethods().getNewTimeData(timeProvider);
           if (status) setTheStates(timeProvider.worldTime);
@@ -46,10 +46,10 @@ class _DisplayDateState extends State<DisplayDate> {
   void setTheStates(WorldTime worldTime) {
     if (mounted)
       setState(() {
-        flagUrl = worldTime.flag!;
-        place = worldTime.location!;
-        timeString = worldTime.time!;
-        dateString = worldTime.date!;
+        flagUrl = worldTime.flag;
+        place = worldTime.location;
+        timeString = worldTime.time;
+        dateString = worldTime.date;
       });
   }
 
@@ -75,7 +75,7 @@ class _DisplayDateState extends State<DisplayDate> {
             SizedBox(width: 8.0),
             Flexible(
               child: Text(
-                place ?? '--',
+                place,
                 softWrap: true,
                 textAlign: TextAlign.center,
                 style: TextStyle(
@@ -95,7 +95,7 @@ class _DisplayDateState extends State<DisplayDate> {
         ),
         SizedBox(height: 5.0),
         Text(
-          timeString ?? '--:--',
+          timeString,
           style: GoogleFonts.aladin(
             textStyle: commonStyle.copyWith(
               fontSize: 50.0,
@@ -104,7 +104,7 @@ class _DisplayDateState extends State<DisplayDate> {
           ),
         ),
         Text(
-          dateString ?? '--',
+          dateString,
           style: commonStyle,
         ),
       ],

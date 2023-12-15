@@ -4,9 +4,7 @@ import 'package:transparent_image/transparent_image.dart';
 
 class DisplayImage extends StatelessWidget {
   final String url;
-
   const DisplayImage({required this.url});
-
   final double size = 25.0;
 
   @override
