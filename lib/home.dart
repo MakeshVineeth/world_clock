@@ -138,7 +138,7 @@ class _HomeState extends State<Home> {
             image: AssetImage('images/time_zone.png'),
           ),
         ),
-        applicationVersion: '2.0.2',
+        applicationVersion: '2.0.3',
         applicationLegalese:
             'An Internet based World Clock app made in Flutter. It can retrieve timezones using the WorldClassAPI.',
       );
