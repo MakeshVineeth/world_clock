@@ -10,7 +10,7 @@ class DisplayImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     try {
-      if (url != '') {
+      if (url.trim().isNotEmpty) {
         return OctoImage.fromSet(
           fit: BoxFit.cover,
           image: AssetImage(url, package: 'country_icons'),

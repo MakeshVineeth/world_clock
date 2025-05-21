@@ -7,15 +7,16 @@ import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DataMethods {
-  final Duration _timeOut = const Duration(seconds: 10);
-  final String httpStr = 'http://';
+  final Duration _timeOut = const Duration(seconds: 100);
+  final String httpStr = 'https://';
 
   Future<Response> getData(String urlStr) async {
     try {
       String fullUrl = Uri.encodeFull(httpStr + urlStr);
       Uri url = Uri.parse(fullUrl);
-      return await get(url).timeout(_timeOut,
-          onTimeout: () => Response("Error Timeout", 504));
+      return await get(
+        url,
+      ).timeout(_timeOut, onTimeout: () => Response("Error Timeout", 504));
     } catch (_) {
       return Response("Error retrieving data", 500);
     }
@@ -23,7 +24,7 @@ class DataMethods {
 
   Future<List> getList() async {
     try {
-      Response responseList = await getData('worldtimeapi.org/api/timezone');
+      Response responseList = await getData('timeapi.io/api/timezone/availabletimezones');
       List listData = jsonDecode(responseList.body);
 
       return listData;
@@ -32,31 +33,26 @@ class DataMethods {
     }
   }
 
-  Future<WorldTime> getTime(
-      {required String location,
-      required String url,
-      required String flag}) async {
+  Future<WorldTime> getTime({
+    required String location,
+    required String url,
+    required String flag,
+  }) async {
     try {
-      Response? response = await getData('worldtimeapi.org/api/timezone/$url');
-      Map e = jsonDecode(response.body);
-
-      String dumpTime = e['datetime'];
-      String offset = e['utc_offset'].substring(1);
-      String check = e['utc_offset'].substring(0, 1);
-      DateTime now = DateTime.parse(dumpTime);
-
-      int? hours = int.tryParse(offset.split(":")[0]);
-      int? min = int.tryParse(offset.split(":")[1]);
-
-      if (check.contains('-')) {
-        now = now.subtract(Duration(hours: hours!, minutes: min!));
-      } else {
-        now = now.add(Duration(hours: hours!, minutes: min!));
+      if (url.trim().isEmpty) {
+        throw Exception('URL is empty');
       }
 
+      Response? response = await getData(
+        'timeapi.io/api/time/current/zone?timeZone=$url',
+      );
+
+      Map e = jsonDecode(response.body);
+
+      String dumpTime = e['dateTime'];
+      DateTime now = DateTime.parse(dumpTime);
       DateFormat formatter = DateFormat('dd-MMM-yyyy');
       String date = formatter.format(now);
-
       bool isDayTime = now.hour > 6 && now.hour < 19 ? true : false;
       String time = DateFormat.jm().format(now);
       int secondsLeft = 60 - now.second;
@@ -72,20 +68,24 @@ class DataMethods {
       );
     } catch (_) {
       return WorldTime(
-          location: location,
-          url: url,
-          flag: flag,
-          date: '',
-          isDayTime: true,
-          time: '');
+        location: location,
+        url: url,
+        flag: flag,
+        date: '',
+        isDayTime: true,
+        time: '',
+      );
     }
   }
 
   Future<bool> getNewTimeData(TimeProvider timeProvider) async {
     try {
       final WorldTime old = timeProvider.worldTime;
-      final WorldTime newTime =
-          await getTime(location: old.location, url: old.url, flag: old.flag);
+      final WorldTime newTime = await getTime(
+        location: old.location,
+        url: old.url,
+        flag: old.flag,
+      );
 
       timeProvider.change(newTime);
       return true;
@@ -97,7 +97,7 @@ class DataMethods {
   Future<WorldTime> getDefaultClock() async {
     String defaultLocation = 'Asia, Kolkata';
     String defaultUrl = 'Asia/Kolkata';
-    String defaultFlag = 'icons/flags/png/in.png';
+    String defaultFlag = 'icons/flags/png100px/in.png';
 
     final prefs = await SharedPreferences.getInstance();
     String location = prefs.getString('location') ?? "";
@@ -117,11 +117,7 @@ class DataMethods {
       );
     }
 
-    instance = await getTime(
-      location: location,
-      url: url,
-      flag: flag,
-    );
+    instance = await getTime(location: location, url: url, flag: flag);
 
     return instance;
   }

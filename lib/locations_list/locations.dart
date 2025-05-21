@@ -87,7 +87,7 @@ class LocationState extends State<Location> {
         String listItem = item.toString();
 
         String? flag = e[listItem].toString().toLowerCase();
-        flag = 'icons/flags/png/$flag.png';
+        flag = 'icons/flags/png100px/$flag.png';
 
         if (flag.contains('null')) flag = '';
 
