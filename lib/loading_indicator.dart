@@ -4,7 +4,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 class LoadingIndicator extends StatelessWidget {
   final Color color;
 
-  const LoadingIndicator({this.color = Colors.blue});
+  const LoadingIndicator({super.key, this.color = Colors.blue});
 
   @override
   Widget build(BuildContext context) {

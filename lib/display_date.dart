@@ -9,11 +9,13 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class DisplayDate extends StatefulWidget {
+  const DisplayDate({super.key});
+
   @override
-  _DisplayDateState createState() => _DisplayDateState();
+  DisplayDateState createState() => DisplayDateState();
 }
 
-class _DisplayDateState extends State<DisplayDate> {
+class DisplayDateState extends State<DisplayDate> {
   Timer timer = Timer(Duration.zero, () {});
   int secondsLeft = 10;
   String flagUrl = '';
@@ -44,13 +46,14 @@ class _DisplayDateState extends State<DisplayDate> {
   }
 
   void setTheStates(WorldTime worldTime) {
-    if (mounted)
+    if (mounted) {
       setState(() {
         flagUrl = worldTime.flag;
         place = worldTime.location;
         timeString = worldTime.time;
         dateString = worldTime.date;
       });
+    }
   }
 
   @override

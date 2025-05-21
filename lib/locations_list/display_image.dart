@@ -4,13 +4,13 @@ import 'package:transparent_image/transparent_image.dart';
 
 class DisplayImage extends StatelessWidget {
   final String url;
-  const DisplayImage({required this.url});
+  const DisplayImage({super.key, required this.url});
   final double size = 25.0;
 
   @override
   Widget build(BuildContext context) {
     try {
-      if (url != '')
+      if (url != '') {
         return OctoImage.fromSet(
           fit: BoxFit.cover,
           image: AssetImage(url, package: 'country_icons'),
@@ -21,8 +21,9 @@ class DisplayImage extends StatelessWidget {
             text: Text(''),
           ),
         );
-      else
+      } else {
         return Image.memory(kTransparentImage);
+      }
     } catch (_) {
       return Image.memory(kTransparentImage);
     }

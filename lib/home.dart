@@ -10,11 +10,13 @@ import 'package:flutter_clock/services/time_provider.dart';
 import 'package:provider/provider.dart';
 
 class Home extends StatefulWidget {
+  const Home({super.key});
+
   @override
-  _HomeState createState() => _HomeState();
+  HomeState createState() => HomeState();
 }
 
-class _HomeState extends State<Home> {
+class HomeState extends State<Home> {
   late TimeProvider _timeProvider;
   final MethodChannel _androidAppRetain = MethodChannel("android_app_exit");
   final Duration duration = const Duration(milliseconds: 200);
@@ -28,7 +30,7 @@ class _HomeState extends State<Home> {
       decoration: BoxDecoration(
         image: DecorationImage(
           image: ResizeImage(
-            AssetImage('images/' + getDynamicBg(_timeProvider)),
+            AssetImage('images/${getDynamicBg(_timeProvider)}'),
             width: MediaQuery.of(context).size.width.round(),
             height: MediaQuery.of(context).size.height.round(),
           ),
@@ -43,7 +45,7 @@ class _HomeState extends State<Home> {
             child: SingleChildScrollView(
               physics: AlwaysScrollableScrollPhysics(
                   parent: BouncingScrollPhysics()),
-              child: Container(
+              child: SizedBox(
                 height: MediaQuery.of(context).size.height,
                 child: DisplayDate(),
               ),
@@ -119,11 +121,13 @@ class _HomeState extends State<Home> {
         displayAbout();
         break;
       case 5:
-        if (Platform.isAndroid)
+        if (Platform.isAndroid) {
           _androidAppRetain.invokeMethod("sendToBackground");
-        else if (!Platform.isIOS)
-          exit(
+        } else if (!Platform.isIOS)
+          {
+            exit(
               0); // Not allowed on IOS as it's against Apple Human Interface guidelines to exit the app programmatically.
+          }
         break;
     }
   }

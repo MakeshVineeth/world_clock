@@ -15,9 +15,9 @@ class DataMethods {
       String fullUrl = Uri.encodeFull(httpStr + urlStr);
       Uri url = Uri.parse(fullUrl);
       return await get(url).timeout(_timeOut,
-          onTimeout: () => new Response("Error Timeout", 504));
+          onTimeout: () => Response("Error Timeout", 504));
     } catch (_) {
-      return new Response("Error retrieving data", 500);
+      return Response("Error retrieving data", 500);
     }
   }
 
@@ -95,9 +95,9 @@ class DataMethods {
   }
 
   Future<WorldTime> getDefaultClock() async {
-    String default_location = 'Asia, Kolkata';
-    String default_url = 'Asia/Kolkata';
-    String default_flag = 'icons/flags/png/in.png';
+    String defaultLocation = 'Asia, Kolkata';
+    String defaultUrl = 'Asia/Kolkata';
+    String defaultFlag = 'icons/flags/png/in.png';
 
     final prefs = await SharedPreferences.getInstance();
     String location = prefs.getString('location') ?? "";
@@ -111,9 +111,9 @@ class DataMethods {
         url == "" ||
         flag.contains('https://www.countryflags.io')) {
       instance = await getTime(
-        location: default_location,
-        url: default_url,
-        flag: default_flag,
+        location: defaultLocation,
+        url: defaultUrl,
+        flag: defaultFlag,
       );
     }
 

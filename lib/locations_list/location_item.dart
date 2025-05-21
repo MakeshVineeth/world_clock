@@ -9,7 +9,7 @@ class LocationItem extends StatelessWidget {
   final Function onTap;
 
   const LocationItem(
-      {required this.worldTime, required this.index, required this.onTap});
+      {super.key, required this.worldTime, required this.index, required this.onTap});
 
   @override
   Widget build(BuildContext context) {

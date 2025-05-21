@@ -8,20 +8,23 @@ class Commons {
   static const Color bgColor = Colors.blue;
 
   static ThemeData getColorData(BuildContext context) => ThemeData(
-        primarySwatch: materialColor,
-        scaffoldBackgroundColor: Colors.white,
-        appBarTheme: AppBarTheme(
-          color: bgColor,
-          centerTitle: true,
-          systemOverlayStyle: SystemUiOverlayStyle(
-            statusBarColor: Colors.transparent,
-            statusBarIconBrightness: Brightness.light,
-          ),
-        ),
-      );
+    useMaterial3: true,
+    primarySwatch: materialColor,
+    scaffoldBackgroundColor: Colors.white,
+    appBarTheme: AppBarTheme(
+      color: bgColor,
+      centerTitle: true,
+      systemOverlayStyle: SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        statusBarIconBrightness: Brightness.light,
+      ),
+    ),
+  );
 
-  static Future<void> launch(
-      {required String url, bool enableJS = false}) async {
+  static Future<void> launch({
+    required String url,
+    bool enableJS = false,
+  }) async {
     try {
       Uri encoded = Uri.parse(url);
 

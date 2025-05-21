@@ -7,17 +7,19 @@ import 'package:flutter_clock/services/worldtime.dart';
 import 'package:provider/provider.dart';
 
 class Loader extends StatefulWidget {
+  const Loader({super.key});
+
   @override
-  _LoaderState createState() => _LoaderState();
+  LoaderState createState() => LoaderState();
 }
 
-class _LoaderState extends State<Loader> {
+class LoaderState extends State<Loader> {
   Widget _current = loadingIndicator();
   late TimeProvider timeProvider;
 
   void getTimeData() async {
-    WorldTime _worldTime = await DataMethods().getDefaultClock();
-    timeProvider = TimeProvider(worldTime: _worldTime);
+    WorldTime worldTime = await DataMethods().getDefaultClock();
+    timeProvider = TimeProvider(worldTime: worldTime);
     setState(() => _current = Home());
   }
 

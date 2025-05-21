@@ -1,6 +1,6 @@
 import 'dart:convert';
-
-import 'package:flappy_search_bar_ns/flappy_search_bar_ns.dart' as FlappySearch;
+import 'package:flappy_search_bar_ns/flappy_search_bar_ns.dart'
+    as flappy_search;
 import 'package:flappy_search_bar_ns/search_bar_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -15,23 +15,27 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Location extends StatefulWidget {
+  const Location({super.key});
+
   @override
-  _LocationState createState() => _LocationState();
+  LocationState createState() => LocationState();
 }
 
-class _LocationState extends State<Location> {
+class LocationState extends State<Location> {
   List<WorldTime> locations = [];
   Fuzzy<String> listOfLocations = Fuzzy([]);
   Map listData = {};
 
   TimeProvider timeProvider = TimeProvider(
-      worldTime: WorldTime(
-          location: '',
-          url: '',
-          flag: '',
-          date: '',
-          isDayTime: true,
-          time: ''));
+    worldTime: WorldTime(
+      location: '',
+      url: '',
+      flag: '',
+      date: '',
+      isDayTime: true,
+      time: '',
+    ),
+  );
 
   bool _workInProgress = true;
 
@@ -59,7 +63,9 @@ class _LocationState extends State<Location> {
       await prefs.setString('location', instance.location);
       await prefs.setString('flag', instance.flag);
 
-      Navigator.pop(context);
+      if (mounted) {
+        Navigator.pop(context);
+      }
     } catch (_) {
       if (mounted) setState(() => _workInProgress = false);
     }
@@ -80,7 +86,7 @@ class _LocationState extends State<Location> {
       for (var item in ins) {
         String listItem = item.toString();
 
-        String? flag = e['$listItem'].toString().toLowerCase();
+        String? flag = e[listItem].toString().toLowerCase();
         flag = 'icons/flags/png/$flag.png';
 
         if (flag.contains('null')) flag = '';
@@ -92,12 +98,13 @@ class _LocationState extends State<Location> {
         countryName = countryName.replaceAll('_', ' ');
 
         WorldTime locationItem = WorldTime(
-            url: listItem,
-            location: countryName,
-            flag: flag,
-            date: '',
-            isDayTime: true,
-            time: '');
+          url: listItem,
+          location: countryName,
+          flag: flag,
+          date: '',
+          isDayTime: true,
+          time: '',
+        );
 
         locations.add(locationItem);
         listOfLocations.list.add(locationItem.url);
@@ -138,9 +145,9 @@ class _LocationState extends State<Location> {
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
         child: AnimatedCrossFade(
-          firstChild: Container(
+          firstChild: SizedBox(
             height: double.maxFinite,
-            child: FlappySearch.SearchBar<WorldTime>(
+            child: flappy_search.SearchBar<WorldTime>(
               onSearch: search,
               suggestions: locations,
               scrollDirection: Axis.vertical,
@@ -157,43 +164,30 @@ class _LocationState extends State<Location> {
               onError: (_) => Center(
                 child: Text(
                   "Error",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: TextStyle(fontWeight: FontWeight.bold),
                 ),
               ),
               emptyWidget: Center(
                 child: Text(
                   "No Results",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: TextStyle(fontWeight: FontWeight.bold),
                 ),
               ),
               cancellationWidget: Text(
                 "Cancel",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontWeight: FontWeight.bold),
               ),
               icon: Padding(
                 padding: const EdgeInsets.symmetric(
                   vertical: 0.0,
                   horizontal: 5.0,
                 ),
-                child: Icon(
-                  Icons.search,
-                ),
+                child: Icon(Icons.search),
               ),
               hintText: "Search Timezones",
               searchBarPadding: EdgeInsets.all(15.0),
-              listPadding: EdgeInsets.symmetric(
-                vertical: 0.0,
-                horizontal: 5.0,
-              ),
-              textStyle: TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
+              listPadding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 5.0),
+              textStyle: TextStyle(fontWeight: FontWeight.bold),
               iconActiveColor: Colors.blue,
               loader: LoadingIndicator(),
               crossAxisCount: 1,
