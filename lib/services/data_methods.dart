@@ -24,7 +24,9 @@ class DataMethods {
 
   Future<List> getList() async {
     try {
-      Response responseList = await getData('timeapi.io/api/timezone/availabletimezones');
+      Response responseList = await getData(
+        'timeapi.io/api/timezone/availabletimezones',
+      );
       List listData = jsonDecode(responseList.body);
 
       return listData;
@@ -103,21 +105,18 @@ class DataMethods {
     String location = prefs.getString('location') ?? "";
     String url = prefs.getString('url') ?? "";
     String flag = prefs.getString('flag') ?? "";
+
     WorldTime instance;
 
-    // Also checking for country flags string as previously it uses online to get this flag icons.
-    if (flag == "" ||
-        location == "" ||
-        url == "" ||
-        flag.contains('https://www.countryflags.io')) {
+    if (flag.isEmpty || location.isEmpty || url.isEmpty) {
       instance = await getTime(
         location: defaultLocation,
         url: defaultUrl,
         flag: defaultFlag,
       );
+    } else {
+      instance = await getTime(location: location, url: url, flag: flag);
     }
-
-    instance = await getTime(location: location, url: url, flag: flag);
 
     return instance;
   }
