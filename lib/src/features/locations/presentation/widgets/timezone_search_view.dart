@@ -81,6 +81,7 @@ class _TimezoneSearchViewState extends State<TimezoneSearchView> {
 
   Widget _buildSearchBarRow() {
     final bool showCancel = widget.isSearchActive || widget.isSearching;
+    final TextStyle labelStyle = AppTypography.boldLabelStyle;
     return Padding(
       padding: const EdgeInsets.all(15.0),
       child: SizedBox(
@@ -105,7 +106,7 @@ class _TimezoneSearchViewState extends State<TimezoneSearchView> {
                         InputValidator.maxSearchQueryLength,
                       ),
                     ],
-                    style: AppTypography.boldLabelStyle,
+                    style: labelStyle,
                     decoration: InputDecoration(
                       icon: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 5.0),
@@ -116,8 +117,8 @@ class _TimezoneSearchViewState extends State<TimezoneSearchView> {
                       ),
                       border: InputBorder.none,
                       hintText: 'Search Timezones',
-                      hintStyle: const TextStyle(
-                        color: AppTheme.searchHintColor,
+                      hintStyle: AppTypography.searchHintStyle(
+                        AppTheme.searchHintColor,
                       ),
                     ),
                   ),
@@ -135,15 +136,15 @@ class _TimezoneSearchViewState extends State<TimezoneSearchView> {
                         opacity: showCancel ? 1.0 : 0.0,
                         curve: Curves.easeIn,
                         duration: const Duration(milliseconds: 150),
-                        child: const Padding(
-                          padding: EdgeInsets.symmetric(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
                             horizontal: 12.0,
                             vertical: 8.0,
                           ),
                           child: Text(
                             'Cancel',
                             maxLines: 1,
-                            style: AppTypography.boldLabelStyle,
+                            style: labelStyle,
                           ),
                         ),
                       ),
@@ -157,11 +158,12 @@ class _TimezoneSearchViewState extends State<TimezoneSearchView> {
   }
 
   Widget _buildBodyContent() {
+    final TextStyle labelStyle = AppTypography.boldLabelStyle;
     if (widget.hasError) {
-      return const Center(
+      return Center(
         child: Text(
           'Error',
-          style: AppTypography.boldLabelStyle,
+          style: labelStyle,
         ),
       );
     }
@@ -174,10 +176,10 @@ class _TimezoneSearchViewState extends State<TimezoneSearchView> {
     if (widget.searchResults.isNotEmpty) {
       return _buildLocationList(widget.searchResults);
     }
-    return const Center(
+    return Center(
       child: Text(
         'No Results',
-        style: AppTypography.boldLabelStyle,
+        style: labelStyle,
       ),
     );
   }

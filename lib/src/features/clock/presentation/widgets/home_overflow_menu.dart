@@ -21,27 +21,28 @@ class HomeOverflowMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final TextStyle itemStyle = AppTypography.menuItemStyle;
     return PopupMenuButton<HomeMenuAction>(
-      itemBuilder: (BuildContext context) => const <PopupMenuEntry<HomeMenuAction>>[
+      itemBuilder: (BuildContext context) => <PopupMenuEntry<HomeMenuAction>>[
         PopupMenuItem<HomeMenuAction>(
           value: HomeMenuAction.changeLocation,
-          child: Text('Change Location', style: AppTypography.menuItemStyle),
+          child: Text('Change Location', style: itemStyle),
         ),
         PopupMenuItem<HomeMenuAction>(
           value: HomeMenuAction.playStore,
-          child: Text('Play Store', style: AppTypography.menuItemStyle),
+          child: Text('Play Store', style: itemStyle),
         ),
         PopupMenuItem<HomeMenuAction>(
           value: HomeMenuAction.github,
-          child: Text('GitHub', style: AppTypography.menuItemStyle),
+          child: Text('GitHub', style: itemStyle),
         ),
         PopupMenuItem<HomeMenuAction>(
           value: HomeMenuAction.about,
-          child: Text('About', style: AppTypography.menuItemStyle),
+          child: Text('About', style: itemStyle),
         ),
         PopupMenuItem<HomeMenuAction>(
           value: HomeMenuAction.exit,
-          child: Text('Exit', style: AppTypography.menuItemStyle),
+          child: Text('Exit', style: itemStyle),
         ),
       ],
       offset: const Offset(0, 50),

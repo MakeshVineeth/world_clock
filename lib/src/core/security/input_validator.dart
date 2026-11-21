@@ -6,7 +6,10 @@ abstract final class InputValidator {
 
   static final RegExp _timeZonePattern = RegExp(r'^[A-Za-z0-9_+\-/]{1,64}$');
   static final RegExp _flagAssetPattern = RegExp(
-    r'^icons/flags/png(100|250)px/([a-z]{2})\.png$',
+    r'^icons/flags/png(100|250|1000)px/([a-z]{2})\.png$',
+  );
+  static final RegExp _svgFlagAssetPattern = RegExp(
+    r'^icons/flags/svg/([a-z]{2})\.svg$',
   );
   static final RegExp _legacyFlagAssetPattern = RegExp(
     r'^icons/flags/png/([a-z]{2})\.png$',
@@ -59,6 +62,13 @@ abstract final class InputValidator {
         return 'icons/flags/png100px/$code.png';
       }
     }
+    final RegExpMatch? svgMatch = _svgFlagAssetPattern.firstMatch(trimmed);
+    if (svgMatch != null) {
+      final String? code = svgMatch.group(1);
+      if (code != null) {
+        return 'icons/flags/png100px/$code.png';
+      }
+    }
     final RegExpMatch? legacyMatch = _legacyFlagAssetPattern.firstMatch(
       trimmed,
     );
@@ -81,6 +91,17 @@ abstract final class InputValidator {
       'icons/flags/png100px/',
       'icons/flags/png250px/',
     );
+  }
+
+  /// Resolves a validated flag path to its vector `svg` asset in `country_icons`.
+  static String toVectorFlagAssetPath(String rawPath) {
+    final String normalized = normalizeFlagAssetPath(rawPath);
+    if (normalized.isEmpty) {
+      return '';
+    }
+    return normalized
+        .replaceFirst('icons/flags/png100px/', 'icons/flags/svg/')
+        .replaceFirst(RegExp(r'\.png$'), '.svg');
   }
 
   /// Allows only external `https` (with non-empty host, no userinfo) or `market` URIs.

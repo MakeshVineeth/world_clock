@@ -1,7 +1,7 @@
 /// Application-wide constants for Flutter Clock.
 abstract final class AppConstants {
   static const String appName = 'Flutter Clock';
-  static const String appVersion = '3.1.0';
+  static const String appVersion = '3.2.0';
   static const String appLegalese =
       'An Internet based World Clock app made in Flutter. '
       'It can retrieve timezones using the WorldClassAPI.';

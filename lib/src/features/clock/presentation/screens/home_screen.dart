@@ -7,37 +7,22 @@ import 'package:flutter_clock/src/core/theme/app_theme.dart';
 import 'package:flutter_clock/src/features/clock/domain/services/app_lifecycle_service.dart';
 import 'package:flutter_clock/src/features/clock/presentation/controllers/clock_controller.dart';
 import 'package:flutter_clock/src/features/clock/presentation/widgets/clock_display.dart';
+import 'package:flutter_clock/src/features/clock/presentation/widgets/hd_scene_background.dart';
 import 'package:flutter_clock/src/features/clock/presentation/widgets/home_overflow_menu.dart';
 import 'package:flutter_clock/src/features/locations/presentation/screens/locations_screen.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 
-/// Primary clock screen with dynamic HD day/night GIF background and overflow menu.
-class HomeScreen extends StatefulWidget {
+/// Primary clock screen with 24-bit QHD+ day/night background and overflow menu.
+class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
   static const AssetImage _dayImage = AssetImage(
     AppConstants.dayBackgroundAsset,
   );
   static const AssetImage _nightImage = AssetImage(
     AppConstants.nightBackgroundAsset,
   );
-  bool _precached = false;
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    if (!_precached) {
-      _precached = true;
-      unawaited(precacheImage(_dayImage, context));
-      unawaited(precacheImage(_nightImage, context));
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,36 +43,40 @@ class _HomeScreenState extends State<HomeScreen> {
             filterQuality: FilterQuality.high,
           ),
         ),
-        child: Scaffold(
-          backgroundColor: Colors.transparent,
-          body: SafeArea(
-            child: LayoutBuilder(
-              builder: (BuildContext context, BoxConstraints constraints) {
-                return RefreshIndicator(
-                  onRefresh: () =>
-                      context.read<ClockController>().refreshCurrentClock(),
-                  child: SingleChildScrollView(
-                    physics: const AlwaysScrollableScrollPhysics(
-                      parent: BouncingScrollPhysics(),
-                    ),
-                    child: ConstrainedBox(
-                      constraints: BoxConstraints(
-                        minHeight: constraints.maxHeight,
+        child: HdSceneBackground(
+          isDayTime: isDayTime,
+          child: Scaffold(
+            backgroundColor: Colors.transparent,
+            body: SafeArea(
+              child: LayoutBuilder(
+                builder: (BuildContext context, BoxConstraints constraints) {
+                  return RefreshIndicator(
+                    onRefresh: () =>
+                        context.read<ClockController>().refreshCurrentClock(),
+                    child: SingleChildScrollView(
+                      physics: const AlwaysScrollableScrollPhysics(
+                        parent: BouncingScrollPhysics(),
                       ),
-                      child: const Center(
-                        child: ClockDisplay(),
+                      child: ConstrainedBox(
+                        constraints: BoxConstraints(
+                          minHeight: constraints.maxHeight,
+                        ),
+                        child: const Center(
+                          child: ClockDisplay(),
+                        ),
                       ),
                     ),
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             ),
+            floatingActionButton: HomeOverflowMenu(
+              onSelected: (HomeMenuAction action) =>
+                  unawaited(_handleMenuAction(context, action)),
+            ),
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.miniEndTop,
           ),
-          floatingActionButton: HomeOverflowMenu(
-            onSelected: (HomeMenuAction action) =>
-                unawaited(_handleMenuAction(context, action)),
-          ),
-          floatingActionButtonLocation: FloatingActionButtonLocation.miniEndTop,
         ),
       ),
     );
@@ -145,10 +134,11 @@ class _HomeScreenState extends State<HomeScreen> {
       context: context,
       applicationName: AppConstants.appName,
       applicationIcon: const Padding(
-        padding: EdgeInsets.all(8.0),
+        padding: EdgeInsets.all(6.0),
         child: Image(
-          width: 35.0,
-          filterQuality: FilterQuality.high,
+          width: 44.0,
+          height: 44.0,
+          filterQuality: FilterQuality.medium,
           isAntiAlias: true,
           image: AssetImage(AppConstants.appIconAsset),
         ),

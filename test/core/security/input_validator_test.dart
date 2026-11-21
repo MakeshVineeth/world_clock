@@ -58,6 +58,14 @@ void main() {
         InputValidator.toHdFlagAssetPath('icons/flags/png100px/in.png'),
         equals('icons/flags/png250px/in.png'),
       );
+      expect(
+        InputValidator.toVectorFlagAssetPath('icons/flags/png100px/in.png'),
+        equals('icons/flags/svg/in.svg'),
+      );
+      expect(
+        InputValidator.normalizeFlagAssetPath('icons/flags/svg/in.svg'),
+        equals('icons/flags/png100px/in.png'),
+      );
     });
 
     test('rejects invalid or traversal flag paths', () {

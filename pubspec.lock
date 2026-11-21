@@ -132,7 +132,7 @@ packages:
     source: sdk
     version: "0.0.0"
   flutter_svg:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: flutter_svg
       sha256: "4565a66f0a968f2e1ab4197854686990258aadab9572eb80a7655053a01dc302"
