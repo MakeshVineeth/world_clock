@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 520" width="920" height="520" role="img" aria-labelledby="title-context desc-context">
+  <title id="title-context">C4 System Context Diagram - Flutter Clock</title>
+  <desc id="desc-context">Shows the mobile user interacting with Flutter Clock and external systems timeapi.io, Google Fonts CDN, Play Store, and GitHub.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#475569"/>
+    </marker>
+    <style>
+      .bg { fill: #f8fafc; }
+      .heading { font: 700 18px system-ui, -apple-system, Segoe UI, sans-serif; fill: #0f172a; }
+      .sub { font: 400 12px system-ui, -apple-system, Segoe UI, sans-serif; fill: #475569; }
+      .box-title { font: 700 14px system-ui, -apple-system, Segoe UI, sans-serif; fill: #ffffff; }
+      .box-type { font: 600 11px system-ui, -apple-system, Segoe UI, sans-serif; fill: #e2e8f0; }
+      .box-desc { font: 400 11px system-ui, -apple-system, Segoe UI, sans-serif; fill: #f1f5f9; }
+      .edge { stroke: #475569; stroke-width: 1.8; fill: none; marker-end: url(#arrow); }
+      .edge-label { font: 600 11px system-ui, -apple-system, Segoe UI, sans-serif; fill: #1e293b; }
+      .label-bg { fill: #f8fafc; }
+    </style>
+  </defs>
+
+  <rect class="bg" width="920" height="520" rx="12"/>
+  <text x="28" y="36" class="heading">Flutter Clock — System Context (C4 Level 1)</text>
+  <text x="28" y="56" class="sub">Android 16 (API 36) World Clock application and its external integrations</text>
+
+  <!-- Person: Mobile User -->
+  <g transform="translate(360, 82)">
+    <circle cx="100" cy="24" r="22" fill="#08427b"/>
+    <rect x="0" y="42" width="200" height="92" rx="12" fill="#08427b"/>
+    <text x="100" y="68" text-anchor="middle" class="box-title">Mobile User</text>
+    <text x="100" y="84" text-anchor="middle" class="box-type">[Person]</text>
+    <text x="100" y="104" text-anchor="middle" class="box-desc">Views local time, day/night state,</text>
+    <text x="100" y="120" text-anchor="middle" class="box-desc">and picks global IANA timezones</text>
+  </g>
+
+  <!-- Software System: Flutter Clock -->
+  <g transform="translate(320, 260)">
+    <rect width="280" height="106" rx="10" fill="#1168bd" stroke="#0b4f94" stroke-width="2"/>
+    <text x="140" y="28" text-anchor="middle" class="box-title">Flutter Clock</text>
+    <text x="140" y="45" text-anchor="middle" class="box-type">[Software System — Android App]</text>
+    <text x="140" y="68" text-anchor="middle" class="box-desc">Displays dynamic world time, date,</text>
+    <text x="140" y="84" text-anchor="middle" class="box-desc">country flags, and day/night animations</text>
+  </g>
+
+  <!-- External System: timeapi.io -->
+  <g transform="translate(36, 392)">
+    <rect width="240" height="96" rx="10" fill="#64748b"/>
+    <text x="120" y="26" text-anchor="middle" class="box-title">timeapi.io API</text>
+    <text x="120" y="43" text-anchor="middle" class="box-type">[External System]</text>
+    <text x="120" y="65" text-anchor="middle" class="box-desc">Provides available IANA zones</text>
+    <text x="120" y="81" text-anchor="middle" class="box-desc">and current zone date/time JSON</text>
+  </g>
+
+  <!-- External System: Google Fonts -->
+  <g transform="translate(340, 392)">
+    <rect width="240" height="96" rx="10" fill="#64748b"/>
+    <text x="120" y="26" text-anchor="middle" class="box-title">Google Fonts CDN</text>
+    <text x="120" y="43" text-anchor="middle" class="box-type">[External System]</text>
+    <text x="120" y="65" text-anchor="middle" class="box-desc">Serves Aladin display typeface</text>
+    <text x="120" y="81" text-anchor="middle" class="box-desc">with local disk caching</text>
+  </g>
+
+  <!-- External System: Play Store & GitHub -->
+  <g transform="translate(644, 392)">
+    <rect width="240" height="96" rx="10" fill="#64748b"/>
+    <text x="120" y="26" text-anchor="middle" class="box-title">Google Play &amp; GitHub</text>
+    <text x="120" y="43" text-anchor="middle" class="box-type">[External Systems]</text>
+    <text x="120" y="65" text-anchor="middle" class="box-desc">App store listing and open-source</text>
+    <text x="120" y="81" text-anchor="middle" class="box-desc">repository opened via browser</text>
+  </g>
+
+  <!-- Edges -->
+  <path class="edge" d="M 460 216 L 460 256"/>
+  <rect class="label-bg" x="394" y="224" width="132" height="16"/>
+  <text x="460" y="236" text-anchor="middle" class="edge-label">Interacts with [Touch]</text>
+
+  <path class="edge" d="M 350 366 L 200 390"/>
+  <rect class="label-bg" x="195" y="366" width="144" height="16"/>
+  <text x="267" y="378" text-anchor="middle" class="edge-label">Queries time [HTTPS/JSON]</text>
+
+  <path class="edge" d="M 460 366 L 460 388"/>
+  <rect class="label-bg" x="389" y="367" width="142" height="16"/>
+  <text x="460" y="379" text-anchor="middle" class="edge-label">Fetches font [HTTPS]</text>
+
+  <path class="edge" d="M 570 366 L 720 390"/>
+  <rect class="label-bg" x="582" y="366" width="150" height="16"/>
+  <text x="657" y="378" text-anchor="middle" class="edge-label">Opens links [Validated HTTPS]</text>
+</svg>

@@ -8,6 +8,7 @@
 .buildlog/
 .history
 .svn/
+device_*.png
 
 # IntelliJ related
 *.iml
@@ -15,9 +16,7 @@
 *.iws
 .idea/
 
-# The .vscode folder contains launch configuration and tasks you configure in
-# VS Code which you may wish to be included in version control, so this line
-# is commented out by default.
+# VS Code (optional)
 #.vscode/
 
 # Flutter/Dart/Pub related
@@ -31,13 +30,22 @@
 .pub/
 /build/
 
+# Android signing & local config
+*.jks
+*.keystore
+*.p12
+*.key
+key.properties
+local.properties
+android/key.properties
+android/local.properties
+
 # Web related
 lib/generated_plugin_registrant.dart
 
-# Symbolication related
+# Symbolication & obfuscation related
+*.symbols
 app.*.symbols
-
-# Obfuscation related
 app.*.map.json
 
 # Exceptions to above rules.
