@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:math' as math;
 
 import 'package:flutter/services.dart';
 import 'package:flutter_clock/src/core/constants/app_constants.dart';
@@ -13,9 +12,32 @@ import 'package:flutter_clock/src/features/locations/presentation/screens/locati
 import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 
-/// Primary clock screen with dynamic day/night GIF background and overflow menu.
-class HomeScreen extends StatelessWidget {
+/// Primary clock screen with dynamic HD day/night GIF background and overflow menu.
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  static const AssetImage _dayImage = AssetImage(
+    AppConstants.dayBackgroundAsset,
+  );
+  static const AssetImage _nightImage = AssetImage(
+    AppConstants.nightBackgroundAsset,
+  );
+  bool _precached = false;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!_precached) {
+      _precached = true;
+      unawaited(precacheImage(_dayImage, context));
+      unawaited(precacheImage(_nightImage, context));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,11 +45,7 @@ class HomeScreen extends StatelessWidget {
       (ClockController controller) => controller.currentClock.isDayTime,
     );
     final Size screenSize = MediaQuery.sizeOf(context);
-    final int targetWidth = math.max(1, screenSize.width.round());
-    final int targetHeight = math.max(1, screenSize.height.round());
-    final String backgroundAsset = isDayTime
-        ? AppConstants.dayBackgroundAsset
-        : AppConstants.nightBackgroundAsset;
+    final AssetImage backgroundAsset = isDayTime ? _dayImage : _nightImage;
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: AppTheme.homeOverlayStyle,
@@ -35,12 +53,9 @@ class HomeScreen extends StatelessWidget {
         height: screenSize.height,
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: ResizeImage(
-              AssetImage(backgroundAsset),
-              width: targetWidth,
-              height: targetHeight,
-            ),
+            image: backgroundAsset,
             fit: BoxFit.cover,
+            filterQuality: FilterQuality.high,
           ),
         ),
         child: Scaffold(
@@ -133,6 +148,8 @@ class HomeScreen extends StatelessWidget {
         padding: EdgeInsets.all(8.0),
         child: Image(
           width: 35.0,
+          filterQuality: FilterQuality.high,
+          isAntiAlias: true,
           image: AssetImage(AppConstants.appIconAsset),
         ),
       ),

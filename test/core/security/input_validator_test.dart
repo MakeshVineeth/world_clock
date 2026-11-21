@@ -54,6 +54,10 @@ void main() {
         InputValidator.normalizeFlagAssetPath('icons/flags/png/us.png'),
         equals('icons/flags/png100px/us.png'),
       );
+      expect(
+        InputValidator.toHdFlagAssetPath('icons/flags/png100px/in.png'),
+        equals('icons/flags/png250px/in.png'),
+      );
     });
 
     test('rejects invalid or traversal flag paths', () {

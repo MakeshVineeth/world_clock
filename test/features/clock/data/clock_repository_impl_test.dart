@@ -195,5 +195,31 @@ void main() {
       expect(result.isDayTime, isTrue);
       expect(result.location, equals('Asia, Kolkata'));
     });
+
+    test('resolves time instantly offline when preferLocalTimezone is true', () async {
+      bool networkCalled = false;
+      final MockClient mockClient = MockClient((_) async {
+        networkCalled = true;
+        return http.Response('Error', 502);
+      });
+      final TimeApiClient apiClient = TimeApiClient(client: mockClient);
+      addTearDown(apiClient.close);
+
+      final ClockRepositoryImpl repository = ClockRepositoryImpl(
+        apiClient: apiClient,
+        storage: _InMemoryStorage(),
+        preferLocalTimezone: true,
+      );
+
+      final WorldTime result = await repository.fetchCurrentTime(
+        location: 'Asia, Kolkata',
+        url: 'Asia/Kolkata',
+        flag: 'icons/flags/png100px/in.png',
+      );
+      expect(networkCalled, isFalse);
+      expect(result.time, isNotEmpty);
+      expect(result.date, isNotEmpty);
+      expect(result.location, equals('Asia, Kolkata'));
+    });
   });
 }

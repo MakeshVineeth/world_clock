@@ -74,7 +74,6 @@ class ClockController extends ChangeNotifier {
       url: url,
       flag: flag,
     );
-    await _repository.saveSelectedClock(updated);
     if (_isDisposed) {
       return;
     }
@@ -83,6 +82,7 @@ class ClockController extends ChangeNotifier {
     _isInitialized = true;
     _scheduleNextRefresh();
     notifyListeners();
+    await _repository.saveSelectedClock(updated);
   }
 
   void _scheduleNextRefresh() {

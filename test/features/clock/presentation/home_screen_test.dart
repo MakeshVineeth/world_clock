@@ -161,8 +161,7 @@ void main() {
             .first,
       );
       final BoxDecoration decoration = bgContainer.decoration! as BoxDecoration;
-      final ResizeImage resizeImage = decoration.image!.image as ResizeImage;
-      final AssetImage dayAsset = resizeImage.imageProvider as AssetImage;
+      final AssetImage dayAsset = decoration.image!.image as AssetImage;
       expect(dayAsset.assetName, equals(AppConstants.dayBackgroundAsset));
 
       // Pull to refresh switches to night background & updated time.
@@ -186,9 +185,7 @@ void main() {
       );
       final BoxDecoration nightDecoration =
           nightContainer.decoration! as BoxDecoration;
-      final ResizeImage nightResize =
-          nightDecoration.image!.image as ResizeImage;
-      final AssetImage nightAsset = nightResize.imageProvider as AssetImage;
+      final AssetImage nightAsset = nightDecoration.image!.image as AssetImage;
       expect(nightAsset.assetName, equals(AppConstants.nightBackgroundAsset));
     });
 

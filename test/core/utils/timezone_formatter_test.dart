@@ -48,5 +48,34 @@ void main() {
       expect(TimezoneFormatter.flagAssetForCountryCode('null'), isEmpty);
       expect(TimezoneFormatter.flagAssetForCountryCode('invalid'), isEmpty);
     });
+
+    test('resolves IANA aliases and sub-regions to ISO country codes', () {
+      const Map<String, String> baseMap = <String, String>{
+        'Asia/Kolkata': 'IN',
+      };
+      expect(
+        TimezoneFormatter.resolveCountryCode('Asia/Kolkata', baseMap),
+        equals('IN'),
+      );
+      expect(
+        TimezoneFormatter.resolveCountryCode('Asia/Calcutta', baseMap),
+        equals('IN'),
+      );
+      expect(
+        TimezoneFormatter.resolveCountryCode(
+          'America/Indiana/Indianapolis',
+          baseMap,
+        ),
+        equals('US'),
+      );
+      expect(
+        TimezoneFormatter.resolveCountryCode('Europe/Kyiv', baseMap),
+        equals('UA'),
+      );
+      expect(
+        TimezoneFormatter.resolveCountryCode('Canada/Pacific', baseMap),
+        equals('CA'),
+      );
+    });
   });
 }

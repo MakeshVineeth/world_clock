@@ -3,18 +3,24 @@ import 'package:flutter_clock/src/core/constants/storage_keys.dart';
 import 'package:flutter_clock/src/core/security/input_validator.dart';
 import 'package:flutter_clock/src/core/storage/key_value_storage.dart';
 import 'package:flutter_clock/src/core/utils/timezone_formatter.dart';
+import 'package:flutter_clock/src/features/clock/data/datasources/local_timezone_datasource.dart';
 import 'package:flutter_clock/src/features/clock/data/datasources/time_api_client.dart';
 import 'package:flutter_clock/src/features/clock/domain/entities/world_time.dart';
 import 'package:flutter_clock/src/features/clock/domain/repositories/clock_repository.dart';
 
-/// Repository implementation combining HTTPS API calls and local preferences.
+/// Repository implementation combining instant local IANA resolution, HTTPS API, and preferences.
 class ClockRepositoryImpl implements ClockRepository {
   final TimeApiClient _apiClient;
   final KeyValueStorage _storage;
+  final LocalTimezoneDataSource _localTimezoneSource;
+  final bool _preferLocalTimezone;
 
   ClockRepositoryImpl({
     required this._apiClient,
     required this._storage,
+    this._localTimezoneSource =
+        const LocalTimezoneDataSource(),
+    this._preferLocalTimezone = false,
   });
 
   @override
@@ -25,9 +31,7 @@ class ClockRepositoryImpl implements ClockRepository {
   }) async {
     final String safeFlag = InputValidator.normalizeFlagAssetPath(flag);
     final String safeUrl = url.trim();
-    final DateTime? currentDateTime = await _apiClient.fetchCurrentDateTime(
-      safeUrl,
-    );
+    final DateTime? currentDateTime = await _resolveDateTime(safeUrl);
 
     if (currentDateTime == null) {
       return WorldTime(
@@ -53,16 +57,27 @@ class ClockRepositoryImpl implements ClockRepository {
     );
   }
 
+  Future<DateTime?> _resolveDateTime(String safeUrl) async {
+    if (_preferLocalTimezone) {
+      final DateTime? localNow = _localTimezoneSource.nowInTimeZone(safeUrl);
+      if (localNow != null) {
+        return localNow;
+      }
+    }
+    return _apiClient.fetchCurrentDateTime(safeUrl);
+  }
+
   @override
   Future<WorldTime> loadDefaultOrSavedClock() async {
-    final String savedLocation =
-        (await _storage.getString(StorageKeys.selectedLocationName))?.trim() ??
-        '';
-    final String savedUrl =
-        (await _storage.getString(StorageKeys.selectedTimeZoneUrl))?.trim() ??
-        '';
-    final String savedFlagRaw =
-        (await _storage.getString(StorageKeys.selectedFlagAsset)) ?? '';
+    final List<String?> savedValues = await Future.wait<String?>(<Future<String?>>[
+      _storage.getString(StorageKeys.selectedLocationName),
+      _storage.getString(StorageKeys.selectedTimeZoneUrl),
+      _storage.getString(StorageKeys.selectedFlagAsset),
+    ]);
+
+    final String savedLocation = savedValues[0]?.trim() ?? '';
+    final String savedUrl = savedValues[1]?.trim() ?? '';
+    final String savedFlagRaw = savedValues[2] ?? '';
     final String savedFlag = InputValidator.normalizeFlagAssetPath(
       savedFlagRaw,
     );
@@ -94,14 +109,13 @@ class ClockRepositoryImpl implements ClockRepository {
     final String safeFlag = InputValidator.normalizeFlagAssetPath(
       worldTime.flag,
     );
-    await _storage.setString(
-      StorageKeys.selectedTimeZoneUrl,
-      worldTime.url.trim(),
-    );
-    await _storage.setString(
-      StorageKeys.selectedLocationName,
-      worldTime.location.trim(),
-    );
-    await _storage.setString(StorageKeys.selectedFlagAsset, safeFlag);
+    await Future.wait<void>(<Future<void>>[
+      _storage.setString(StorageKeys.selectedTimeZoneUrl, worldTime.url.trim()),
+      _storage.setString(
+        StorageKeys.selectedLocationName,
+        worldTime.location.trim(),
+      ),
+      _storage.setString(StorageKeys.selectedFlagAsset, safeFlag),
+    ]);
   }
 }

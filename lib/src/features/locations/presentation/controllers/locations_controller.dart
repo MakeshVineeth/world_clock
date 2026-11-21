@@ -7,7 +7,7 @@ import 'package:flutter_clock/src/features/locations/domain/entities/timezone_lo
 import 'package:flutter_clock/src/features/locations/domain/repositories/location_repository.dart';
 import 'package:flutter_clock/src/features/locations/domain/services/timezone_search_service.dart';
 
-/// Controller managing timezone list loading, debounced search, and selection state.
+/// Controller managing timezone list loading, search, and selection state.
 class LocationsController extends ChangeNotifier {
   final LocationRepository _repository;
   final TimezoneSearchService _searchService;
@@ -44,8 +44,10 @@ class LocationsController extends ChangeNotifier {
     if (_isDisposed) {
       return;
     }
-    _isLoading = true;
-    notifyListeners();
+    if (_locations.isEmpty) {
+      _isLoading = true;
+      notifyListeners();
+    }
 
     try {
       final List<TimezoneLocation> loaded = await _repository
@@ -76,6 +78,11 @@ class LocationsController extends ChangeNotifier {
       _isSearching = false;
       _hasSearchError = false;
       notifyListeners();
+      return;
+    }
+
+    if (_debounceDuration == Duration.zero) {
+      _executeSearch(sanitized);
       return;
     }
 

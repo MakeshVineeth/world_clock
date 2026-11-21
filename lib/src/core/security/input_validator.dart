@@ -6,7 +6,7 @@ abstract final class InputValidator {
 
   static final RegExp _timeZonePattern = RegExp(r'^[A-Za-z0-9_+\-/]{1,64}$');
   static final RegExp _flagAssetPattern = RegExp(
-    r'^icons/flags/png100px/[a-z]{2}\.png$',
+    r'^icons/flags/png(100|250)px/([a-z]{2})\.png$',
   );
   static final RegExp _legacyFlagAssetPattern = RegExp(
     r'^icons/flags/png/([a-z]{2})\.png$',
@@ -52,8 +52,12 @@ abstract final class InputValidator {
     if (trimmed.isEmpty || trimmed.contains('..')) {
       return '';
     }
-    if (_flagAssetPattern.hasMatch(trimmed)) {
-      return trimmed;
+    final RegExpMatch? directMatch = _flagAssetPattern.firstMatch(trimmed);
+    if (directMatch != null) {
+      final String? code = directMatch.group(2);
+      if (code != null) {
+        return 'icons/flags/png100px/$code.png';
+      }
     }
     final RegExpMatch? legacyMatch = _legacyFlagAssetPattern.firstMatch(
       trimmed,
@@ -65,6 +69,18 @@ abstract final class InputValidator {
       }
     }
     return '';
+  }
+
+  /// Resolves a validated flag path to its high-definition `png250px` asset.
+  static String toHdFlagAssetPath(String rawPath) {
+    final String normalized = normalizeFlagAssetPath(rawPath);
+    if (normalized.isEmpty) {
+      return '';
+    }
+    return normalized.replaceFirst(
+      'icons/flags/png100px/',
+      'icons/flags/png250px/',
+    );
   }
 
   /// Allows only external `https` (with non-empty host, no userinfo) or `market` URIs.

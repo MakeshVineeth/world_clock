@@ -15,7 +15,7 @@ abstract final class AppConstants {
   static const String availableTimeZonesPath =
       '/api/timezone/availabletimezones';
   static const String currentTimePath = '/api/time/current/zone';
-  static const Duration apiTimeout = Duration(seconds: 15);
+  static const Duration apiTimeout = Duration(seconds: 4);
 
   static const String defaultLocation = 'Asia, Kolkata';
   static const String defaultTimeZoneId = 'Asia/Kolkata';
@@ -30,9 +30,9 @@ abstract final class AppConstants {
   static const String exitMethodName = 'sendToBackground';
 
   static const Duration routeFadeDuration = Duration(milliseconds: 200);
-  static const Duration loaderSwitchDuration = Duration(milliseconds: 500);
+  static const Duration loaderSwitchDuration = Duration(milliseconds: 250);
   static const Duration locationsCrossFadeDuration = Duration(
-    milliseconds: 400,
+    milliseconds: 200,
   );
-  static const Duration searchDebounceDuration = Duration(milliseconds: 300);
+  static const Duration searchDebounceDuration = Duration.zero;
 }

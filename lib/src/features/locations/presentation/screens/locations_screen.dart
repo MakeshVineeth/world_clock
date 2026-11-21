@@ -46,6 +46,8 @@ class _LocationsView extends StatefulWidget {
 }
 
 class _LocationsViewState extends State<_LocationsView> {
+  bool _isProcessingSelection = false;
+
   @override
   void initState() {
     super.initState();
@@ -60,11 +62,12 @@ class _LocationsViewState extends State<_LocationsView> {
   }
 
   Future<void> _handleLocationSelected(TimezoneLocation location) async {
-    final LocationsController locationsController = context
-        .read<LocationsController>();
+    if (_isProcessingSelection) {
+      return;
+    }
+    _isProcessingSelection = true;
     final ClockController clockController = context.read<ClockController>();
 
-    locationsController.setSelecting(true);
     try {
       await clockController.selectTimezone(
         location: location.displayName,
@@ -74,10 +77,8 @@ class _LocationsViewState extends State<_LocationsView> {
       if (mounted) {
         Navigator.of(context).pop();
       }
-    } catch (_) {
-      if (mounted) {
-        locationsController.setSelecting(false);
-      }
+    } finally {
+      _isProcessingSelection = false;
     }
   }
 

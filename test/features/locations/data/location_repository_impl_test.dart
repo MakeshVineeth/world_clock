@@ -67,5 +67,33 @@ void main() {
 
       expect(await repository.fetchAvailableLocations(), isEmpty);
     });
+
+    test('loads bundled country-backed locations with 100% flags when preferBundledLocations is true', () async {
+      bool networkCalled = false;
+      final MockClient mockClient = MockClient((_) async {
+        networkCalled = true;
+        return http.Response('502 Bad Gateway', 502);
+      });
+      final TimeApiClient apiClient = TimeApiClient(client: mockClient);
+      addTearDown(apiClient.close);
+
+      final LocationRepositoryImpl repository = LocationRepositoryImpl(
+        apiClient: apiClient,
+        countryFlagSource: _FakeCountryFlagSource(<String, String>{
+          'Asia/Kolkata': 'IN',
+          'America/New_York': 'US',
+        }),
+        preferBundledLocations: true,
+      );
+
+      final List<TimezoneLocation> locations = await repository
+          .fetchAvailableLocations();
+      expect(networkCalled, isFalse);
+      expect(locations, hasLength(2));
+      expect(
+        locations.every((TimezoneLocation l) => l.flagAssetPath.isNotEmpty),
+        isTrue,
+      );
+    });
   });
 }

@@ -134,7 +134,7 @@ class _TimezoneSearchViewState extends State<TimezoneSearchView> {
                       child: AnimatedOpacity(
                         opacity: showCancel ? 1.0 : 0.0,
                         curve: Curves.easeIn,
-                        duration: const Duration(milliseconds: 1000),
+                        duration: const Duration(milliseconds: 150),
                         child: const Padding(
                           padding: EdgeInsets.symmetric(
                             horizontal: 12.0,

@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter_clock/src/core/constants/app_constants.dart';
 import 'package:flutter_clock/src/core/security/external_url_launcher.dart';
 import 'package:flutter_clock/src/core/storage/key_value_storage.dart';
 import 'package:flutter_clock/src/core/theme/app_theme.dart';
+import 'package:flutter_clock/src/features/clock/data/datasources/local_timezone_datasource.dart';
 import 'package:flutter_clock/src/features/clock/data/datasources/time_api_client.dart';
 import 'package:flutter_clock/src/features/clock/data/repositories/clock_repository_impl.dart';
 import 'package:flutter_clock/src/features/clock/data/services/app_lifecycle_service.dart';
@@ -36,6 +39,8 @@ class WorldClockApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    LocalTimezoneDataSource.ensureInitialized();
+
     return MultiProvider(
       providers: <SingleChildWidget>[
         Provider<TimeApiClient>(
@@ -60,15 +65,22 @@ class WorldClockApp extends StatelessWidget {
               ClockRepositoryImpl(
                 apiClient: context.read<TimeApiClient>(),
                 storage: context.read<KeyValueStorage>(),
+                preferLocalTimezone: true,
               ),
         ),
         Provider<LocationRepository>(
-          create: (BuildContext context) =>
-              locationRepository ??
-              LocationRepositoryImpl(
-                apiClient: context.read<TimeApiClient>(),
-                countryFlagSource: context.read<CountryFlagAssetSource>(),
-              ),
+          lazy: false,
+          create: (BuildContext context) {
+            final LocationRepository repo =
+                locationRepository ??
+                LocationRepositoryImpl(
+                  apiClient: context.read<TimeApiClient>(),
+                  countryFlagSource: context.read<CountryFlagAssetSource>(),
+                  preferBundledLocations: true,
+                );
+            unawaited(repo.fetchAvailableLocations());
+            return repo;
+          },
         ),
         ChangeNotifierProvider<ClockController>(
           create: (BuildContext context) => ClockController(

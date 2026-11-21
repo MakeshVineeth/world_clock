@@ -1,7 +1,7 @@
 import 'package:flutter_clock/src/core/security/input_validator.dart';
 import 'package:material_ui/material_ui.dart';
 
-/// Circular country flag avatar implemented natively in Flutter.
+/// Circular HD country flag avatar implemented natively in Flutter.
 class FlagAvatar extends StatelessWidget {
   final String assetPath;
   final double size;
@@ -14,8 +14,8 @@ class FlagAvatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String validPath = InputValidator.normalizeFlagAssetPath(assetPath);
-    if (validPath.isEmpty) {
+    final String hdPath = InputValidator.toHdFlagAssetPath(assetPath);
+    if (hdPath.isEmpty) {
       return const SizedBox.square(dimension: 1.0);
     }
 
@@ -23,11 +23,14 @@ class FlagAvatar extends StatelessWidget {
       dimension: size,
       child: ClipOval(
         child: Image.asset(
-          validPath,
+          hdPath,
           package: 'country_icons',
           width: size,
           height: size,
           fit: BoxFit.cover,
+          filterQuality: FilterQuality.high,
+          isAntiAlias: true,
+          gaplessPlayback: true,
           errorBuilder: (_, _, _) => SizedBox.square(dimension: size),
         ),
       ),
