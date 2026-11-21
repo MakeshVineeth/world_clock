@@ -94,8 +94,17 @@ class ClockRepositoryImpl implements ClockRepository {
       );
     }
 
+    final String? flagCountryCode =
+        TimezoneFormatter.countryCodeFromFlagAssetPath(savedFlag);
+    final String normalizedSavedLocation = flagCountryCode != null
+        ? TimezoneFormatter.formatDisplayLocation(
+            savedUrl,
+            countryCode: flagCountryCode,
+          )
+        : savedLocation;
+
     return fetchCurrentTime(
-      location: savedLocation,
+      location: normalizedSavedLocation,
       url: savedUrl,
       flag: savedFlag,
     );

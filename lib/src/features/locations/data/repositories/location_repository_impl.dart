@@ -61,7 +61,10 @@ class LocationRepositoryImpl implements LocationRepository {
       locations.add(
         TimezoneLocation(
           timeZoneId: zoneId,
-          displayName: TimezoneFormatter.formatDisplayLocation(zoneId),
+          displayName: TimezoneFormatter.formatDisplayLocation(
+            zoneId,
+            countryCode: resolvedCode,
+          ),
           flagAssetPath: TimezoneFormatter.flagAssetForCountryCode(
             resolvedCode,
           ),
@@ -69,6 +72,7 @@ class LocationRepositoryImpl implements LocationRepository {
       );
     }
 
+    locations.sort(_compareByDisplayName);
     _cachedLocations = List<TimezoneLocation>.unmodifiable(locations);
     return _cachedLocations!;
   }
@@ -76,7 +80,7 @@ class LocationRepositoryImpl implements LocationRepository {
   List<TimezoneLocation> _buildFromBundledCountryCodes(
     Map<String, String> countryCodes,
   ) {
-    final List<String> sortedZones = countryCodes.keys.toList()..sort();
+    final List<String> sortedZones = countryCodes.keys.toList();
     final List<TimezoneLocation> locations = <TimezoneLocation>[];
 
     for (final String rawId in sortedZones) {
@@ -84,8 +88,12 @@ class LocationRepositoryImpl implements LocationRepository {
       if (!InputValidator.isValidTimeZoneId(zoneId)) {
         continue;
       }
+      final String? resolvedCode = TimezoneFormatter.resolveCountryCode(
+        zoneId,
+        countryCodes,
+      );
       final String flagPath = TimezoneFormatter.flagAssetForCountryCode(
-        TimezoneFormatter.resolveCountryCode(zoneId, countryCodes),
+        resolvedCode,
       );
       if (flagPath.isEmpty) {
         continue;
@@ -93,11 +101,19 @@ class LocationRepositoryImpl implements LocationRepository {
       locations.add(
         TimezoneLocation(
           timeZoneId: zoneId,
-          displayName: TimezoneFormatter.formatDisplayLocation(zoneId),
+          displayName: TimezoneFormatter.formatDisplayLocation(
+            zoneId,
+            countryCode: resolvedCode,
+          ),
           flagAssetPath: flagPath,
         ),
       );
     }
+    locations.sort(_compareByDisplayName);
     return locations;
+  }
+
+  static int _compareByDisplayName(TimezoneLocation a, TimezoneLocation b) {
+    return a.displayName.compareTo(b.displayName);
   }
 }

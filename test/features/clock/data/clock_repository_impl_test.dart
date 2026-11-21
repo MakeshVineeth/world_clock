@@ -73,6 +73,7 @@ void main() {
 
       final WorldTime result = await repository.loadDefaultOrSavedClock();
       expect(result.url, equals('America/New_York'));
+      expect(result.location, equals('United States, New York'));
       expect(result.flag, equals('icons/flags/png100px/us.png'));
       expect(result.isDayTime, isFalse);
     });

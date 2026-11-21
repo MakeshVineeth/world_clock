@@ -45,12 +45,12 @@ void main() {
           .fetchAvailableLocations();
 
       expect(locations, hasLength(3));
-      expect(locations[0].displayName, equals('Asia, Kolkata'));
-      expect(locations[0].flagAssetPath, equals('icons/flags/png100px/in.png'));
-      expect(locations[1].displayName, equals('America, New York'));
-      expect(locations[1].flagAssetPath, equals('icons/flags/png100px/us.png'));
-      expect(locations[2].displayName, equals('Etc, UTC'));
-      expect(locations[2].flagAssetPath, isEmpty);
+      expect(locations[0].displayName, equals('Etc, UTC'));
+      expect(locations[0].flagAssetPath, isEmpty);
+      expect(locations[1].displayName, equals('India, Kolkata'));
+      expect(locations[1].flagAssetPath, equals('icons/flags/png100px/in.png'));
+      expect(locations[2].displayName, equals('United States, New York'));
+      expect(locations[2].flagAssetPath, equals('icons/flags/png100px/us.png'));
     });
 
     test('returns empty list when API returns empty or fails', () async {

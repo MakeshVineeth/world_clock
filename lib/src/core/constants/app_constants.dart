@@ -18,7 +18,7 @@ abstract final class AppConstants {
   static const String currentTimePath = '/api/time/current/zone';
   static const Duration apiTimeout = Duration(seconds: 4);
 
-  static const String defaultLocation = 'Asia, Kolkata';
+  static const String defaultLocation = 'India, Kolkata';
   static const String defaultTimeZoneId = 'Asia/Kolkata';
   static const String defaultFlagAsset = 'icons/flags/png100px/in.png';
 

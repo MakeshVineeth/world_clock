@@ -9,14 +9,41 @@ void main() {
         equals('America/New_York'),
       );
       expect(
-        TimezoneFormatter.formatDisplayLocation('America/New_York'),
-        equals('America, New York'),
+        TimezoneFormatter.formatDisplayLocation(
+          'America/New_York',
+          countryCode: 'US',
+        ),
+        equals('United States, New York'),
       );
       expect(
         TimezoneFormatter.formatDisplayLocation(
-          'America/Argentina/Buenos_Aires',
+          'America/Argentina/La_Rioja',
+          countryCode: 'AR',
         ),
-        equals('America, Argentina, Buenos Aires'),
+        equals('Argentina, La Rioja'),
+      );
+      expect(
+        TimezoneFormatter.formatDisplayLocation(
+          'Asia/Kolkata',
+          countryCode: 'IN',
+        ),
+        equals('India, Kolkata'),
+      );
+      expect(
+        TimezoneFormatter.formatDisplayLocation(
+          'America/Indiana/Indianapolis',
+        ),
+        equals('United States, Indiana, Indianapolis'),
+      );
+      expect(
+        TimezoneFormatter.formatDisplayLocation('Etc/UTC'),
+        equals('Etc, UTC'),
+      );
+      expect(
+        TimezoneFormatter.countryCodeFromFlagAssetPath(
+          'icons/flags/png100px/ar.png',
+        ),
+        equals('AR'),
       );
     });
 
