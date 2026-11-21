@@ -12,9 +12,9 @@ Preparing an existing Play Store app for modern security expectations requires e
 1. **Network & Data Protection**:
    - Configure `android/app/src/main/res/xml/network_security_config.xml` with `cleartextTrafficPermitted="false"` and system certificate trust anchors only.
    - Set `android:allowBackup="false"` in `android/app/src/main/AndroidManifest.xml`.
-   - Keep `android.permission.INTERNET` because querying `https://timeapi.io` is core app functionality.
+   - Keep `android.permission.INTERNET` for `https://timeapi.io` fallback requests and Google Fonts (`Plus Jakarta Sans` / `Outfit`) CDN delivery.
 2. **Input Validation & URI Hardening**:
-   - Validate timezone IDs, sanitize search queries, allowlist flag asset paths (`icons/flags/png100px/[a-z]{2}.png`), and restrict external links to `https` (non-empty host) and `market` schemes via `InputValidator` and `UrlLauncherService` (launching in `LaunchMode.externalApplication` with no embedded JS WebView).
+   - Validate timezone IDs, sanitize search queries, allowlist vector SVG and PNG flag asset paths (`icons/flags/svg/[a-z]{2}.svg` and `icons/flags/png(100|250|1000)px/[a-z]{2}.png`), and restrict external links to `https` (non-empty host, empty `userInfo`) and `market` schemes via `InputValidator` and `UrlLauncherService` (launching in `LaunchMode.externalApplication` with no embedded JS WebView).
    - Restrict Android `<queries>` to `android.intent.action.VIEW` with `android:scheme="https"`.
 3. **Merged Release Manifest & Repo Hygiene**:
    - Inspect `build/app/intermediates/merged_manifest/release/processReleaseMainManifest/AndroidManifest.xml` and maintain `android/app/src/release/AndroidManifest.xml` to strip any unnecessary plugin-injected permissions or exported components.

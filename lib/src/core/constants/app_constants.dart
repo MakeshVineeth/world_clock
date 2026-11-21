@@ -3,8 +3,9 @@ abstract final class AppConstants {
   static const String appName = 'Flutter Clock';
   static const String appVersion = '3.2.0';
   static const String appLegalese =
-      'An Internet based World Clock app made in Flutter. '
-      'It can retrieve timezones using the WorldClassAPI.';
+      'A modern World Clock app built with Flutter. '
+      'Resolves global timezones instantly using the embedded IANA Time Zone '
+      'Database with timeapi.io HTTPS fallback.';
 
   static const String playStoreUrl =
       'https://play.google.com/store/apps/details?id=com.makeshtech.clock';

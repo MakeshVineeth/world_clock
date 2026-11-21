@@ -35,8 +35,8 @@
     <text x="130" y="26" text-anchor="middle" class="box-title">Flutter UI &amp; Controllers</text>
     <text x="130" y="43" text-anchor="middle" class="box-type">[Container: Dart 3 / material_ui / Provider]</text>
     <text x="130" y="66" text-anchor="middle" class="box-desc">LoaderScreen, HomeScreen, LocationsScreen,</text>
-    <text x="130" y="82" text-anchor="middle" class="box-desc">ClockController, LocationsController,</text>
-    <text x="130" y="98" text-anchor="middle" class="box-desc">Pure-Flutter Pulse &amp; Search Widgets</text>
+    <text x="130" y="82" text-anchor="middle" class="box-desc">HdSceneBackground (24-bit GPU),</text>
+    <text x="130" y="98" text-anchor="middle" class="box-desc">Vector SVG FlagAvatar &amp; Search Widgets</text>
   </g>
 
   <!-- Domain & Security Core Container -->
@@ -53,10 +53,10 @@
   <g transform="translate(56, 286)">
     <rect width="260" height="114" rx="10" fill="#2563eb"/>
     <text x="130" y="26" text-anchor="middle" class="box-title">Data &amp; Platform Adapters</text>
-    <text x="130" y="43" text-anchor="middle" class="box-type">[Container: http / url_launcher / MethodChannel]</text>
-    <text x="130" y="66" text-anchor="middle" class="box-desc">TimeApiClient, ClockRepositoryImpl,</text>
-    <text x="130" y="82" text-anchor="middle" class="box-desc">LocationRepositoryImpl, UrlLauncherService,</text>
-    <text x="130" y="98" text-anchor="middle" class="box-desc">PlatformAppLifecycleService</text>
+    <text x="130" y="43" text-anchor="middle" class="box-type">[Container: timezone / http / url_launcher]</text>
+    <text x="130" y="66" text-anchor="middle" class="box-desc">LocalTimezoneDataSource (IANA tzdb &lt;1ms),</text>
+    <text x="130" y="82" text-anchor="middle" class="box-desc">TimeApiClient (HTTPS fallback), Repos,</text>
+    <text x="130" y="98" text-anchor="middle" class="box-desc">UrlLauncher &amp; PlatformAppLifecycleService</text>
   </g>
 
   <!-- Local Persistence & Assets -->
@@ -65,8 +65,8 @@
     <text x="130" y="26" text-anchor="middle" class="box-title">Local Storage &amp; Assets</text>
     <text x="130" y="43" text-anchor="middle" class="box-type">[Container: SharedPreferences / AssetBundle]</text>
     <text x="130" y="66" text-anchor="middle" class="box-desc">Saved timezone keys (url, location, flag),</text>
-    <text x="130" y="82" text-anchor="middle" class="box-desc">assets/countries.json, day/night GIFs,</text>
-    <text x="130" y="98" text-anchor="middle" class="box-desc">country_icons PNG100px flag assets</text>
+    <text x="130" y="82" text-anchor="middle" class="box-desc">Embedded IANA tzdb, countries.json,</text>
+    <text x="130" y="98" text-anchor="middle" class="box-desc">country_icons vector SVG &amp; PNG flags</text>
   </g>
 
   <!-- Android Native Host -->
@@ -97,7 +97,7 @@
     <rect width="228" height="86" rx="10" fill="#64748b"/>
     <text x="114" y="26" text-anchor="middle" class="box-title">Google Fonts CDN</text>
     <text x="114" y="43" text-anchor="middle" class="box-type">[External HTTPS Asset]</text>
-    <text x="114" y="64" text-anchor="middle" class="box-desc">Aladin font delivery</text>
+    <text x="114" y="64" text-anchor="middle" class="box-desc">Plus Jakarta Sans &amp; Outfit fonts</text>
   </g>
 
   <!-- Edges -->

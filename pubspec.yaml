@@ -1,5 +1,5 @@
 name: flutter_clock
-description: A Simple Flutter project to display World Clocks dynamically from WorldTimeAPI.
+description: A modern Flutter World Clock application using the embedded IANA Time Zone Database with timeapi.io HTTPS fallback.
 publish_to: "none"
 version: 3.2.0+12
 

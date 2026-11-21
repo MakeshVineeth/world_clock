@@ -37,16 +37,16 @@
     <rect width="280" height="106" rx="10" fill="#1168bd" stroke="#0b4f94" stroke-width="2"/>
     <text x="140" y="28" text-anchor="middle" class="box-title">Flutter Clock</text>
     <text x="140" y="45" text-anchor="middle" class="box-type">[Software System — Android App]</text>
-    <text x="140" y="68" text-anchor="middle" class="box-desc">Displays dynamic world time, date,</text>
-    <text x="140" y="84" text-anchor="middle" class="box-desc">country flags, and day/night animations</text>
+    <text x="140" y="68" text-anchor="middle" class="box-desc">Embedded IANA tzdb (&lt;1ms), SVG flags,</text>
+    <text x="140" y="84" text-anchor="middle" class="box-desc">&amp; 24-bit QHD+ GPU day/night scenes</text>
   </g>
 
   <!-- External System: timeapi.io -->
   <g transform="translate(36, 392)">
     <rect width="240" height="96" rx="10" fill="#64748b"/>
     <text x="120" y="26" text-anchor="middle" class="box-title">timeapi.io API</text>
-    <text x="120" y="43" text-anchor="middle" class="box-type">[External System]</text>
-    <text x="120" y="65" text-anchor="middle" class="box-desc">Provides available IANA zones</text>
+    <text x="120" y="43" text-anchor="middle" class="box-type">[External System — HTTPS Fallback]</text>
+    <text x="120" y="65" text-anchor="middle" class="box-desc">Fallback for unbundled IANA zones</text>
     <text x="120" y="81" text-anchor="middle" class="box-desc">and current zone date/time JSON</text>
   </g>
 
@@ -55,8 +55,8 @@
     <rect width="240" height="96" rx="10" fill="#64748b"/>
     <text x="120" y="26" text-anchor="middle" class="box-title">Google Fonts CDN</text>
     <text x="120" y="43" text-anchor="middle" class="box-type">[External System]</text>
-    <text x="120" y="65" text-anchor="middle" class="box-desc">Serves Aladin display typeface</text>
-    <text x="120" y="81" text-anchor="middle" class="box-desc">with local disk caching</text>
+    <text x="120" y="65" text-anchor="middle" class="box-desc">Serves Plus Jakarta Sans &amp; Outfit</text>
+    <text x="120" y="81" text-anchor="middle" class="box-desc">typefaces with local disk caching</text>
   </g>
 
   <!-- External System: Play Store & GitHub -->

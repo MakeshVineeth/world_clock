@@ -38,9 +38,9 @@
   <g transform="translate(228, 108)">
     <rect class="comp" width="186" height="100" rx="8"/>
     <text x="93" y="26" text-anchor="middle" class="comp-title">HomeScreen</text>
-    <text x="93" y="45" text-anchor="middle" class="comp-sub">ClockDisplay + FlagAvatar</text>
+    <text x="93" y="45" text-anchor="middle" class="comp-sub">ClockDisplay + SVG FlagAvatar</text>
     <text x="93" y="64" text-anchor="middle" class="comp-sub">HomeOverflowMenu (5 items)</text>
-    <text x="93" y="82" text-anchor="middle" class="comp-sub">day.gif / night.gif + Refresh</text>
+    <text x="93" y="82" text-anchor="middle" class="comp-sub">HdSceneBackground (24-bit GPU)</text>
   </g>
   <g transform="translate(430, 108)">
     <rect class="comp" width="186" height="100" rx="8"/>
@@ -60,8 +60,8 @@
     <rect class="comp" width="154" height="100" rx="8"/>
     <text x="77" y="28" text-anchor="middle" class="comp-title">LocationsController</text>
     <text x="77" y="48" text-anchor="middle" class="comp-sub">ChangeNotifier</text>
-    <text x="77" y="66" text-anchor="middle" class="comp-sub">300ms Debounce Timer</text>
-    <text x="77" y="84" text-anchor="middle" class="comp-sub">Query &amp; Error State</text>
+    <text x="77" y="66" text-anchor="middle" class="comp-sub">0ms Sync Search Filter</text>
+    <text x="77" y="84" text-anchor="middle" class="comp-sub">Preloaded Country List</text>
   </g>
 
   <!-- Domain Layer -->
@@ -100,22 +100,22 @@
   <g transform="translate(46, 454)">
     <rect class="comp" width="210" height="118" rx="8"/>
     <text x="105" y="26" text-anchor="middle" class="comp-title">ClockRepositoryImpl</text>
-    <text x="105" y="46" text-anchor="middle" class="comp-sub">Orchestrates TimeApiClient</text>
-    <text x="105" y="64" text-anchor="middle" class="comp-sub">+ SharedPreferencesStorage</text>
-    <text x="105" y="84" text-anchor="middle" class="comp-sub">Migrates legacy flag paths</text>
+    <text x="105" y="46" text-anchor="middle" class="comp-sub">LocalTimezoneDataSource (&lt;1ms)</text>
+    <text x="105" y="64" text-anchor="middle" class="comp-sub">+ TimeApiClient fallback</text>
+    <text x="105" y="84" text-anchor="middle" class="comp-sub">+ SharedPreferencesStorage</text>
   </g>
   <g transform="translate(274, 454)">
     <rect class="comp" width="218" height="118" rx="8"/>
     <text x="109" y="26" text-anchor="middle" class="comp-title">LocationRepositoryImpl</text>
-    <text x="109" y="46" text-anchor="middle" class="comp-sub">Combines TimeApiClient</text>
-    <text x="109" y="64" text-anchor="middle" class="comp-sub">+ AssetCountryFlagSource</text>
-    <text x="109" y="84" text-anchor="middle" class="comp-sub">Filters invalid zone IDs</text>
+    <text x="109" y="46" text-anchor="middle" class="comp-sub">Instant AssetCountryFlagSource</text>
+    <text x="109" y="64" text-anchor="middle" class="comp-sub">+ Local IANA tzdb &amp; alias map</text>
+    <text x="109" y="84" text-anchor="middle" class="comp-sub">100% vector SVG flag coverage</text>
   </g>
   <g transform="translate(510, 454)">
     <rect class="comp" width="216" height="118" rx="8"/>
-    <text x="108" y="26" text-anchor="middle" class="comp-title">TimeApiClient</text>
-    <text x="108" y="46" text-anchor="middle" class="comp-sub">Injectable http.Client</text>
-    <text x="108" y="64" text-anchor="middle" class="comp-sub">Uri.https + 15s timeout</text>
+    <text x="108" y="26" text-anchor="middle" class="comp-title">Local Tzdb &amp; TimeApiClient</text>
+    <text x="108" y="46" text-anchor="middle" class="comp-sub">Embedded package:timezone DB</text>
+    <text x="108" y="64" text-anchor="middle" class="comp-sub">+ Injectable HTTPS fallback</text>
     <text x="108" y="84" text-anchor="middle" class="comp-sub">Closed via Provider.dispose</text>
   </g>
   <g transform="translate(744, 454)">
