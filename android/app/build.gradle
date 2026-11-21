@@ -1,71 +1,83 @@
 plugins {
     id "com.android.application"
-    id "kotlin-android"
     id "dev.flutter.flutter-gradle-plugin"
 }
 
-def localProperties = new Properties()
-def localPropertiesFile = rootProject.file('local.properties')
-if (localPropertiesFile.exists()) {
-    localPropertiesFile.withReader('UTF-8') { reader ->
-        localProperties.load(reader)
-    }
-}
-
-def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
-if (flutterVersionCode == null) {
-    flutterVersionCode = '1'
-}
-
-def flutterVersionName = localProperties.getProperty('flutter.versionName')
-if (flutterVersionName == null) {
-    flutterVersionName = '1.0'
-}
-
 def keystoreProperties = new Properties()
-def keystorePropertiesFile = rootProject.file('key.properties')
+def keystorePropertiesFile = rootProject.file("key.properties")
 if (keystorePropertiesFile.exists()) {
-    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+    keystorePropertiesFile.withInputStream { keystoreProperties.load(it) }
 }
 
+def storeFilePath = keystoreProperties.getProperty("storeFile")?.trim()
+def keyAliasValue = keystoreProperties.getProperty("keyAlias")?.trim()
+def keyPasswordValue = keystoreProperties.getProperty("keyPassword")?.trim()
+def storePasswordValue = keystoreProperties.getProperty("storePassword")?.trim()
+def resolvedStoreFile = storeFilePath ? file(storeFilePath) : null
+def hasReleaseSigning = Boolean.valueOf(
+    resolvedStoreFile != null &&
+    resolvedStoreFile.exists() &&
+    keyAliasValue &&
+    keyPasswordValue &&
+    storePasswordValue
+)
 
 android {
-    compileSdkVersion 36
-    ndkVersion "29.0.13113456"
-    namespace "com.makeshtech.clock"
+    namespace = "com.makeshtech.clock"
+    compileSdk = 36
+    ndkVersion = flutter.ndkVersion
 
-    sourceSets {
-        main.java.srcDirs += 'src/main/kotlin'
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
-    lintOptions {
-        disable 'InvalidPackage'
+    lint {
+        disable += "InvalidPackage"
     }
 
     defaultConfig {
-        applicationId "com.makeshtech.clock"
-        minSdkVersion flutter.minSdkVersion
-        targetSdkVersion 36
-        versionCode flutterVersionCode.toInteger()
-        versionName flutterVersionName
+        applicationId = "com.makeshtech.clock"
+        minSdk = 24
+        targetSdk = 36
+        versionCode = flutter.versionCode
+        versionName = flutter.versionName
+        ndk {
+            debugSymbolLevel = "FULL"
+        }
     }
 
-    signingConfigs {
-       release {
-           keyAlias keystoreProperties['keyAlias']
-           keyPassword keystoreProperties['keyPassword']
-           storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
-           storePassword keystoreProperties['storePassword']
-       }
+    if (hasReleaseSigning) {
+        signingConfigs {
+            release {
+                keyAlias = keyAliasValue
+                keyPassword = keyPasswordValue
+                storeFile = resolvedStoreFile
+                storePassword = storePasswordValue
+            }
+        }
     }
 
     buildTypes {
         release {
-            signingConfig signingConfigs.release
+            if (hasReleaseSigning) {
+                signingConfig = signingConfigs.release
+            }
+            minifyEnabled = true
+            shrinkResources = true
+            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+        }
+    }
+}
+
+pluginManager.withPlugin("org.jetbrains.kotlin.android") {
+    kotlin {
+        compilerOptions {
+            jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17
         }
     }
 }
 
 flutter {
-    source '../..'
+    source = "../.."
 }

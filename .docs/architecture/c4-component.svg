@@ -1,0 +1,138 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 620" width="1000" height="620" role="img" aria-labelledby="title-component desc-component">
+  <title id="title-component">C4 Component Diagram - Flutter Clock</title>
+  <desc id="desc-component">Shows Feature-First Clean Architecture components across core, clock, and locations features.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#475569"/>
+    </marker>
+    <style>
+      .bg { fill: #f8fafc; }
+      .heading { font: 700 18px system-ui, -apple-system, Segoe UI, sans-serif; fill: #0f172a; }
+      .sub { font: 400 12px system-ui, -apple-system, Segoe UI, sans-serif; fill: #475569; }
+      .layer { fill: #f1f5f9; stroke: #94a3b8; stroke-width: 1.5; }
+      .layer-title { font: 700 12px system-ui, -apple-system, Segoe UI, sans-serif; fill: #334155; }
+      .comp { fill: #93c5fd; stroke: #2563eb; stroke-width: 1.5; }
+      .comp-domain { fill: #bfdbfe; stroke: #1d4ed8; stroke-width: 1.5; }
+      .comp-sec { fill: #fecaca; stroke: #dc2626; stroke-width: 1.5; }
+      .comp-title { font: 700 12.5px system-ui, -apple-system, Segoe UI, sans-serif; fill: #0f172a; }
+      .comp-sub { font: 400 10.5px system-ui, -apple-system, Segoe UI, sans-serif; fill: #1e293b; }
+      .edge { stroke: #475569; stroke-width: 1.5; fill: none; marker-end: url(#arrow); }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1000" height="620" rx="12"/>
+  <text x="28" y="34" class="heading">Flutter Clock — Components (C4 Level 3)</text>
+  <text x="28" y="54" class="sub">Feature-First Clean Architecture under lib/src/ with strict domain isolation</text>
+
+  <!-- Presentation Layer -->
+  <rect class="layer" x="28" y="72" width="944" height="154" rx="10"/>
+  <text x="44" y="94" class="layer-title">PRESENTATION LAYER (lib/src/features/*/presentation &amp; core/widgets)</text>
+
+  <g transform="translate(46, 108)">
+    <rect class="comp" width="166" height="100" rx="8"/>
+    <text x="83" y="26" text-anchor="middle" class="comp-title">LoaderScreen</text>
+    <text x="83" y="45" text-anchor="middle" class="comp-sub">AnimatedSwitcher</text>
+    <text x="83" y="64" text-anchor="middle" class="comp-sub">PulseLoadingIndicator</text>
+    <text x="83" y="82" text-anchor="middle" class="comp-sub">AnnotatedRegion</text>
+  </g>
+  <g transform="translate(228, 108)">
+    <rect class="comp" width="186" height="100" rx="8"/>
+    <text x="93" y="26" text-anchor="middle" class="comp-title">HomeScreen</text>
+    <text x="93" y="45" text-anchor="middle" class="comp-sub">ClockDisplay + FlagAvatar</text>
+    <text x="93" y="64" text-anchor="middle" class="comp-sub">HomeOverflowMenu (5 items)</text>
+    <text x="93" y="82" text-anchor="middle" class="comp-sub">day.gif / night.gif + Refresh</text>
+  </g>
+  <g transform="translate(430, 108)">
+    <rect class="comp" width="186" height="100" rx="8"/>
+    <text x="93" y="26" text-anchor="middle" class="comp-title">LocationsScreen</text>
+    <text x="93" y="45" text-anchor="middle" class="comp-sub">TimezoneSearchView</text>
+    <text x="93" y="64" text-anchor="middle" class="comp-sub">LocationListItem</text>
+    <text x="93" y="82" text-anchor="middle" class="comp-sub">AnimatedCrossFade</text>
+  </g>
+  <g transform="translate(632, 108)">
+    <rect class="comp" width="154" height="100" rx="8"/>
+    <text x="77" y="28" text-anchor="middle" class="comp-title">ClockController</text>
+    <text x="77" y="48" text-anchor="middle" class="comp-sub">ChangeNotifier</text>
+    <text x="77" y="66" text-anchor="middle" class="comp-sub">Minute-aligned Timer</text>
+    <text x="77" y="84" text-anchor="middle" class="comp-sub">Safe dispose()</text>
+  </g>
+  <g transform="translate(802, 108)">
+    <rect class="comp" width="154" height="100" rx="8"/>
+    <text x="77" y="28" text-anchor="middle" class="comp-title">LocationsController</text>
+    <text x="77" y="48" text-anchor="middle" class="comp-sub">ChangeNotifier</text>
+    <text x="77" y="66" text-anchor="middle" class="comp-sub">300ms Debounce Timer</text>
+    <text x="77" y="84" text-anchor="middle" class="comp-sub">Query &amp; Error State</text>
+  </g>
+
+  <!-- Domain Layer -->
+  <rect class="layer" x="28" y="246" width="944" height="150" rx="10"/>
+  <text x="44" y="268" class="layer-title">DOMAIN &amp; SECURITY LAYER (Pure Dart — Zero Flutter/Plugin Imports)</text>
+
+  <g transform="translate(46, 282)">
+    <rect class="comp-domain" width="210" height="96" rx="8"/>
+    <text x="105" y="26" text-anchor="middle" class="comp-title">Clock Domain</text>
+    <text x="105" y="46" text-anchor="middle" class="comp-sub">WorldTime (immutable)</text>
+    <text x="105" y="66" text-anchor="middle" class="comp-sub">ClockRepository (interface)</text>
+  </g>
+  <g transform="translate(274, 282)">
+    <rect class="comp-domain" width="218" height="96" rx="8"/>
+    <text x="109" y="26" text-anchor="middle" class="comp-title">Locations Domain</text>
+    <text x="109" y="46" text-anchor="middle" class="comp-sub">TimezoneLocation (immutable)</text>
+    <text x="109" y="66" text-anchor="middle" class="comp-sub">LocationRepository (interface)</text>
+  </g>
+  <g transform="translate(510, 282)">
+    <rect class="comp-domain" width="216" height="96" rx="8"/>
+    <text x="108" y="26" text-anchor="middle" class="comp-title">TimezoneSearchService</text>
+    <text x="108" y="46" text-anchor="middle" class="comp-sub">Prefix, token, subsequence</text>
+    <text x="108" y="66" text-anchor="middle" class="comp-sub">&amp; bounded Levenshtein scoring</text>
+  </g>
+  <g transform="translate(744, 282)">
+    <rect class="comp-sec" width="212" height="96" rx="8"/>
+    <text x="106" y="26" text-anchor="middle" class="comp-title">InputValidator &amp; Formatter</text>
+    <text x="106" y="46" text-anchor="middle" class="comp-sub">Zone regex, query clamp,</text>
+    <text x="106" y="66" text-anchor="middle" class="comp-sub">URI allowlist, flag path guard</text>
+  </g>
+
+  <!-- Data Layer -->
+  <rect class="layer" x="28" y="416" width="944" height="176" rx="10"/>
+  <text x="44" y="438" class="layer-title">DATA &amp; INFRASTRUCTURE LAYER (lib/src/features/*/data &amp; core/storage, security)</text>
+
+  <g transform="translate(46, 454)">
+    <rect class="comp" width="210" height="118" rx="8"/>
+    <text x="105" y="26" text-anchor="middle" class="comp-title">ClockRepositoryImpl</text>
+    <text x="105" y="46" text-anchor="middle" class="comp-sub">Orchestrates TimeApiClient</text>
+    <text x="105" y="64" text-anchor="middle" class="comp-sub">+ SharedPreferencesStorage</text>
+    <text x="105" y="84" text-anchor="middle" class="comp-sub">Migrates legacy flag paths</text>
+  </g>
+  <g transform="translate(274, 454)">
+    <rect class="comp" width="218" height="118" rx="8"/>
+    <text x="109" y="26" text-anchor="middle" class="comp-title">LocationRepositoryImpl</text>
+    <text x="109" y="46" text-anchor="middle" class="comp-sub">Combines TimeApiClient</text>
+    <text x="109" y="64" text-anchor="middle" class="comp-sub">+ AssetCountryFlagSource</text>
+    <text x="109" y="84" text-anchor="middle" class="comp-sub">Filters invalid zone IDs</text>
+  </g>
+  <g transform="translate(510, 454)">
+    <rect class="comp" width="216" height="118" rx="8"/>
+    <text x="108" y="26" text-anchor="middle" class="comp-title">TimeApiClient</text>
+    <text x="108" y="46" text-anchor="middle" class="comp-sub">Injectable http.Client</text>
+    <text x="108" y="64" text-anchor="middle" class="comp-sub">Uri.https + 15s timeout</text>
+    <text x="108" y="84" text-anchor="middle" class="comp-sub">Closed via Provider.dispose</text>
+  </g>
+  <g transform="translate(744, 454)">
+    <rect class="comp" width="212" height="118" rx="8"/>
+    <text x="106" y="26" text-anchor="middle" class="comp-title">Platform Adapters</text>
+    <text x="106" y="46" text-anchor="middle" class="comp-sub">UrlLauncherService (https/market)</text>
+    <text x="106" y="64" text-anchor="middle" class="comp-sub">PlatformAppLifecycleService</text>
+    <text x="106" y="84" text-anchor="middle" class="comp-sub">AppLogger (kDebugMode only)</text>
+  </g>
+
+  <!-- Key Dependency Arrows -->
+  <path class="edge" d="M 709 208 L 190 278"/>
+  <path class="edge" d="M 879 208 L 410 278"/>
+  <path class="edge" d="M 879 208 L 620 278"/>
+  <path class="edge" d="M 151 454 L 151 382"/>
+  <path class="edge" d="M 383 454 L 383 382"/>
+  <path class="edge" d="M 256 512 L 506 512"/>
+  <path class="edge" d="M 492 500 L 506 500"/>
+  <path class="edge" d="M 850 454 L 850 382"/>
+</svg>

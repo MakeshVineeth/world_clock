@@ -1,0 +1,117 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 500" width="920" height="500" role="img" aria-labelledby="title-deploy desc-deploy">
+  <title id="title-deploy">C4 Deployment Diagram - Flutter Clock</title>
+  <desc id="desc-deploy">Shows Google Play release pipeline, Android 16 runtime device node, and external HTTPS APIs.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#475569"/>
+    </marker>
+    <style>
+      .bg { fill: #f8fafc; }
+      .heading { font: 700 18px system-ui, -apple-system, Segoe UI, sans-serif; fill: #0f172a; }
+      .sub { font: 400 12px system-ui, -apple-system, Segoe UI, sans-serif; fill: #475569; }
+      .node { fill: #ffffff; stroke: #334155; stroke-width: 2; }
+      .node-hdr { fill: #1e293b; }
+      .node-title { font: 700 13px system-ui, -apple-system, Segoe UI, sans-serif; fill: #ffffff; }
+      .art { fill: #dbeafe; stroke: #2563eb; stroke-width: 1.4; }
+      .art-sec { fill: #fee2e2; stroke: #dc2626; stroke-width: 1.4; }
+      .art-title { font: 700 12px system-ui, -apple-system, Segoe UI, sans-serif; fill: #0f172a; }
+      .art-sub { font: 400 10.5px system-ui, -apple-system, Segoe UI, sans-serif; fill: #334155; }
+      .edge { stroke: #475569; stroke-width: 1.8; fill: none; marker-end: url(#arrow); }
+      .edge-label { font: 600 11px system-ui, -apple-system, Segoe UI, sans-serif; fill: #1e293b; }
+      .label-bg { fill: #f8fafc; }
+    </style>
+  </defs>
+
+  <rect class="bg" width="920" height="500" rx="12"/>
+  <text x="28" y="34" class="heading">Flutter Clock — Deployment (C4 Level 4)</text>
+  <text x="28" y="54" class="sub">Android 16 (API 36) device runtime, Play Console release artifacts, and HTTPS endpoints</text>
+
+  <!-- Node 1: Build & Play Console -->
+  <g transform="translate(28, 78)">
+    <rect class="node" width="260" height="390" rx="10"/>
+    <rect class="node-hdr" width="260" height="44" rx="10"/>
+    <text x="130" y="20" text-anchor="middle" class="node-title">Build &amp; Google Play Distribution</text>
+    <text x="130" y="36" text-anchor="middle" class="art-sub" style="fill:#cbd5e1">Gradle 9.5 / AGP 9.3.1 / KGP 2.4.20</text>
+
+    <rect class="art" x="16" y="62" width="228" height="62" rx="8"/>
+    <text x="130" y="84" text-anchor="middle" class="art-title">Release App Bundle (.aab)</text>
+    <text x="130" y="101" text-anchor="middle" class="art-sub">R8 minifyEnabled + shrinkResources</text>
+    <text x="130" y="116" text-anchor="middle" class="art-sub">--obfuscate + split-debug-info</text>
+
+    <rect class="art" x="16" y="138" width="228" height="62" rx="8"/>
+    <text x="130" y="160" text-anchor="middle" class="art-title">Symbol &amp; Mapping Bundles</text>
+    <text x="130" y="177" text-anchor="middle" class="art-sub">mapping.txt, native-debug-symbols.zip</text>
+    <text x="130" y="192" text-anchor="middle" class="art-sub">dart-obfuscation-symbols.zip</text>
+
+    <rect class="art-sec" x="16" y="214" width="228" height="68" rx="8"/>
+    <text x="130" y="236" text-anchor="middle" class="art-title">Signing &amp; Manifest Policy</text>
+    <text x="130" y="253" text-anchor="middle" class="art-sub">External key.properties (never debug)</text>
+    <text x="130" y="268" text-anchor="middle" class="art-sub">Merged release manifest audited</text>
+
+    <rect class="art" x="16" y="296" width="228" height="72" rx="8"/>
+    <text x="130" y="318" text-anchor="middle" class="art-title">Google Play Console</text>
+    <text x="130" y="335" text-anchor="middle" class="art-sub">Play App Signing &amp; Managed</text>
+    <text x="130" y="350" text-anchor="middle" class="art-sub">delivery for minSdk 24..targetSdk 36</text>
+  </g>
+
+  <!-- Node 2: Android Device -->
+  <g transform="translate(340, 78)">
+    <rect class="node" width="300" height="390" rx="10"/>
+    <rect class="node-hdr" width="300" height="44" rx="10"/>
+    <text x="150" y="20" text-anchor="middle" class="node-title">Android Device [minSdk 24 / targetSdk 36]</text>
+    <text x="150" y="36" text-anchor="middle" class="art-sub" style="fill:#cbd5e1">com.makeshtech.clock</text>
+
+    <rect class="art" x="16" y="62" width="268" height="82" rx="8"/>
+    <text x="150" y="84" text-anchor="middle" class="art-title">Flutter Engine + Impeller/Skia</text>
+    <text x="150" y="101" text-anchor="middle" class="art-sub">AOT Dart 3.15 arm64-v8a / armeabi-v7a</text>
+    <text x="150" y="117" text-anchor="middle" class="art-sub">Bundled GIFs, countries.json, country_icons</text>
+    <text x="150" y="133" text-anchor="middle" class="art-sub">SystemUiMode.edgeToEdge</text>
+
+    <rect class="art" x="16" y="158" width="268" height="84" rx="8"/>
+    <text x="150" y="180" text-anchor="middle" class="art-title">MainActivity.kt &amp; Window</text>
+    <text x="150" y="197" text-anchor="middle" class="art-sub">WindowCompat.setDecorFitsSystemWindows</text>
+    <text x="150" y="213" text-anchor="middle" class="art-sub">shortEdges cutout mode (4 style sets)</text>
+    <text x="150" y="229" text-anchor="middle" class="art-sub">android_app_exit MethodChannel</text>
+
+    <rect class="art-sec" x="16" y="256" width="268" height="114" rx="8"/>
+    <text x="150" y="278" text-anchor="middle" class="art-title">OS Security Sandbox</text>
+    <text x="150" y="295" text-anchor="middle" class="art-sub">allowBackup=false</text>
+    <text x="150" y="311" text-anchor="middle" class="art-sub">cleartextTrafficPermitted=false</text>
+    <text x="150" y="327" text-anchor="middle" class="art-sub">System CAs only + Private SharedPrefs</text>
+    <text x="150" y="343" text-anchor="middle" class="art-sub">Least-privilege HTTPS &lt;queries&gt;</text>
+    <text x="150" y="359" text-anchor="middle" class="art-sub">INTERNET permission only</text>
+  </g>
+
+  <!-- Node 3: Cloud Services -->
+  <g transform="translate(692, 118)">
+    <rect class="node" width="200" height="310" rx="10"/>
+    <rect class="node-hdr" width="200" height="44" rx="10"/>
+    <text x="100" y="20" text-anchor="middle" class="node-title">External Cloud Hosts</text>
+    <text x="100" y="36" text-anchor="middle" class="art-sub" style="fill:#cbd5e1">TLS 1.2+ Only</text>
+
+    <rect class="art" x="14" y="66" width="172" height="66" rx="8"/>
+    <text x="100" y="90" text-anchor="middle" class="art-title">timeapi.io</text>
+    <text x="100" y="108" text-anchor="middle" class="art-sub">Zones &amp; current zone time</text>
+
+    <rect class="art" x="14" y="148" width="172" height="66" rx="8"/>
+    <text x="100" y="172" text-anchor="middle" class="art-title">fonts.gstatic.com</text>
+    <text x="100" y="190" text-anchor="middle" class="art-sub">Aladin font TTF download</text>
+
+    <rect class="art" x="14" y="230" width="172" height="66" rx="8"/>
+    <text x="100" y="254" text-anchor="middle" class="art-title">Play Store &amp; GitHub</text>
+    <text x="100" y="272" text-anchor="middle" class="art-sub">External browser launch</text>
+  </g>
+
+  <!-- Deployment Edges -->
+  <path class="edge" d="M 288 332 L 336 280"/>
+  <rect class="label-bg" x="275" y="280" width="76" height="16"/>
+  <text x="313" y="292" text-anchor="middle" class="edge-label">Installs APK</text>
+
+  <path class="edge" d="M 640 218 L 688 218"/>
+  <rect class="label-bg" x="641" y="200" width="46" height="16"/>
+  <text x="664" y="212" text-anchor="middle" class="edge-label">HTTPS</text>
+
+  <path class="edge" d="M 640 300 L 688 368"/>
+  <rect class="label-bg" x="640" y="330" width="48" height="16"/>
+  <text x="664" y="342" text-anchor="middle" class="edge-label">HTTPS</text>
+</svg>
